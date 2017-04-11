@@ -1,0 +1,28 @@
+package com.traffic.wap.action; 
+import java.util.ArrayList;
+import java.util.HashMap; 
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.stereotype.Controller; 
+
+import com.traffic.wap.service.QRWapService;
+@Controller("qRWapAction")
+public class QRWapAction { 
+	private HashMap<String,Object> result; 
+	@Autowired
+	private QRWapService qrWapService;
+	
+	
+	public HashMap<String, Object> getResult() {
+		return result;
+	}
+	public void setResult(HashMap<String, Object> result) {
+		this.result = result;
+	}
+	public String qrCode(){ 
+		return "success";
+	}
+	public String test(){
+		result=qrWapService.test();
+		return "success";
+	}
+}

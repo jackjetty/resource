@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>测速点</title>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<link rel="stylesheet" type="text/css" href="information.css"/>
+<link rel="stylesheet" type="text/css" href="toTop.css"/>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="toTop.js"></script>
+<script type="text/javascript">
+$(function (){
+	$(window).toTop({
+		showHeight : 100,//设置滚动高度时显示
+		speed : 500 //返回顶部的速度以毫秒为单位
+	});
+});
+</script>
+</head>
+<body>
+<div class="list_h">
+
+<script type="text/javascript">
+	$(".footer-nav-menu-cls-btn").bind('click',function(e){
+	  
+	    
+		var menuEle = $(this).parent().find(".dropdown-menu-top").eq(0);
+		var display = menuEle.css("display");
+		$("#footer-nav-div .dropdown-menu-top").removeClass("show");
+		if(display == "none"){
+			menuEle.addClass("show");
+			if($("#container").height() < menuEle.height()){
+				$("#container").height(menuEle.height());
+			}
+		}else{
+			menuEle.removeClass("show");
+		}
+	});
+    
+  
+    
+</script>    
+<div class="list_m">
+        <div class="content">
+                <div class="top_bd">  <h2>测速点分布</h2>
+        <p class="news_times">象山交警  2014-06-23 </p></div>
+        <table>
+	<tbody>
+		<tr>
+			<td width="31">
+				序号
+			</td>
+			<td width="254">
+				类型
+			</td>
+			<td width="456">
+				地点
+			</td>
+			<td width="192">
+				备注
+			</td>
+		</tr>
+		<tr>
+			<td width="31">
+				1
+			</td>
+			<td width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线3KM+230M
+			</td>
+			<td width="192">
+				限速60KM
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				2
+			</td>
+			<td width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线14KM+180M
+			</td>
+			<td width="192">
+				限速70KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				3
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线17KM+850M
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				4
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线2KM+50M
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				5
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线14KM+220M
+			</td>
+			<td  width="192">
+				限速70KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				6
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线17KM+950M
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				7
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				兴海路堂墙村路段
+			</td>
+			<td  width="192">
+				限速65KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				8
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				兴海路西洋村路段
+			</td>
+			<td  width="192">
+				限速65KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				9
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				气象北路赵家村口
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				10
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				气象北路天明湖路段
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				11
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				陈蟠线6KM+300M
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				12
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				陈蟠线1KM+400M
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				13
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				桥电线7KM+250M
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				14
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				桥电线8K
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr><td  width="31">15</td><td  width="254">固定测速点</td><td width="456">象西线36KM+360M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">16</td><td  width="254">固定测速点</td><td width="456">象西线36KM+150M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">17</td><td  width="254">固定测速点</td><td width="456">甬临线47KM+350M</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">18</td><td  width="254">固定测速点</td><td width="456">甬临线56KM+350M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">19</td><td  width="254">固定测速点</td><td width="456">甬临线61KM</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">20</td><td  width="254">固定测速点</td><td width="456">甬临线(兴宁北路笆弄头路段)</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">21</td><td  width="254">固定测速点</td><td width="456">甬临线74KM</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">22</td><td  width="254">固定测速点</td><td width="456">甬临线92KM+720M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">23</td><td  width="254">固定测速点</td><td width="456">甬临线47KM+400M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">24</td><td  width="254">固定测速点</td><td width="456">甬临线57KM</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">25</td><td  width="254">固定测速点</td><td width="456">甬临线59KM+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">26</td><td  width="254">固定测速点</td><td width="456">甬临线(兴宁北路赵家村路段)</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">27</td><td  width="254">固定测速点</td><td width="456">甬临线74KM+100M</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">28</td><td  width="254">固定测速点</td><td width="456">甬临线93KM+200M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">1</td><td  width="254">卡口</td><td width="456">梅茶线1K+360M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">2</td><td  width="254">卡口</td><td width="456">临港公路2K+100M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">3</td><td  width="254">卡口</td><td width="456">象西线39K+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">4</td><td  width="254">卡口</td><td width="456">陈桥线1K+500M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">5</td><td  width="254">卡口</td><td width="456">盛宁线118K+800M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">6</td><td  width="254">卡口</td><td width="456">象西线69K+700M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">7</td><td  width="254">卡口</td><td width="456">象西线55K+250M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">8</td><td  width="254">卡口</td><td width="456">沿海南线8K+200M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">9</td><td  width="254">卡口</td><td width="456">城岭线4K+100M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">10</td><td  width="254">卡口</td><td width="456">甬临线83K+400M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">11</td><td  width="254">卡口</td><td width="456">甬临线99K+800M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">12</td><td  width="254">卡口</td><td width="456">沙洋线0K+100M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">13</td><td  width="254">卡口</td><td width="456">越沙线21K+700M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">14</td><td  width="254">卡口</td><td width="456">甬临线73K+50M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">15</td><td  width="254">卡口</td><td width="456">甬临线78K+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">16</td><td  width="254">卡口</td><td width="456">沿海南线19K+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">17</td><td  width="254">卡口</td><td width="456">甬临线51K+600M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">18</td><td  width="254">卡口</td><td width="456">甬临线62K+950M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">19</td><td  width="254">卡口</td><td width="456">象西线48K+700M</td><td  width="192">限速80KM</td></tr>
+		
+	</tbody>
+</table>
+<div style="" onclick="document.getElementById('mcover').style.display='';" id="mcover">
+                <img src="guide.png">
+            </div>
+            <div style="margin-top:15px;">
+              <div id="mess_share">
+                  <div id="share_1">
+                      <button onclick="document.getElementById('mcover').style.display='block';" class="button2">
+                          <img width="64" height="64" src="icon_msg.png">
+                          &nbsp;发送给朋友
+                      </button>
+                  </div>
+                  <div id="share_2">
+                      <button onclick="document.getElementById('mcover').style.display='block';" class="button2">
+                          <img width="64" height="64" src="icon_timeline.png">
+                          &nbsp;分享到朋友圈
+                      </button>
+                  </div>
+                  
+                  <div style="height:5px;"></div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+  <div id="gotop"></div>
+  
+</div>
+</body>
+</html>

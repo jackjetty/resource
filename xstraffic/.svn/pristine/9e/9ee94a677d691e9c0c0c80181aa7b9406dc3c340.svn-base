@@ -1,0 +1,8 @@
+package com.traffic.wap.service;
+import java.util.HashMap;
+
+public interface QRWapService {
+
+	
+	public HashMap<String, Object> test();
+}

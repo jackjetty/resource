@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+ <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+ <title>象山交警微信管理平台</title>
+  <script type="text/javascript">
+	String.prototype.trim = function() {
+	  return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	}
+	function checkLogin() {
+		var username = $("input[name='username']").val();
+		username.trim();
+		if (username == "") {
+			$(".error").html("用户名不能为空!");
+			return false;
+		}
+		var password = $("input[name='password']").val();
+		password.trim();
+		if (password == "") {
+			$(".error").html("密码不能为空!");
+			return false;
+		}
+		var captcha = $("input[name='captcha']").val();
+		captcha.trim();
+		if (captcha == "") {
+			$(".error").html("验证码不能为空!");
+			return false;
+		}
+		$.ajax({
+			url:"login.action",
+			data:"username="+username+"&password="+password+"&captcha="+captcha,
+			dataType:"json",
+			type:"post",
+			success:function(data){
+				if(data.respCode == 0){
+					window.location = "toMain.action";
+				}else{
+					if(data.respCode==-1){
+						alert(data.respInfo);
+						imageCodeChange();
+					}else{
+						alert(data.respInfo);
+						imageCodeChange();
+					}
+					
+				}
+			},
+			error:function(data){
+				alert("error 后台出现错误！");
+			}
+		});
+	}
+	$(document).ready(function(){
+		
+		 document.onkeydown = function(e){   
+			    var ev = document.all ? window.event : e; 
+			    if(ev.keyCode==13) {
+			    	checkLogin();
+			    } 
+			  }
+		
+	});
+	function imageCodeChange(){
+		var src = "getCaptchaImage.action"+"?date=" + new Date();
+		$('#captchaimg').attr("src",src);
+		
+	}
+</script>
+<style>
+*{ margin:0; padding:0; font-family:"微软雅黑";}
+.top{ width:1366px; height:5px; background-color:#67ad03; margin:0 auto;}
+header{ width:1366px; height:57px; background-color:#f3f3f3; margin:0 auto;}
+header img{ margin-left:140px; margin-top:15px;}
+.center{ width:1366px; height:500px; background-image:url(images/back.png); background-repeat:no-repeat; margin:0 auto;}
+.login{ width:890px; height:340px; background-image:url(images/login.png); background-repeat:no-repeat; background-position:470px 70px;}
+.text{ color:#FFF; padding-top:97px; padding-left:509px; font-size:20px;}
+.shuru{ margin-left:542px; margin-top:15px;}
+.shuru div{ font-size:12px; color:#777777;}
+input{ width:235px; height:30px; border: 1px solid #C4C4C4; }
+.y input{ width:150px;}
+.y *{ float:left;}
+footer{ width:1366px; line-height:37px; background-color:#77777a; margin:0 auto;}
+.footerText1{ width:180px; color:#ffffff; font-size:12px; margin:0 auto;text-align:center;}
+.footerText2{ width:300px; color:#ffffff; font-size:12px; margin:0 auto;}
+.trClass{
+	height:40px;
+}
+td{
+
+}
+</style>
+
+</head>
+
+<body>
+<div class="content">
+	<div class="top">
+	</div>
+    <header>
+    	<img src="images/logo.jpg">
+    </header>
+    <div class="center">
+    	<div class="login">
+        	<div class="text">
+            	登录
+            </div>
+            
+            <div class="shuru">
+			<table style="margin-top:20px;">
+					<tr class="trClass">
+						<td align="right" style="color:#B0B0B0;font-size:13px;">用户名:&nbsp;</td>
+						<td><input type="text" id="username" name="username" /></td>
+					</tr>
+					<tr class="trClass">
+						<td align="right" style="color:#B0B0B0;font-size:13px;">密码:&nbsp;</td>
+						<td><input type="password" id="password" name="password" /></td>
+					</tr>
+					<tr class="trClass">
+						<td align="right" style="color:#B0B0B0;font-size:13px;">验证码:&nbsp;</td>
+						<td><input type="text" id="captcha" name="captcha" style="width:160px;height:30px;margin-right:10px;" />
+						<img  alt="验证码图片" id="captchaimg" src="getCaptchaImage.action"  style="height:30px;vertical-align:middle;border-right: 1px solid #68838B;border-bottom: 1px solid #68838B;" onclick="imageCodeChange()" /></td>
+					</tr>
+					<tr style="height:25px;">
+						<td></td>
+						<td><span class="error" style="color:red;font-size:15px;"></span></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><img src="images/butn.png" style="" id="button" onclick="checkLogin()"></td>
+					</tr>
+					
+				</table>
+	
+           			
+            </div>
+          
+        </div>
+    </div>
+    <footer>
+    	<div class="footerText1">
+        	技术支持：杭州冉思科技有限公司
+        </div>
+        
+    </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+package com.traffic.wei.service.impl;
+import java.io.File; 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;  
+
+ 
+ 
+import com.traffic.dao.FeedBackDao;
+import com.traffic.dao.OrationRecordDao;
+import com.traffic.dao.ProcessDao;
+import com.traffic.dao.UserDao;
+import com.traffic.pojo.TbAccident;
+import com.traffic.pojo.TbFeedBack;
+import com.traffic.pojo.TbUser;
+import com.traffic.pojo.TbOrationRecord;  
+import com.traffic.util.Constant;  
+import com.traffic.util.CommonUtil;
+import org.rising.wei.bean.req.ClickEventReqBean;
+import org.rising.wei.bean.req.TextReqBean;
+import com.traffic.wei.process.FeedBackProcess;
+@Service("feedBackProcessService")
+public class FeedBackProcessServiceImpl   extends ProcessServiceImpl{
+	@Autowired
+	private UserDao userDao; 
+	@Autowired
+	private ProcessDao processDao;
+	@Autowired
+	private OrationRecordDao orationRecordDao;
+	@Autowired
+	private FeedBackDao feedBackDao; 
+	public boolean clickEventProcess(ClickEventReqBean clickEventReqBean){ 
+		super.clickEventProcess(clickEventReqBean);
+		String eventKey=clickEventReqBean.getEventKey();
+		boolean sign=true;
+ 
+		sign= eventKey.equalsIgnoreCase(Constant.FEEDBACK)?sign:false;
+		if(!sign) return false;   
+		StringBuffer textBuffer=new StringBuffer("");  
+		textBuffer.append("欢迎您提出宝贵的意见和建议，请输入:"); 
+		this.tipMessage(textBuffer.toString()); 
+		this.session.setAttribute("lastOperationStage",FeedBackProcess.START);    
+		return true;  
+		 
+	}
+	public boolean textProcess(TextReqBean textReqBean){
+		super.textProcess(textReqBean);
+		String content=textReqBean.getContent().trim();  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false;  
+		sign=stage instanceof  FeedBackProcess;  
+		if(!sign) return false;
+		sign=stage.equals(FeedBackProcess.START);
+		if(!sign) return false; 
+		this.tipMessage("您的建议我们已经收到，感谢您的支持和关注！");  
+		TbFeedBack tbFeedBack=new TbFeedBack();
+		tbFeedBack.setFeedOpenId(this.openId);
+		tbFeedBack.setFeedText(content);
+		Calendar cal = Calendar.getInstance(); 
+        Date date=cal.getTime();      
+        tbFeedBack.setFeedTime(new Timestamp(date.getTime()));
+        tbFeedBack.setRecordType("REPLY"); 
+        tbFeedBack.setFeedBackState("未回复");
+        feedBackDao.saveOrUpdate(tbFeedBack); 
+		this.session.setAttribute("lastOperationStage",FeedBackProcess.CONTEXT); 
+		return sign;  
+		 
+	} 
+	
+}

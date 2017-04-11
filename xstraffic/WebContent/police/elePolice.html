@@ -1,0 +1,1471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>电子警察点查询</title>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<link rel="stylesheet" type="text/css" href="information.css"/>
+<link rel="stylesheet" type="text/css" href="toTop.css"/>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="toTop.js"></script>
+<script type="text/javascript">
+$(function (){
+	$(window).toTop({
+		showHeight : 100,//设置滚动高度时显示
+		speed : 500 //返回顶部的速度以毫秒为单位
+	});
+});
+</script>
+</head>
+<body>
+<div class="list_h">
+
+<script type="text/javascript">
+	$(".footer-nav-menu-cls-btn").bind('click',function(e){
+	  
+	    
+		var menuEle = $(this).parent().find(".dropdown-menu-top").eq(0);
+		var display = menuEle.css("display");
+		$("#footer-nav-div .dropdown-menu-top").removeClass("show");
+		if(display == "none"){
+			menuEle.addClass("show");
+			if($("#container").height() < menuEle.height()){
+				$("#container").height(menuEle.height());
+			}
+		}else{
+			menuEle.removeClass("show");
+		}
+	});
+    
+  
+    
+</script>    
+<div class="list_m">
+        <div class="content">
+                <div class="top_bd">  <h2>电子警察点查询</h2>
+        <p class="news_times">象山交警  2014-06-23 </p></div>
+       <table>
+	<tbody>
+		<tr>
+			<td width="31">
+				序号
+			</td>
+			<td width="254">
+				类型
+			</td>
+			<td width="456">
+				地点
+			</td>
+			<td width="192">
+				备注
+			</td>
+			
+		</tr>
+		<tr>
+			<td width="31">
+				1
+			</td>
+			<td width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线3KM+230M
+			</td>
+			<td width="192">
+				限速60KM
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				2
+			</td>
+			<td width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线14KM+180M
+			</td>
+			<td width="192">
+				限速70KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				3
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线17KM+850M
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				4
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线2KM+50M
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				5
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线14KM+220M
+			</td>
+			<td  width="192">
+				限速70KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				6
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				宁松线17KM+950M
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				7
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				兴海路堂墙村路段
+			</td>
+			<td  width="192">
+				限速65KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				8
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				兴海路西洋村路段
+			</td>
+			<td  width="192">
+				限速65KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				9
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				气象北路赵家村口
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				10
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				气象北路天明湖路段
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				11
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				陈蟠线6KM+300M
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				12
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				陈蟠线1KM+400M
+			</td>
+			<td  width="192">
+				限速60KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				13
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				桥电线7KM+250M
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				14
+			</td>
+			<td  width="254">
+				固定测速点
+			</td>
+			<td width="456">
+				桥电线8K
+			</td>
+			<td  width="192">
+				限速80KM
+			</td>
+		</tr>
+		<tr><td  width="31">15</td><td  width="254">固定测速点</td><td width="456">象西线36KM+360M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">16</td><td  width="254">固定测速点</td><td width="456">象西线36KM+150M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">17</td><td  width="254">固定测速点</td><td width="456">甬临线47KM+350M</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">18</td><td  width="254">固定测速点</td><td width="456">甬临线56KM+350M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">19</td><td  width="254">固定测速点</td><td width="456">甬临线61KM</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">20</td><td  width="254">固定测速点</td><td width="456">甬临线(兴宁北路笆弄头路段)</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">21</td><td  width="254">固定测速点</td><td width="456">甬临线74KM</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">22</td><td  width="254">固定测速点</td><td width="456">甬临线92KM+720M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">23</td><td  width="254">固定测速点</td><td width="456">甬临线47KM+400M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">24</td><td  width="254">固定测速点</td><td width="456">甬临线57KM</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">25</td><td  width="254">固定测速点</td><td width="456">甬临线59KM+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">26</td><td  width="254">固定测速点</td><td width="456">甬临线(兴宁北路赵家村路段)</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">27</td><td  width="254">固定测速点</td><td width="456">甬临线74KM+100M</td><td  width="192">限速65KM</td></tr>
+		<tr><td  width="31">28</td><td  width="254">固定测速点</td><td width="456">甬临线93KM+200M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">1</td><td  width="254">卡口</td><td width="456">梅茶线1K+360M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">2</td><td  width="254">卡口</td><td width="456">临港公路2K+100M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">3</td><td  width="254">卡口</td><td width="456">象西线39K+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">4</td><td  width="254">卡口</td><td width="456">陈桥线1K+500M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">5</td><td  width="254">卡口</td><td width="456">盛宁线118K+800M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">6</td><td  width="254">卡口</td><td width="456">象西线69K+700M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">7</td><td  width="254">卡口</td><td width="456">象西线55K+250M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">8</td><td  width="254">卡口</td><td width="456">沿海南线8K+200M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">9</td><td  width="254">卡口</td><td width="456">城岭线4K+100M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">10</td><td  width="254">卡口</td><td width="456">甬临线83K+400M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">11</td><td  width="254">卡口</td><td width="456">甬临线99K+800M</td><td  width="192">限速70KM</td></tr>
+		<tr><td  width="31">12</td><td  width="254">卡口</td><td width="456">沙洋线0K+100M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">13</td><td  width="254">卡口</td><td width="456">越沙线21K+700M</td><td  width="192">限速60KM</td></tr>
+		<tr><td  width="31">14</td><td  width="254">卡口</td><td width="456">甬临线73K+50M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">15</td><td  width="254">卡口</td><td width="456">甬临线78K+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">16</td><td  width="254">卡口</td><td width="456">沿海南线19K+500M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">17</td><td  width="254">卡口</td><td width="456">甬临线51K+600M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">18</td><td  width="254">卡口</td><td width="456">甬临线62K+950M</td><td  width="192">限速80KM</td></tr>
+		<tr><td  width="31">19</td><td  width="254">卡口</td><td width="456">象西线48K+700M</td><td  width="192">限速80KM</td></tr>
+		
+		<tr>
+			<td width="31">
+				1
+			</td>
+			<td width="254">
+				电子警察
+			</td>
+			<td width="456">
+			外环东路与桃源北路交叉口</td>
+			<td width="192">
+			闯红灯、变更车道、违反禁止标线、随意穿插
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				2
+			</td>
+			<td width="254">
+				电子警察</td>
+			<td width="456">
+				银河路与桃源北路交叉口
+			</td>
+			<td width="192">
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				3
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            时代大道与桃源北路交叉口
+				</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				4
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				金水路与桃源北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				5
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				竹口与桃源北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				6
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				科三路与桃源北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				7
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				桃源北路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				8
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				兴海北路与时代大道交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				9
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				时代大道与学勉路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				10
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				兴工二路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				11
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				梅茶线与甬临线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				12
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				振兴路与甬临线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				13
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				沿海南线与创业路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				14
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				金海路与创业路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+        <tr>
+			<td width="31">
+				15
+			</td>
+			<td width="254">
+				电子警察
+			</td>
+			<td width="456">云桥路与创业路交叉口</td>
+			<td width="192">
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				16</td>
+			<td width="254">
+				电子警察</td>
+			<td width="456">
+				甬临线与赵郎厂路交叉口
+			</td>
+			<td width="192">
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				17</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临线与辛园二路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				18
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				梅茶线与临港公路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				19
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临线与城松线交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				20
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临线与黄坛车站交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				21
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				人民大道与兴宁中路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				22
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            人民大道与中山中路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				23</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				时代大道与北斗北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				24
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				时代大道与新桥路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				25
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				梅林花园街与甬临线
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				26
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				象山湾大道与临港公路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				27
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				科技大道与桃源北路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+        <tr>
+			<td  width="31">
+				28
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            甬临线与西店邵家路交叉口
+				</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				29</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				久安南路与象西线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				30
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				紫溪路与甬临线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				31
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				长街东兴街与沿海南线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				32</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				金水路与气象北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				33
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				甬临线与樟树路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				34
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				甬临线与铁江路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				35
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				越沙线与沿海南线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				36
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				力胡线与沿海南线交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				37
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				天明路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				38
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				甬临线与梁书线交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				39
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				甬临线与西店高速出口交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+        <tr>
+			<td width="31">
+				40
+			</td>
+			<td width="254">
+				电子警察
+			</td>
+			<td width="456">甬临线与岔路G15高速出口交叉口</td>
+			<td width="192">
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				41</td>
+			<td width="254">
+				电子警察</td>
+			<td width="456">
+				甬临线与田梁王路口交叉口
+			</td>
+			<td width="192">
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				42</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临复线与城岭线交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				43
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临复线与城松线交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				44
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临复线与严家交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				45
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临复线与岭根村交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				46
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">甬临复线与梁书线交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				47
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            中山西路与山河路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				48</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				外环路与山河路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td width="31">
+				49
+			</td>
+			<td width="254">
+				电子警察
+			</td>
+			<td width="456">
+			纺织路与兴宁南路交叉口</td>
+			<td width="192">
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				50</td>
+			<td width="254">
+				电子警察</td>
+			<td width="456">
+				北大街与兴宁南路交叉口
+			</td>
+			<td width="192">
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				51
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            正学路与兴宁路交叉口
+				</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				52
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				外环路与兴宁路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				53
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				时代大道与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				54
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				金水路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">55</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				跃龙路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				56
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				银河路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				57
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				兴工一路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				58
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				堤树路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				59
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				兴宁北路与檀树路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				60
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				人民大道与东海路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				61
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">环南中路与兴宁南路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				62
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				正学路与北斗北路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+        <tr>
+			<td width="31">
+				63
+			</td>
+			<td width="254">
+				电子警察
+			</td>
+			<td width="456">外环路与北斗北路交叉口</td>
+			<td width="192">
+			</td>
+			
+		</tr>
+		<tr>
+			<td  width="31">
+				64</td>
+			<td width="254">
+				电子警察</td>
+			<td width="456">
+				人民大道与北斗北路交叉口
+			</td>
+			<td width="192">
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				65</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">中大街与兴宁南路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				66
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">兴海路与华山路南交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				67
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">人民大道与兴海路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				68
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">科三路与科园北路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">69</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				科三路与竹泉路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				70
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            正学路与沿海南线交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				71</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				北大街与桃源南路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				72
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				人民大道与桃源南路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				73
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				中山中路与桃源南路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				74
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				正学路与桃源中路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				75
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				中大街与桃源南路交叉口</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+        <tr>
+			<td  width="31">
+				76</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+            正学路与气象北路交叉口
+				</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				77</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				外环路与气象北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				78
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				跃龙路与气象北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				79
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				时代大道与气象北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				80</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				甬临线与辛岭路口交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				81
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				冠庄路与兴宁北路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				82
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				兴海路与科技大道交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				83
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				科园路与兴海路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+        <tr>
+			<td  width="31">
+				84</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				甬临线与中山西路交叉口
+			</td>
+			<td  width="192">
+				
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				85
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				龙珠大厦东侧南口
+			</td>
+			<td  width="192">
+				单行线
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				86
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				龙珠大厦西侧北口
+			</td>
+			<td  width="192">
+				单行线
+			</td>
+		</tr>
+		<tr>
+			<td  width="31">
+				87
+			</td>
+			<td  width="254">
+				电子警察
+			</td>
+			<td width="456">
+				象山火车站进口
+			</td>
+			<td  width="192">
+				违反禁令标志
+			</td>
+		</tr>
+	</tbody>
+</table>
+<div style="" onclick="document.getElementById('mcover').style.display='';" id="mcover">
+                <img src="guide.png">
+            </div>
+            <div style="margin-top:15px;">
+              <div id="mess_share">
+                  <div id="share_1">
+                      <button onclick="document.getElementById('mcover').style.display='block';" class="button2">
+                          <img width="64" height="64" src="icon_msg.png">
+                          &nbsp;发送给朋友
+                      </button>
+                  </div>
+                  <div id="share_2">
+                      <button onclick="document.getElementById('mcover').style.display='block';" class="button2">
+                          <img width="64" height="64" src="icon_timeline.png">
+                          &nbsp;分享到朋友圈
+                      </button>
+                  </div>
+                  
+                  <div style="height:5px;"></div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+  <div id="gotop"></div>
+  
+</div>
+</body>
+</html>

@@ -1,0 +1,238 @@
+package com.traffic.dao.impl;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType; 
+import java.util.ArrayList;
+import java.util.List; 
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+ 
+import com.traffic.dao.BaseDao;
+public class BaseDaoImpl<T> implements BaseDao<T>{
+	
+	
+	private static final  Log log = LogFactory.getLog(BaseDaoImpl.class); 
+	
+	@Autowired
+	@Qualifier("sessionFactory")
+	SessionFactory sessionFactory;
+	private Class<T> clazz; 
+	@Override
+	public Session getSession() {
+		return sessionFactory.getCurrentSession();
+	}
+	public BaseDaoImpl() {  
+        ParameterizedType type = (ParameterizedType) this.getClass().getGenericSuperclass();  
+        clazz = (Class<T>) type.getActualTypeArguments()[0];   
+    }  
+	public void save(T entity) {  
+		log.debug("saving Emp instance");
+		try { 
+			this.getSession().save(entity); 
+			this.getSession().flush();
+			log.debug("save successful");
+		} catch (RuntimeException re) {
+			log.error("save failed", re);
+			throw re;
+		} 
+         
+        
+    } 
+    
+    
+    public void saveOrUpdate(T entity) {  
+    	
+    	log.debug("saveOrUpdate Emp instance");
+		try { 
+			 this.getSession().saveOrUpdate(entity);  
+			this.getSession().flush();
+			log.debug("saveOrUpdate successful");
+		} catch (RuntimeException re) {
+			log.error("saveOrUpdate failed", re);
+			throw re;
+		} 
+    	 
+        
+    } 
+    public T findById(Serializable id) {  
+    	T tt=null;
+    	log.debug("find Emp instance");
+		try { 
+			tt= (T) this.getSession().get(this.clazz, id);   
+			//this.getSession().flush();
+			log.debug("find successful");
+		} catch (RuntimeException re) {
+			log.error("find failed", re);
+			throw re;
+		} 
+		
+    	return tt;
+        
+        
+    } 
+  
+    public void update(T entity) {  
+    	
+    	log.debug("update Emp instance");
+		try { 
+			this.getSession().update(entity); 
+			this.getSession().flush();
+			log.debug("update successful");
+		} catch (RuntimeException re) {
+			log.error("update failed", re);
+			throw re;
+		}  
+    }  
+  
+    public void delete(T entity) {  
+        
+        
+        log.debug("delete Emp instance");
+		try { 
+			this.getSession().delete(entity); 
+			this.getSession().flush();
+			log.debug("delete successful");
+		} catch (RuntimeException re) {
+			log.error("delete failed", re);
+			throw re;
+		}   
+    } 
+    public List<T> findByHQL(String hql, Object... params) {  
+    	
+    	List<T> ttList=null;
+    	try { 
+    		    Query query = this.getSession().createQuery(hql);
+    	        for (int i = 0; params != null && i < params.length; i++) {
+    	            query.setParameter(i, params[i]);  
+    	        }  
+    	        ttList= query.list();  
+			 
+			log.debug("findByHQL params successful");
+		} catch (RuntimeException re) {
+			log.error("findByHQL params failed", re);
+			throw re;
+		}  
+    	return ttList;
+       
+    } 
+    public List<T> findByHQL(String hql, ArrayList arraylist){
+    	List<T> ttList=null;
+    	try { 
+    		Query query = this.getSession().createQuery(hql);  
+            for (int i = 0; i<arraylist.size(); i++) {  
+                query.setParameter(i, arraylist.get(i));  
+            }  
+            ttList= query.list();    
+			log.debug("findByHQL arraylist successful");
+		} catch (RuntimeException re) {
+			log.error("findByHQL arraylist failed", re);
+			throw re;
+		}  
+    	return ttList; 
+    	
+    	
+    }
+    public List<T> findPage(String hql,int offset,int pageSize, Object... params){
+    	
+    	List<T> ttList=null;
+    	try { 
+    		Query query = this.getSession().createQuery(hql);  
+            for (int i = 0; params != null && i < params.length; i++) {  
+                query.setParameter(i, params[i]);  
+            }   
+            offset=offset<0?0:offset;
+            ttList= query.setFirstResult(offset).setMaxResults(pageSize).list(); 
+              
+			log.debug("findPage  params successful");
+		} catch (RuntimeException re) {
+			log.error("findPage  params  failed", re);
+			throw re;
+		}  
+    	return ttList; 
+    	
+    	
+    	
+    	
+    }
+    public List<T> findPage(String hql,int offset,int pageSize, ArrayList<Object> arraylist){
+    	
+    	List<T> ttList=null;
+    	try { 
+    		Query query = this.getSession().createQuery(hql);  
+            for (int i = 0; i<arraylist.size(); i++) {  
+                query.setParameter(i, arraylist.get(i));  
+            } 
+            offset=offset<0?0:offset;
+            ttList= query.setFirstResult(offset).setMaxResults(pageSize).list(); 
+              
+			log.debug("findPage  arraylist successful");
+		} catch (RuntimeException re) {
+			log.error("findPage  arraylist  failed", re);
+			throw re;
+		}  
+    	return ttList; 
+    	
+    	
+    	
+    }
+    public int findCount(String hql, Object... params) {
+    	int recordCount =0;
+    	
+    	try { 
+    		List list=findByHQL(  hql,    params);
+        	if (list == null || list.size() == 0) {
+    			return recordCount;
+    		} 
+        	recordCount = ((Number) list.get(0)).intValue();  
+              
+			log.debug("findCount  params successful");
+		} catch (RuntimeException re) {
+			log.error("findCount  params  failed", re);
+			throw re;
+		}   
+    	
+		return recordCount;
+    }
+    public int findCount(String hql, ArrayList<Object> arraylist){
+    	int recordCount =0;
+    	
+    	
+    	try { 
+    		List list=findByHQL(hql,arraylist);
+        	if (list == null || list.size() == 0) {
+    			return recordCount;
+    		} 
+        	recordCount = ((Number) list.get(0)).intValue(); 
+              
+			log.debug("findCount  arraylist successful");
+		} catch (RuntimeException re) {
+			log.error("findCount  arraylist  failed", re);
+			throw re;
+		}   
+    	
+    	
+    	
+		return recordCount;
+    }
+    public List<T> findBySQL(String sql, Object... params) {  
+    	SQLQuery sqlQuery = this.getSession().createSQLQuery(sql);  
+        for (int i = 0; params != null && i < params.length; i++) {  
+        	sqlQuery.setParameter(i, params[i]);  
+        }  
+        return sqlQuery.list();  
+    } 
+    public List<T> findBySQL(String sql,ArrayList arraylist) {  
+    	SQLQuery sqlQuery = this.getSession().createSQLQuery(sql); 
+    	for (int i = 0; i<arraylist.size(); i++) {  
+    		sqlQuery.setParameter(i, arraylist.get(i));  
+        }  
+        return sqlQuery.list();  
+    } 
+
+}

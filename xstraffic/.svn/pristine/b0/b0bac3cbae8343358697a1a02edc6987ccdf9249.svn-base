@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html> 
+<head> 
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>声明事项</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <script type="text/javascript">
+    	
+    
+    </script>
+    <link media="screen and (min-width:1000px)" rel="stylesheet" type="text/css" href="../css/pc-page1d0858.css"/>
+    <link href="styleIndex.css" rel="stylesheet" type="text/css">
+</head> 
+
+<body id="activity-detail" style="background-color:#F2F2F2;">
+<div data-role="header" data-position="fixed" id="header">
+<h2>交通违法处理</h2>
+</div>
+<div id="page-content" class="page-content" >
+	<div id="main">
+    	<a href="#">声明事项</a>
+    </div>
+  <div class="text" style="width:85%; margin:0 auto; margin-top:20px; margin-bottom:20px;">
+    <h4>声明事项</h4>
+    <h5>1、用户操作应由机动车驾驶员本人进行；</h5>
+    <h5>2、目前操作仅限持有宁波市车辆管理所核发的机动车驾驶证的驾驶员；</h5>
+    <h5>3、操作必须关联机动车驾驶证与手机号码，请确保您申领机动车驾驶证时登记的手机号码与您当前持有手机号码相符。如不相符，请及时至就近交警大队或车辆管理所办理更正手续；</h5>
+    <h5>4、用户相关信息泄露或交由他人操作导致的一切后果由用户本</h5>
+    <h5>5、用户应牢记本人机动车驾驶证本年度累积记分情况（清分时间为每年初领时间当天零点），本系统显示机动车驾驶证累积记分值仅供参考（外市、省高速交警部门及下属单位窗口处理电子警察和交通违法现场处理的扣分需隔天才能传至本系统）。</h5>
+  </div>
+  <a href="lllegalProcessing.html"><input type="button" value="确认" class="submit" style="height:40px;width:100px;" /></a>
+  <div data-role="footer" data-position="fixed" id="footer">
+  <h1>技术支持：杭州冉思科技有限公司</h1>
+  </div>
+            </div>
+            
+</body>
+</html>

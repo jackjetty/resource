@@ -1,0 +1,86 @@
+@charset "utf-8";
+/* CSS Document */
+	li{
+		list-style:none;
+	}
+	a{
+		text-decoration:none;
+	}
+        body{ -webkit-touch-callout: none; -webkit-text-size-adjust: none; }
+		
+		#footer{
+			margin-top:20px;
+		}
+		#footer h1{
+			font-size:16px;
+			text-align:center;
+			line-height:30px;
+			font-weight:normal;
+		}
+		#header h2{
+			text-align:center;
+			line-height:30px;
+			margin:0;
+			padding:10px 0;
+		}
+.page-content{
+	border:1px solid #CCC;
+	
+}
+#main{
+	background-image: linear-gradient(bottom,  #60b2e2 - 50%,#FFF  50%);
+	background-image: -o-linear-gradient(bottom,  #60b2e2 -50%,#FFF 50%);
+	background-image: -moz-linear-gradient(bottom,  #60b2e2 -50%,#FFF 50%);
+	background-image: -webkit-linear-gradient(bottom,  #60b2e2 -50%,#FFF 50%);
+	border-bottom:1px solid #247DBB;
+}
+#main a{
+	line-height:40px;
+	text-align:center;
+	padding:11px 10px;
+	color:white;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	background-image: linear-gradient(bottom,  #04436E 0%,#237CBA  100%);
+	background-image: -o-linear-gradient(bottom,  #04436E 0%,#237CBA  100%);
+	background-image: -moz-linear-gradient(bottom,  #04436E 0%,#237CBA  100%);
+	background-image: -webkit-linear-gradient(bottom,  #04436E 0%,#237CBA  100%);
+}
+.text h4{
+	color:#232323;
+	padding-bottom:5px;
+	font-weight:normal;
+	text-align:center;
+	border-bottom:1px dashed #CCCCCC;
+}
+.text h5{
+	padding:0;
+	margin:0;
+	text-indent:2em;
+	font-weight:normal;
+	color:#000000;
+	line-height:25px;
+}
+.submit{
+	border:none;
+	width:20%;
+	 margin:0 auto;
+	 background-color:#179F00;
+	font-size:16px;
+	line-height:38px;
+	text-decoration:none;
+	background-image: linear-gradient(bottom,  #04436E 0%,#237CBA 100%);
+	background-image: -o-linear-gradient(bottom,  #04436E 0%,#237CBA 100%);
+	background-image: -moz-linear-gradient(bottom,  #04436E 0%,#237CBA 100%);
+	background-image: -webkit-linear-gradient(bottom,  #04436E 0%,#237CBA 100%);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-o-border-radius: 5px;
+	border-radius: 5px;
+	color: white;
+	font-weight:bold;
+	display:block;
+	text-align:center;
+}

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts> 
+    <constant name="struts.multipart.saveDir" value="/tmp"/>
+	<constant name="struts.multipart.maxSize" value="6097152" /> 
+	<package name="struts" extends="struts-default,json-default">	
+		<action name="getCaptchaImage" class="captchaAction" method="getCaptchaImage" />
+		<action name="login" class="managerAction" method="login">
+			<result name="login" type="json"><param name="root">result</param></result>
+		</action>
+				<!-- 公众号关注统计 -->
+		<action name="doPublicStatistics" class="publicStatisticsAction" method="doPublicStatistics">
+			<result name="success">page/doPublicStatistics.jsp</result>
+		</action>
+		
+		<!-- 投票活动 -->
+		<action name="doVote" class="voteAction" method="doVote">
+		   <result name="success">vote/doVote.jsp</result>
+		</action>
+		<action name="getVoteByPage" class="voteAction" method="getVoteByPage">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addVote" class="voteAction" method="addVote">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="editVote" class="voteAction" method="editVote">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="deleteVotes" class="voteAction" method="deleteVotes">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doElector" class="voteAction" method="doElector">
+		   <result name="success">vote/doElector.jsp</result>
+		</action>
+		<action name="getElectorByPage" class="voteAction" method="getElectorByPage">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doVoteDetail" class="voteAction" method="doVoteDetail">
+		   <result name="success">vote/doVoteDetail.jsp</result>
+		</action>
+		<action name="getTenderByPage" class="voteAction" method="getTenderByPage">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addElector" class="voteAction" method="addElector">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="editElector" class="voteAction" method="editElector">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="deleteElector" class="voteAction" method="deleteElector">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		
+		<action name="getPublicStatistics" class="publicStatisticsAction" method="getPublicStatistics">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		<action name="logout" class="managerAction" method="logout">
+			<result name="success">index.html</result>
+		</action>
+		<action name="modifyPassword" class="managerAction" method="modifyPassword">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="toMain" class="mainAction" method="toMain">
+			<result name="toMain">page/main.jsp</result>
+		</action>
+		<action name="getMenu" class="menuAction" method="getMenu">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doAccident" class="accidentAction" method="doAccident">
+			<result name="success">page/doAccident.jsp</result>
+		</action>
+		<action name="getAccident" class="accidentAction" method="getAccident">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		<action name="accidentDetail" class="accidentAction" method="accidentDetail">
+			<result name="success">/page/AccidentDetail.jsp</result>
+		</action>
+		
+		<action name="getTbAccidentPic" class="accidentAction" method="getTbAccidentPic">
+			<result name="success" type="json"><param name="root">tap</param></result>
+		</action>
+		<action name="getAccidentNumber" class="accidentAction" method="getAccidentNumber">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getTbNumber" class="accidentAction" method="getTbNumber">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getTbAccidentText" class="accidentAction" method="getTbAccidentText">
+			<result name="success" type="json"><param name="root">tav</param></result>
+		</action>
+		<action name="saveProcedureMessage" class="accidentAction" method="saveProcedureMessage">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="saveProcedureMessage1" class="accidentAction" method="saveProcedureMessage1">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="responseWei" class="accidentAction" method="responseWei">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getAccidentByAccidentId" class="accidentAction" method="getAccidentByAccidentId">
+			<result name="success" type="json"><param name="root">accidentVo</param></result>
+		</action>
+		
+		<action name="getTbAddress" class="accidentAction" method="getTbAddress">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="viewImages" class="accidentAction" method="viewImages" />
+		<action name="doUser" class="userAction" method="doUser">
+			<result name="success">page/doUser.jsp</result>
+		</action>
+		<action name="getUser" class="userAction" method="getUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addUser" class="userAction" method="addUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateUser" class="userAction" method="updateUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getAllUserId" class="userAction" method="getAllUserId">
+			<result name="success" type="json"><param name="root">list</param></result>
+		</action>
+		<action name="deleteUser" class="userAction" method="deleteUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="exchangeStatus" class="userAction" method="exchangeStatus">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="exchangeStatus1" class="userAction" method="exchangeStatus1">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getFirst" class="userAction" method="getFirst">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doRole" class="roleAction" method="doRole">
+			<result name="success">page/doRole.jsp</result>
+		</action>
+		<action name="getRole" class="roleAction" method="getRole">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addRole" class="roleAction" method="addRole">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateRole" class="roleAction" method="updateRole">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="removeRole" class="roleAction" method="removeRole">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getAllRole" class="roleAction" method="getAllRole">
+			<result name="success" type="json"><param name="root">array</param></result>
+		</action>
+		<action name="getAllMenu" class="menuAction" method="getAllMenu">
+			<result name="success" type="json"><param name="root">tree</param></result>
+			<result name="failed" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="developRoleRight" class="roleRightAction" method="developRoleRight">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="developManagerRole" class="managerRoleAction" method="developManagerRole">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doFeedBack" class="feedBackAction" method="doFeedBack">
+			<result name="success">page/doFeedBack.jsp</result>
+		</action>
+		<action name="getFeedBack" class="feedBackAction" method="getFeedBack">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getDoAnswer" class="doAnswerAction" method="getDoAnswer">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		
+		<action name="doAnswer" class="doAnswerAction" method="doAnswer">
+			<result name="success">page/doAnswer.jsp</result>
+		</action>
+		<action name="getUserFbInfo" class="feedBackAction" method="getUserFbInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getUserDaInfo" class="doAnswerAction" method="getUserDaInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action> 
+		<action name="exportFbInfo" class="feedBackAction" method="exportFbInfo"> </action> 
+		
+		<action name="exportDaInfo" class="doAnswerAction" method="exportDaInfo"> </action> 
+		<action name="addFeedCustRes" class="feedBackAction" method="addFeedCustRes">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action> 
+		<action name="addAnswerCustRes" class="doAnswerAction" method="addAnswerCustRes">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action> 
+		
+		
+		 
+		<action name="doMoveCar" class="moveCarAction" method="doMoveCar">
+			<result name="success">page/doMoveCar.jsp</result>
+		</action>
+		<action name="getCarMove" class="moveCarAction" method="getCarMove">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getCarMovePic" class="moveCarAction" method="getCarMovePic">
+			<result name="success" type="json"><param name="root">tap</param></result>
+		</action>
+		<action name="getMoveCarAddress" class="moveCarAction" method="getMoveCarAddress">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateCarMoveState" class="moveCarAction" method="updateCarMoveState">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="saveFailInfo" class="moveCarAction" method="saveFailInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getMoveCarByCarMoveId" class="moveCarAction" method="getMoveCarByCarMoveId">
+			<result name="success" type="json"><param name="root">moveCarVo</param></result>
+		</action>
+		<action name="saveProcedureMessageMove" class="moveCarAction" method="saveProcedureMessageMove">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="responseWeiMoveCar" class="moveCarAction" method="responseWeiMoveCar">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		
+		<action name="doMicroMessage" class="microMessageAction" method="doMicroMessage">
+			<result name="success">page/doMicroMessage.jsp</result>
+		</action>
+		<action name="getMicroMessage" class="microMessageAction" method="getMicroMessage">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doOperateRecord" class="operateRecordAction" method="doOperateRecord">
+			<result name="success">page/doOperateRecord.jsp</result>
+		</action>
+		<action name="getOperateRecord" class="operateRecordAction" method="getOperateRecord">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doCongest" class="congestAction" method="doCongest">
+			<result name="success">page/doCongest.jsp</result>
+		</action>
+		<action name="getCongest" class="congestAction" method="getCongest">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="changeCgState" class="congestAction" method="changeCgState">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doWarningTone" class="warningToneAction" method="doWarningTone">
+			<result name="success">page/doWarningTone.jsp</result>
+		</action>
+		<action name="getWarningTone" class="warningToneAction" method="getWarningTone">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addWarningTone" class="warningToneAction" method="addWarningTone">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateWarningTone" class="warningToneAction" method="updateWarningTone">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="deleteWarningTone" class="warningToneAction" method="deleteWarningTone">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="viewVoice" class="warningToneAction" method="viewVoice"/>
+		<action name="getVoicePath" class="warningToneAction" method="getVoicePath">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getAllLs" class="warningToneAction" method="getAllLs">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="changeStatus" class="warningToneAction" method="changeStatus">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doTakingPhotos" class="takingPhotosAction" method="doTakingPhotos">
+			<result name="success">page/doTakingPhotos.jsp</result>
+		</action>
+		<action name="getTakingPhotos" class="takingPhotosAction" method="getTakingPhotos">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateState" class="takingPhotosAction" method="updateState">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getTpAddress" class="takingPhotosAction" method="getTpAddress">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doPublicInfo" class="publicInfoAction" method="doPublicInfo">
+			<result name="success">page/doPublicInfo.jsp</result>
+		</action>
+		<action name="getPublicInfo" class="publicInfoAction" method="getPublicInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addPublicInfo" class="publicInfoAction" method="addPublicInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updatePublicInfo" class="publicInfoAction" method="updatePublicInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="publicInfoStatus" class="publicInfoAction" method="publicInfoStatus">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="removePublicInfo" class="publicInfoAction" method="removePublicInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="publicInfoUpOrDown" class="publicInfoAction" method="publicInfoUpOrDown">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getPublicInfoWB" class="publicInfoAction" method="getPublicInfoWB">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		
+		<action name="fileUpload" class="fileUploadAction"></action> 
+		<action name="getCodeInfo" class="publicInfoAction" method="getCodeInfo">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doBakPic" class="bakPicAction" method="doBakPic">
+			<result name="success">page/doBakPic.jsp</result>
+		</action>
+		<action name="getBakPic" class="bakPicAction" method="getBakPic">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="deleteBakPic" class="bakPicAction" method="deleteBakPic">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="toImageDown" class="bakPicAction" method="toImageDown">
+		</action>
+		
+		
+		<action name="doWeiFaSearch" class="weiFaSearchAction" method="doWeiFaSearch">
+			<result name="success">page/weiFaSearch.jsp</result>
+		</action>
+		<action name="getWFresult" class="weiFaSearchAction" method="getWFresult">
+		    <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getCLresult" class="weiFaSearchAction" method="getCLresult">
+		    <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doOrganizationInfo" class="organizationInfoAction" method="doOrganizationInfo">
+		   <result name="success">page/doOrganizationInfo.jsp</result>
+		</action>
+		<action name="getOrganizationInfo" class="organizationInfoAction" method="getOrganizationInfo">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addOrganizationInfo" class="organizationInfoAction" method="addOrganizationInfo">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateOrganizationInfo" class="organizationInfoAction" method="updateOrganizationInfo">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="removeOrganizationInfo" class="organizationInfoAction" method="removeOrganizationInfo">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doOnlineStudy" class="problemsAction" method="doOnlineStudy">
+		   <result name="success">page/doOnlineStudy.jsp</result>
+		</action>
+		<action name="getProblems" class="problemsAction" method="getProblems">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addProblemFile" class="problemsAction" method="addProblemFile">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doStudyInfo" class="problemsAction" method="doStudyInfo">
+		    <result name="success">page/doStudyInfo.jsp</result>
+		</action>
+		<action name="getStudyInfos" class="problemsAction" method="getStudyInfos">
+		    <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="exportProblem" class="problemsAction" method="exportProblem">
+		</action>
+		<action name="doStudyHistory" class="problemsAction" method="doStudyHistory">
+		    <result name="success">page2/studyHistory.jsp</result>
+		</action>
+		<action name="getStudyInfoJsp" class="problemsAction" method="getStudyInfoJsp">
+		    <result name="success" type="json"><param name="root">tbStudyInfos</param></result>
+		</action>
+		
+		
+		
+		 <action name="getSelectCaseByAccident" class="procedureAction" method="getSelectCaseByAccident">
+			<result name="success">/tip/Dg_AccidentAuditFail.jsp</result>
+		</action>
+		<action name="getSelectCaseByMoveCar" class="procedureAction" method="getSelectCaseByMoveCar">
+			<result name="success" type="json"><param name="root">atp</param></result>
+		</action>
+		
+		
+		<!-- weixinJsp -->
+		<action name="getCodeJsp" class="publicInfoAction" method="getCodeJsp">
+		   <result name="success">page2/code.jsp</result>
+		</action>
+		<action name="getCodeInfoJsp" class="publicInfoAction" method="getCodeInfoJsp">
+		   <result name="success">page2/codeInfo.jsp</result>
+		</action>
+		<action name="getAllCodeJsp" class="publicInfoAction" method="getAllCodeJsp">
+		    <result name="success" type="json"><param name="root">re</param></result>
+		</action>
+		<action name="getCodeInfoById" class="publicInfoAction" method="getCodeInfoById">
+		    <result name="success" type="json"><param name="root">tb</param></result>
+		</action>
+		<action name="doMechanismInfo" class="organizationInfoAction" method="doMechanismInfo">
+		   <result name="success">page2/mechanismInfo.jsp</result>
+		</action>
+		<action name="getMechanismInfo" class="organizationInfoAction" method="getMechanismInfo">
+		   <result name="success" type="json"><param name="root">re</param></result>
+		</action>
+		<!-- 在线考试 -->
+		<action name="getOnlineStudy" class="problemsAction" method="getOnlineStudy">
+		   <result name="success">page2/onlineStudy.jsp</result>
+		</action>
+		<action name="getStudyPhone" class="problemsAction" method="getStudyPhone">
+		   <result name="success">page2/studyPhone.jsp</result>
+		</action>
+		<action name="getProblemJsp" class="problemsAction" method="getProblemJsp">
+		   <result name="success" type="json"><param name="root">re</param></result>
+		</action>
+		<action name="saveStudyInfo" class="problemsAction" method="saveStudyInfo">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="studyImages" class="problemsAction" method="studyImages">
+		</action>
+		<action name="getPhoneNumber" class="problemsAction" method="getPhoneNumberByOpenId">
+		   <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		
+		
+		
+		<action name="doRealTrafficWB" class="realTrafficWbAction" method="doRealTrafficWB">
+		   <result name="success">page/doRealTrafficWB.jsp</result>
+		</action>
+		<action name="doRealTrafficWBJsp" class="realTrafficWbAction" method="doRealTrafficWBJsp">
+		   <result name="success">page2/RealTrafficWB.jsp</result>
+		</action>
+		<action name="trafficWbPic" class="realTrafficWbAction" method="trafficWbPic">
+		   <result name="success">page2/trafficWbPic.jsp</result>
+		</action>
+		
+		<action name="rotatePic" class="infoPicAction" method="rotatePic">
+		  <result name="success" type="json"><param name="root">result</param></result> 
+		  <result name="accidentExport" type="redirectAction">
+		       <param name="actionName">/rpt/formalAccidentReport.action</param> 
+               <param name="accidentId">${accidentId}</param>
+               <param name="arrPicIndex">${arrPicIndex}</param>
+		       <param name="exportType">${exportType}</param>
+		  </result>
+		  <result name="accidentPrint" type="redirectAction">
+		       <param name="actionName">/rpt/formalAccidentReport.action</param> 
+               <param name="accidentId">${accidentId}</param>
+               <param name="arrPicIndex">${arrPicIndex}</param>
+		       <param name="exportType">${exportType}</param>
+		  </result> 
+		</action>
+	</package>
+	
+	<package name="rpt" extends="struts-default,json-default" namespace="/rpt">	  
+		<action name="formalAccidentReport" class="reportAction" method="formalAccidentReport">
+			    <result name="success">/rpt/PreviewReport.jsp</result> 
+		</action>
+		
+		<action name="previewReport" class="reportAction" method="previewReport">
+		         <result name="success">/rpt/PreviewReport.jsp</result>  
+		</action> 
+	</package>
+	
+	<package name="wei" extends="struts-default,json-default" namespace="/wei">	  
+		<action name="chat"   class="platFormAction" method="chat"></action> 
+	</package>
+	<package name="wap" extends="struts-default,json-default" namespace="/wap">	  	   
+		<action name="qrCode"   class="qRWapAction" method="qrCode">
+		     <result name="success">trafficQR.jsp</result>
+		</action> 
+		<action name="test"   class="qRWapAction" method="test">
+		     <result name="success" type="json"><param name="root">result</param></result>
+		</action> 
+		<action name="win"   class="qRWapAction" method="win">
+		     <result name="success" type="json"><param name="root">result</param></result>
+		</action> 
+		<action name="voteHome"   class="voteWapAction" method="voteWapPage">
+		     <result name="success">/wap/vote/voteHome.jsp</result>
+		</action> 
+		<action name="voteElectors"   class="voteWapAction" method="voteWapElectors">
+		     <result name="success">/wap/vote/voteElectors.jsp</result>
+		</action>
+		<action name="voteRank"   class="voteWapAction" method="voteWapRank">
+		     <result name="success">/wap/vote/voteRank.jsp</result>
+		</action>
+		<action name="voteDoVote"   class="voteWapAction" method="voteWapDoVote">
+		     <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="voteCheckTender"   class="voteWapAction" method="voteWapCheckTender">
+		     <result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="voteDoIntroduce"   class="voteWapAction" method="voteWapDoIntroduce">
+		     <result name="success">/wap/vote/voteIntroduce.jsp</result>
+		</action>   
+	 </package>
+</struts>

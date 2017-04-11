@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>车管业务</title>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<link rel="stylesheet" type="text/css" href="information.css"/>
+<link rel="stylesheet" type="text/css" href="toTop.css"/>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="toTop.js"></script>
+<script type="text/javascript">
+$(function (){
+	$(window).toTop({
+		showHeight : 100,//设置滚动高度时显示
+		speed : 500 //返回顶部的速度以毫秒为单位
+	});
+});
+</script>
+</head>
+<body>
+<div class="list_h">
+
+<script type="text/javascript">
+	$(".footer-nav-menu-cls-btn").bind('click',function(e){
+	  
+	    
+		var menuEle = $(this).parent().find(".dropdown-menu-top").eq(0);
+		var display = menuEle.css("display");
+		$("#footer-nav-div .dropdown-menu-top").removeClass("show");
+		if(display == "none"){
+			menuEle.addClass("show");
+			if($("#container").height() < menuEle.height()){
+				$("#container").height(menuEle.height());
+			}
+		}else{
+			menuEle.removeClass("show");
+		}
+	});
+    
+  
+    
+</script>    
+<div class="list_m">
+        <div class="content">
+                <div class="top_bd">  <h2>机动车、驾驶人业务办理流程</h2>
+        <p class="news_times"><span>2014-06-23 14:23:18</span> <span style="color:#7D9EC0;margin-left:10px;font-size:13px;">象山交警</span></p></div>
+        <p style="text-indent: 2em"><b style="color:#000000;">机动车驾驶证补证：</b>收费窗口付费→填写《机动车驾驶证申请表》、提供身份证原件及复印件、符合规定的数码照片两张→导办台取号排队→窗口办理补证业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车驾驶证换证：</b>收费窗口付费、领取体检表（准备一张近期照片）→体检大厅体检→填写《机动车驾驶证申请表》、提供身份证原件及复印件、符定规定的数码照片两张→导办台取号排队→窗口办理换证业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">驾驶人年度体检：</b>收费窗口付费（准备一张近期彩照）、领取体检表→体检大厅体检→导办台取号排队→窗口办理递交身体条件证明→领取回执单
+</p><p style="text-indent: 2em"><b style="color:#000000;">报考摩托车驾驶证：</b>收费窗口付费→填写《机动车驾驶人申请表》、提供身份证原件及复印件两张（增驾还需提供驾驶证原件及复印件、外地人员报名需提供暂住证）、身体条件证明→导办台取号排队→窗口办理报考摩托车驾驶证业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车驾驶证注销：</b>填写《机动车驾驶证申请表》、提供身份证原件及复印件、驾驶证原件、数码照片一张→导办台取号排队→窗口办理注销业务→领取注销凭证
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车上牌业务：</b>梅林国税局交附加税→机动车拓印、拍照→检验大厅检验登录窗口领检验记录单（免检车除外）→查验、检测机动车→检测大厅数据审核室审核→检验登录窗口领合格证明→填写《机动车注册登记申请表》、提供车主身份证原件及复印件、购车发票、车辆合格证、车辆购置税完税证明、机动车交通强制保险第三联原件、查验记录表、检验合格证明（非免检车）（单位车辆需提供组织机构代码证原件及复印件、委托书加盖公章、代办人身份证原件及复印件→登记窗口受理→业务窗口领取机动车受理凭证→十选一号码（自选号牌号码）→收费大厅付费→业务窗口领取行驶证、机动车登记证书、检验合格标志、（领取临时行驶号牌，正式牌照邮寄给车主）
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车年检业务：</b>检验大厅收费窗口付费→检验登录窗口领取检验记录单→待检区查验→车辆检测→检验大厅数据审核室 →检验签证窗口签证（提供机动车交强险第三联原件、查验表、填写《机动车牌证申请表》、行驶证、单位车辆另需代办人身份证复印件、委托书加盖公章）
+</p><p style="text-indent: 2em"><b style="color:#000000;">摩托车转户业务：</b>收费大厅付费→机动车车架号拓印→新车注册大厅业务窗口核对车架号并领取照片→业务窗口办理（填写《机动车注册登记申请表》、提供双方车主身份证原件及复印件、机动车登记证书、行驶证、两手车交易发票、查验表）→业务窗口领取行驶证、机动车登记证书
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车补/换行驶证：</b>收费窗口付费→填写《机动车牌证申请表》、提供车主身份证原件及复印件（单位车辆需提供组织机构代码证原件及复印件、委托书并加盖单位公章、代办人身份证原件及复印件）→导办台取号排队→窗口办理补/换行驶证业务→领取行驶证
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车补/换号牌：</b>收费窗口付费→填写《机动车牌证申请表》、提供车主身份证原件及复印件（单位车辆需提供组织机构代码证原件及复印件、委托书并加盖单位公章、代办人身份证原件及复印件）→导办台取号排队→窗口办理补/换号牌业务→领取临时行驶号牌→7个工作日后领取正式号牌
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车非营运转营运：</b>收费窗口付费→机动车车架号拓印→数据审核室核对车架号、拉取车辆照片→填写《机动车变更登记/备案表》、提供车主身份证原件及复印件（单位车辆需提供组织机构代码证原件及复印件、委托书并加盖单位公章、代办人身份证原件及复印件）、机动车登记证书、行驶证、公管所工作联系单→导办台取号排队→窗口办理非转营业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车营运转非营运：</b>收费窗口付费→机动车车架号拓印→数据审核室核对车架号、拉取车辆照片→填写《机动车变更登记/备案表》、提供车主身份证原件及复印件（单位车辆需提供组织机构代码证原件及复印件、委托书并加盖单位公章、代办人身份证原件及复印件）、机动车登记证书、行驶证→导办台取号排队→窗口办理营转非业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车抵押登记：</b>填写《机动车抵押登记/质押备案申请表》、提供车主身份证原件及复印件、银行委托书、银行组织机构代码证复印件、机动车登记证书、代办人身份证原件及复印件（委托书）、抵押合同→导办台取号排队→窗口办理抵押登记业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车解除抵押：</b>填写《机动车抵押登记/质押备案申请表》、提供车主身份证原件及复印件、银行委托书、银行组织机构代码证复印件、机动车登记证书、代办人身份证原件及复印件（委托书）→导办台取号排队→窗口办理解除抵押业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车临时行驶号牌申领：</b>收费窗口付费→提供车主身份证复印件、车辆合格证原件及复印件、车辆交强保险复印件、车辆销售发票复印件→导办台取号排队→窗口办临时行驶号牌申领业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车变更车身颜色：</b>收费窗口付费→机动车车架号拓印、拍照→数据审核室核对车架号→填写《机动车变更登记/备案表》、提供车主身份证原件及复印件（单位车辆需提供组织机构代码证原件及复印件、委托书并加盖单位公章、代办人身份证原件及复印件）、机动车登记证书、行驶证→导办台取号排队→窗口办理变更车身颜色业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">摩托车重新打刻车架号：</b>重新打刻车架号→车架号拓印→数据审核室核对车架号→填写《机动车变更登记/备案表》、提供车主身份证原件及复印件、机动车登记证书（代办人身份证原件及复印件、委托书）→导办台取号排队→窗口办理重新打刻车架号业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车单位名称变更：</b>收费窗口付费→填写《机动车变更登记/备案表》、提供组织机构代码证原件及复印件、委托书并加盖公章、机动车登记证书、行驶证、工商局变更证明、代办人身份证原件及复印件→导办台取号排队→窗口办理单位名称变更业务
+</p><p style="text-indent: 2em"><b style="color:#000000;">机动车联系方式变更：</b>填写《机动车变更登记/备案表》、提供车主身份证原件及复印件→导办台取号排队→窗口办理联系方式变更业务</p>
+<div style="" onclick="document.getElementById('mcover').style.display='';" id="mcover">
+                <img src="guide.png">
+            </div>
+            <div style="margin-top:15px;">
+              <div id="mess_share">
+                  <div id="share_1">
+                      <button onclick="document.getElementById('mcover').style.display='block';" class="button2">
+                          <img width="64" height="64" src="icon_msg.png">
+                          &nbsp;发送给朋友
+                      </button>
+                  </div>
+                  <div id="share_2">
+                      <button onclick="document.getElementById('mcover').style.display='block';" class="button2">
+                          <img width="64" height="64" src="icon_timeline.png">
+                          &nbsp;分享到朋友圈
+                      </button>
+                  </div>
+                  
+                  <div style="height:5px;"></div>
+              </div>
+            </div>
+        </div>
+    </div>
+
+  <div id="gotop"></div>
+  
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+#totop{position:fixed;bottom:54px;right:10px;z-index:5;cursor:pointer; display:none;}
+*html #totop{position:absolute;cursor:pointer;right:10px; display:none;top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight)-112+"px")}
+#totop a{ border-radius:2px;display:block;width:50px;height:50px;background:url(../image/button/toTop.png) center center no-repeat #333; background-size:auto 30px; opacity:0.7}
+#totop a.cur{}

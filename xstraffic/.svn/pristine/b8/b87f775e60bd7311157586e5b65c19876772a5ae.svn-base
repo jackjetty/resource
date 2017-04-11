@@ -1,0 +1,529 @@
+package com.traffic.dao.impl;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
+
+import com.traffic.dao.AccidentDao;
+import com.traffic.pojo.TbAccident;
+import com.traffic.pojo.TbAccidentOpn;
+import com.traffic.pojo.TbAccidentOpnId;
+import com.traffic.pojo.TbInfoPic;
+import com.traffic.pojo.TbInfoText;
+import com.traffic.pojo.TbInfoVoice;
+import com.traffic.util.CommonUtil;
+
+@Repository("accidentDao")
+public class AccidentDaoImpl extends BaseDaoImpl<TbAccident> implements AccidentDao {
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getAccidentListSize(Date startTime, Date endTime,
+			String reportPhoneNumber, String nickName, String reporterType) {
+		String hql = " from TbAccident where reportTime >= :startTime and reportTime <= :endTime ";
+		Query query = null;
+		if (nickName == null) {
+			if (reporterType == null) {
+				if (reportPhoneNumber == null) {
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+				} else {
+					hql = hql
+							+ "  and reportPhoneNumber = :reportPhoneNumber ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+
+				}
+			} else {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ "  and reporterType = :reporterType ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reporterType", reporterType);
+				} else {
+					hql = hql
+							+ "  and reportPhoneNumber = :reportPhoneNumber and reporterType = :reporterType ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+					query.setParameter("reporterType", reporterType);
+
+				}
+			}
+		} else {
+			if (reporterType == null) {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ " and reportOpenId in (select openId from TbWeiUser where nickName = :nickName ) ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("nickName", nickName);
+				} else {
+					hql = hql
+							+ "  and reportPhoneNumber = :reportPhoneNumber and reportOpenId in (select openId from TbWeiUser where nickName = :nickName ) ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("nickName", nickName);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+
+				}
+			} else {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ "  and reporterType = :reporterType and reportOpenId in (select openId from TbWeiUser where nickName = :nickName ) ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reporterType", reporterType);
+					query.setParameter("nickName", nickName);
+				} else {
+					hql = hql
+							+ " and reportPhoneNumber = :reportPhoneNumber and reporterType = :reporterType and reportOpenId in (select openId from TbWeiUser where nickName = :nickName ) ";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+					query.setParameter("reporterType", reporterType);
+					query.setParameter("nickName", nickName);
+
+				}
+			}
+
+		}
+		//int ta = ((Number) query.uniqueResult()).intValue();
+		ArrayList<TbAccident> ta = (ArrayList<TbAccident>) query.list();
+		return ta.size();
+	}
+/*
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TbAccident> getAccident(Date startTime, Date endTime,
+			String reportPhoneNumber, String nickName, Integer start,
+			Integer pageSize, String reporterType) {
+		String hql = "from TbAccident where reportTime >= :startTime and reportTime <= :endTime ";
+		Query query = null;
+		if (nickName == null) {
+			if (reporterType == null) {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ "  order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+				} else {
+					hql = hql
+							+ " and reportPhoneNumber = :reportPhoneNumber order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+
+				}
+			} else {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ " and reporterType = :reporterType order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reporterType", reporterType);
+				} else {
+					hql = hql
+							+ " and reportPhoneNumber = :reportPhoneNumber and reporterType = :reporterType order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+					query.setParameter("reporterType", reporterType);
+
+				}
+			}
+		} else {
+			if (reporterType == null) {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ "  and reportOpenId in (select openId from TbUser where nickName = :nickName ) order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("nickName", nickName);
+				} else {
+					hql = hql
+							+ " and reportPhoneNumber = :reportPhoneNumber and reportOpenId in (select openId from TbUser where nickName = :nickName ) order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("nickName", nickName);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+
+				}
+			} else {
+				if (reportPhoneNumber == null) {
+					hql = hql
+							+ "  and reporterType = :reporterType and reportOpenId in (select openId from TbUser where nickName = :nickName ) order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reporterType", reporterType);
+					query.setParameter("nickName", nickName);
+				} else {
+					hql = hql
+							+ "  and reportPhoneNumber = :reportPhoneNumber and reporterType = :reporterType and reportOpenId in (select openId from TbUser where nickName = :nickName ) order by reportTime desc";
+					query = getSession().createQuery(hql);
+					query.setParameter("startTime", startTime);
+					query.setParameter("endTime", endTime);
+					query.setParameter("reportPhoneNumber", reportPhoneNumber);
+					query.setParameter("reporterType", reporterType);
+					query.setParameter("nickName", nickName);
+
+				}
+			}
+
+		}
+		query.setFirstResult(start);
+		query.setMaxResults(pageSize);
+		ArrayList<TbAccident> ta = (ArrayList<TbAccident>) query.list();
+		return ta;
+	}*/
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TbInfoPic> getTbAccidentPic(String accidentId) {
+		Query query = getSession().createQuery(
+				"from TbInfoPic where recordNo = :recordNo");
+		query.setParameter("recordNo", accidentId);
+		ArrayList<TbInfoPic> tap = (ArrayList<TbInfoPic>) query
+				.list();
+		return tap;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<Object[]> getTbAddress(String accidentId) {
+		String hql = "select locationX,locationY,address from TbAccident where accidentId = :accidentId";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("accidentId", accidentId);
+		ArrayList<Object[]> addr = (ArrayList<Object[]>) query.list();
+		return addr;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<String, Object> getPic() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String hql = "from TbInfoPic";
+		Query query = getSession().createQuery(hql);
+		ArrayList<TbInfoPic> m = (ArrayList<TbInfoPic>) query.list();
+		for (TbInfoPic ta : m) {
+			map.put(ta.getId().getRecordNo(), ta.getPicLocalStore());
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<String, Object> getVoice() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String hql = "from TbInfoVoice";
+		Query query = getSession().createQuery(hql);
+		ArrayList<TbInfoVoice> m = (ArrayList<TbInfoVoice>) query
+				.list();
+		for (TbInfoVoice ta : m) {
+			map.put(ta.getId().getRecordNo(), ta.getVoiceInfo());
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void saveprocedureMessage(String managerName,
+			String policeOpnContent,String claimOpnContent, String accidentId) {
+			TbAccidentOpnId tai = new TbAccidentOpnId();
+			tai.setAccidentId(accidentId);
+			tai.setOpnType("POLICE");
+			TbAccidentOpn tao = new TbAccidentOpn();
+			tao.setId(tai);
+			tao.setOpnContent(policeOpnContent);
+			getSession().merge(tao);
+			getSession().flush();
+			TbAccidentOpnId tai1 = new TbAccidentOpnId();
+			tai1.setAccidentId(accidentId);
+			tai1.setOpnType("CLAIM");
+			TbAccidentOpn tao1 = new TbAccidentOpn();
+			tao1.setId(tai1);
+			tao1.setOpnContent(claimOpnContent);
+			getSession().merge(tao1);
+			getSession().flush();
+		
+		String hql = "from TbAccident where accidentId = :accidentId";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("accidentId", accidentId);
+		List<TbAccident> list = query.list();
+		if (list.size() > 0) {
+			if (policeOpnContent != null || claimOpnContent != null) {
+				TbAccident backinfo = list.get(0);
+				if (backinfo.getAccepter() == null) {
+					backinfo.setAccepter(managerName);
+				}
+				backinfo.setAccidentState("受理");
+				getSession().merge(backinfo);
+				getSession().flush();
+			} else {
+				TbAccident backinfo = list.get(0);
+				backinfo.setAccidentState("上报");
+				getSession().merge(backinfo);
+				getSession().flush();
+			}
+
+		} else {
+			System.out.println("反馈ID" + accidentId + "不存在");
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getDoNumber(Date startTime,Date endTime) {
+		String id = "RA";
+		String hql = "from TbAccident where accidentId like :accidentId and reportTime >= :startTime and reportTime <= :endTime and accidentState = '受理'";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("startTime", startTime);
+		query.setParameter("endTime", endTime);
+		query.setParameter("accidentId", "%"+id+"%");
+		List<TbAccident> list = query.list();
+		return list.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getSingleNumber(Date startTime,Date endTime) {
+		String id = "RA";
+		String hql = "from TbAccident where accidentId like :accidentId  and reportTime >= :startTime and reportTime <= :endTime";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("startTime", startTime);
+		query.setParameter("endTime", endTime);
+		query.setParameter("accidentId", "%"+id+"%");
+		List<TbAccident> list = query.list();
+		return list.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<String, Object> getPoliceOpnContent() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String hql = "from TbAccidentOpn where opnType = 'POLICE'";
+		Query query = getSession().createQuery(hql);
+		ArrayList<TbAccidentOpn> m = (ArrayList<TbAccidentOpn>) query
+				.list();
+		for (TbAccidentOpn ta : m) {
+			map.put(ta.getId().getAccidentId(), ta.getOpnContent());
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<String, Object> getClaimOpnContent() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String hql = "from TbAccidentOpn where opnType = 'CLAIM'";
+		Query query = getSession().createQuery(hql);
+		ArrayList<TbAccidentOpn> m = (ArrayList<TbAccidentOpn>) query
+				.list();
+		for (TbAccidentOpn ta : m) {
+			map.put(ta.getId().getAccidentId(), ta.getOpnContent());
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<TbInfoText> getTbAccidentText(String accidentId) {
+		String hql = "from TbInfoText where recordNo = :recordNo order by textTime desc";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("recordNo", accidentId);
+		ArrayList<TbInfoText> m = (ArrayList<TbInfoText>) query
+				.list();
+		return m;
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<String, Object> getTbAccidentText() {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String hql = "from TbInfoText";
+		Query query = getSession().createQuery(hql);
+		ArrayList<TbInfoText> m = (ArrayList<TbInfoText>) query
+				.list();
+		for (TbInfoText ta : m) {
+			map.put(ta.getId().getRecordNo(), ta.getTextMessage());
+		}
+		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getTbNumber() {
+		String id = "RA";
+		String hql = "from TbAccident where accidentId like :accidentId";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("accidentId", "%"+id+"%");
+		List<TbAccident> list = query.list();
+		return list.size();
+	}
+
+	@Override
+	public void saveprocedureMessage1(String managerName, String accidentId) {
+		String hql = "update TbAccident set accepter = :managerName,accidentState = '审核通过' where accidentId = :accidentId";
+		Query query =getSession().createQuery(hql);
+		query.setParameter("managerName", managerName)
+				.setParameter("accidentId", accidentId).executeUpdate();
+		getSession().flush();
+	}
+
+	@Override
+	public void updateAccidentStateFailed(String accidentId) {
+		String hql = "update TbAccident set accidentState = '待定' where accidentId =:accidentId";
+		getSession().createQuery(hql).setParameter("accidentId", accidentId)
+				.executeUpdate();
+		getSession().flush();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public TbAccident getAccidentByAccidentId(String accidentId) {
+		String hql = "from TbAccident where accidentId = :accidentId";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("accidentId", accidentId);
+		ArrayList<TbAccident> ta=(ArrayList<TbAccident>) query.list();
+		if (ta != null) {
+			return ta.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String  getNextAccidentId (String prefix) {
+		Session session = getSession();  
+		String nextAccidentId=prefix+CommonUtil.getDateForm("yyMMdd");
+		int currentNum=0; 
+		String hql = "select max(accidentId) from TbAccident where accidentId like :accidentname";
+		Query query = session.createQuery(hql); 
+		query.setParameter("accidentname", nextAccidentId+"%");
+		List list =   query.list();
+		if(list.size()>0&&list.get(0)!=null){
+			String maxAccidentId= list.get(0).toString();
+			currentNum=CommonUtil.getCurrentNum(maxAccidentId,nextAccidentId);
+		}
+		currentNum++;
+		DecimalFormat aDecimalFormat = (DecimalFormat) DecimalFormat.getInstance();
+        aDecimalFormat.applyPattern("0000");
+        return nextAccidentId+aDecimalFormat.format(currentNum); 
+		
+	}
+
+
+	/**
+	 * @author tinker
+	 * @create 2014-09-19
+	
+	@Override
+	public Integer getAccidentListSize(String startTime, String endTime, String reportPhoneNumber, String nickName, String reporterType) {
+		String hql = "select count(*) from TbAccident a,TbUser b where a.reportOpenId=b.openId and convert(varchar(100),a.reportTime,23) between :startTime and :endTime ";
+		Query query = null;
+		
+		List<String> conditionList = new ArrayList<String>();
+		List<Object> paramList = new ArrayList<Object>();
+		
+		if (reportPhoneNumber != null) {
+			conditionList.add(" and a.reportPhoneNumber= :reportPhoneNumber");
+			paramList.add(reportPhoneNumber);
+		}
+		if (nickName != null) {
+			conditionList.add(" and b.nickName = :nickName");
+			paramList.add(nickName);
+		}
+		if (reporterType != null) {
+			conditionList.add(" and a.reporterType = :reporterType");
+			paramList.add(reporterType);
+		}
+		
+		for (String condition : conditionList) {
+			hql += condition;
+		}
+		
+		query = getSession().createQuery(hql);
+		for (int i = 0; i < paramList.size(); i++) {
+			String paramName = conditionList.get(i).split(":")[1].trim();
+			Object paramObject = paramList.get(i);
+			query.setParameter(paramName, paramObject);
+		}
+		query.setParameter("startTime", startTime);
+		query.setParameter("endTime", endTime);
+		
+		Number number = (Number) query.list().get(0);
+		return number.intValue();
+	} */
+
+	/**
+	 * @author tinker
+	 * @create 2014-09-19
+	 */
+	/*
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Object[]> getAccident(String startTime, String endTime, String reportPhoneNumber, String nickName, Integer start, Integer pageSize, String reporterType) {
+		String hql = "select a.accidentId,a.reportTime,a.reporterType,b.nickName,a.reportPhoneNumber,a.partyPhoneNumber,a.address,a.accidentState from TbAccident a,TbUser b where a.reportOpenId=b.openId and convert(varchar(100),a.reportTime,23) between :startTime and :endTime ";
+		Query query = null;
+		
+		List<String> conditionList = new ArrayList<String>();
+		List<Object> paramList = new ArrayList<Object>();
+		
+		if (reportPhoneNumber != null) {
+			conditionList.add(" and a.reportPhoneNumber= :reportPhoneNumber");
+			paramList.add(reportPhoneNumber);
+		}
+		if (nickName != null) {
+			conditionList.add(" and b.nickName = :nickName");
+			paramList.add(nickName);
+		}
+		if (reporterType != null) {
+			conditionList.add(" and a.reporterType = :reporterType");
+			paramList.add(reporterType);
+		}
+		
+		for (String condition : conditionList) {
+			hql += condition;
+		}
+		hql += " order by a.reportTime desc";
+		
+		query = getSession().createQuery(hql);
+		for (int i = 0; i < paramList.size(); i++) {
+			String paramName = conditionList.get(i).split(":")[1].trim();
+			Object paramObject = paramList.get(i);
+			query.setParameter(paramName, paramObject);
+		}
+		query.setParameter("startTime", startTime);
+		query.setParameter("endTime", endTime);
+		
+		query.setFirstResult(start);
+		query.setMaxResults(pageSize);
+		ArrayList<Object[]> accidentList = (ArrayList<Object[]>) query.list();
+		return accidentList;
+	}*/
+}
