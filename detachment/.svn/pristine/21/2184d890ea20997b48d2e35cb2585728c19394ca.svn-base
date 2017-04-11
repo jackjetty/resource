@@ -1,0 +1,60 @@
+package com.detachment;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import com.detachment.util.CommonUtil;
+import com.detachment.util.Constant;
+import com.detachment.util.HttpWeiUtil;
+import com.detachment.wei.thread.FileThread;
+
+public class HpUtil {
+	
+	public static void main(String[] args){
+		
+		String url="%D0%A1%D0%CD%C6%FB%B3%B5";
+		/* 
+		String picLoalStore= "D:\\冉思\\绍兴交警\\二维码"+File.separator; 
+		String picUrl="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
+		String ticket="";
+		for(int tIndex=31;tIndex<=33;tIndex++){
+			try{
+				ticket=HttpWeiUtil.getInstance("wx687156ff2c631bcc", "4832cb4ecf2973716eb08d8a97fdea67").getLimitTicket(tIndex);  
+				new FileThread(picUrl.concat(URLEncoder.encode(ticket, "utf-8")),picLoalStore+tIndex+".jpg").start(); 
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}  
+		}
+		*/
+		try{
+			 System.out.println(URLDecoder.decode(url, "utf-8"));
+			 System.out.println(URLEncoder.encode(url, "utf-8"));
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}  
+		
+		
+		 
+		
+		  
+		 
+			
+		 
+	}
+  
+ 
+}

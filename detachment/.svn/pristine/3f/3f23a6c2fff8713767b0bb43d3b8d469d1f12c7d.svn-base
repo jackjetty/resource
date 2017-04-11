@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>获取多边形区域覆盖的范围</title>
+<style type="text/css">
+*{
+    margin:0px;
+    padding:0px;
+}
+body, button, input, select, textarea {
+    font: 12px/16px Verdana, Helvetica, Arial, sans-serif;
+}
+#info {
+    margin-top: 10px;
+}
+</style>
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script>
+var init = function() {
+    var center = new qq.maps.LatLng(30.021544,120.596924);
+    var map = new qq.maps.Map(document.getElementById('container'),{
+        center: center,
+        zoom: 13
+    });
+	$.ajax({
+		url:"web/placeTest.action",
+		dataType:"json",
+		type:"post",
+		success:function(data){
+			var v=new Array();
+		 	for(var i=0;i<data.list.length;i++){
+		 		//tv=tv+" new qq.maps.LatLng("+data.list[i].latitude+","+data.list[i].longitude+"),";
+		 		v[i]=new qq.maps.LatLng(data.list[i].latitude,data.list[i].longitude)
+		 	}
+		 	var polygon = new qq.maps.Polygon({
+		        path:v,
+		        strokeColor: '#33ca3e',
+		        strokeWeight: 8,
+		        fillColor: '#446acc',
+		        map: map
+		    });
+		 	alert(2);
+		    var bounds=polygon.getBounds();
+		    setTimeout(function(){
+		        map.fitBounds(bounds);
+		    },3000);
+		},
+		error:function(data){
+			alert("error 后台出现错误！");
+		}
+	});
+ 
+	qq.maps.event.addListener(map, 'click', function(event) {
+	        alert('您点击了地图.');
+	        var x=event.latLng.getLat();
+	        var y=event.latLng.getLng();
+	        var marker = new qq.maps.Marker({
+		        position: new qq.maps.LatLng(x,y),
+		        map: map
+		    });
+	        
+	        
+	        
+	        
+	        
+	    });
+    
+    
+}
+</script>
+</head>
+<body onload="init()">
+<div style="width:803px;height:600px" id="container"></div>
+<div id="info">
+    <p>获取多边形区域覆盖的地理范围，3秒后使地图适应这一范围。</p>
+</div>
+</body>
+</html>

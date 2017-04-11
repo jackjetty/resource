@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>满12分学习指南</title>
+<meta name="viewport"
+	content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<script src="../js/jquery.js" type="text/javascript"></script>
+<link href="../css/paxy.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+</script>
+<style type="text/css">
+.redfont {
+	color: red;
+}
+.nav-back {
+    display: inline-block;
+    height: 26px;
+    padding: 7px 0px 7px 6px;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+}
+a {
+    color: rgb(59, 89, 152);
+    outline: medium none;
+    text-decoration: none;
+}
+#titleDiv{
+    background-color: #179F00;
+    background-image: -moz-linear-gradient(center bottom , #179F00 0%, #5DD300 100%);
+    
+    box-shadow: 0 0px 0 #94E700 inset, 0 1px 2px rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+    width:100%;
+    line-height:40px;
+    margin:0 auto;
+    text-align:center;
+}
+.nav-back .arrow-left {
+    float: left;
+    width: 12px;
+    height: 26px;
+    background-position: 50% 50%; 
+}
+.icon-arrow {
+    background: url("image/button/bg_arrow.png")  no-repeat;
+	background-size:80px auto;  
+}
+
+.nav-back span {
+    float: left;
+    padding: 5px 5px 5px 2px;
+    background: none repeat scroll 0% 0%  #8BE553;
+    font-size: 14px;
+    line-height: 16px;
+}
+</style>
+</head>
+<body id="onlinebooking" style="">
+<div style="width:100%;" >
+	<div id="titleDiv" >
+		<a class="nav-back" onclick="javascript:history.go(-1);">
+		<img src="../image/fullScode/icon.png" >
+          </a>
+		<span style="font-size:18px;color:#FFFFFF;margin-right:10px;" id="addressName">满12分学习指南</span>
+	</div>
+</div>
+		<div class="cardexplain" id="content" style="margin:0 10px 20px 9px">
+		<img src="../image/fullScode/studyGuide.jpg" width="100%" style="border-radius:5px;margin-bottom:10px;margin-top:10px;" />
+			<ul class="round">
+				<li class="title mb"><span class="none">学习指南</span></li>
+				<li class="nob" id="liCard">
+					<div style="padding: 3px 0px 0px 10px " >
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欢迎进入微信在线满12分教育。只要您在微信中完成12个学时的在线教育，即可折抵两次在校学习和两天执勤站岗，学习完成提交后，可在微信中直接预约余下的在校学习和路口执勤时间。
+    
+					</div>
+					<div style="padding: 3px 0px 0px 10px " >
+					 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“学时”相关规定：用户通过学习道路交通知识时间的长短来记学时，10分钟为1学时，不满10分钟无法获得学时，超过10分钟未到20分钟仍为1学时，在学习过程中，软件设置防懒功能，阅读界面若10秒钟未动便停止计时。
+					</div>
+				</li>
+				
+			</ul>
+			
+			
+			
+		</div>
+</body>
+</html>

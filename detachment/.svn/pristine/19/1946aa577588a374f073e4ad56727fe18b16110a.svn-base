@@ -1,0 +1,154 @@
+@CHARSET "UTF-8";
+
+body, article, section, h1, h2, hgroup, p, a, ul, li, em, div, small, span, footer, canvas, figure, figcaption, input {
+    margin: 0;
+    padding: 0;
+}
+a {
+	color:#6495ED;
+    cursor: pointer;
+    text-decoration: none;
+}
+ul,li{
+    list-style-type: none;
+}
+
+body {
+    background-color: #ECECEC;
+    font-family: Microsoft YaHei,Helvitica,Verdana,Tohoma,Arial,san-serif;
+    margin: 0;
+    overflow-x: hidden;
+    padding: 0;
+	color: #666666;
+}
+.qiandaobanner{
+	display:block;
+	text-align:center;
+	position: relative;
+	min-height: 26px;
+}
+
+.cardexplain{
+	margin:11px 10px 20px 9px;
+	min-width:301px;
+}
+h2 {
+    color: #373B3E;
+    font-size: 14px;
+    line-height: 32px;
+    padding-left: 10px;
+    padding-top: 5px;
+    text-align: left;
+	font-weight:normal;
+}
+
+ul.round {
+	border:1px solid #C6C6C6;
+	background-color:rgba(255, 255, 255, 0.9);
+	text-align:left;
+	font-size:14px;
+	line-height:24px;
+	border-radius:5px;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	-moz-box-shadow:0 1px 1px #f6f6f6;
+	-webkit-box-shadow:0 1px 1px #f6f6f6;
+	box-shadow:0 1px 5px #CFCFCF;
+	margin-bottom:5px;
+	display:block
+}
+
+ul.round li {
+	border:solid #C6C6C6;
+	border-width:0 0 1px 0;
+	padding:0px 10px 0 10px;
+}
+ul.round li:only-of-type {
+	border-width:0;
+}
+ul.round li:last-of-type {
+	border-width:0;
+}
+
+
+
+.mb{ margin-bottom:4px}
+.round li.nob {
+    border-width:0;
+}
+.round li.dandanb {
+	border-color:#EBEBEB;
+}
+.round li.nob .px{
+    border-radius:5px;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	background-color: #FFFFFF;
+	border: 1px solid #E8E8E8;
+	margin: 5px 0 4px;
+	padding: 5px 10px;
+}
+.round li.nob .dropdown-select{
+    border-radius:5px;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	background-color: #FFFFFF;
+	border: 1px solid #E8E8E8;
+	margin: 5px 0 4px;
+	padding: 5px 10px;
+}
+
+.round li h2 {
+    color: #373B3E;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 20px;
+    padding: 10px 0 10px 0;
+	border-bottom:1px dotted #C6C6C6;
+}
+.round li span h2 {
+    color: #373B3E;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 20px;
+    padding: 6px 20px 6px 0;
+	border-bottom:0;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.round li p{
+	padding:0; margin:2px 0; color:#999; font-size:12px;line-height: 14px;
+}
+
+.kuang th {
+    padding:0; font-size:14px; font-weight:normal;text-align: left;width: 75px;
+}
+.kuang td {
+    color: #999999;padding:0;font-size:14px;
+}
+.kuang th.thtop{ padding:10px 0 0 0}
+.kuang td.userinfo{
+    padding:10px;
+}
+.round li span .kuang td.userinfo{
+    padding:0 0 1px 10px;color: #666666;
+}
+.kuang td.title{
+    padding:10px 0;color: #333333;
+}
+.kuang td.price{
+	color: #FF6600; font-size:16px;
+}
+.kuang td.price2{
+	color: #1CC200; font-size:16px;
+}
+.kuang td.pm{
+    font-size:14px;
+	line-height:20px;
+}
+
+
+
+

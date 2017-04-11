@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/loadindex.css"/>
+  <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+  <title>绍兴交警微信管理平台</title>
+  <style type="text/css">
+  .error {
+  	height:15px;
+	text-align:center;
+	color: red;
+	
+}
+  </style>
+  <script type="text/javascript">
+	String.prototype.trim = function() {
+	  return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	}
+	function checkLogin() {
+		var username = $("input[name='username']").val();
+		username.trim();
+		if (username == "") {
+			$(".error").html("用户名不能为空!");
+			return false;
+		}
+		var password = $("input[name='password']").val();
+		password.trim();
+		if (password == "") {
+			$(".error").html("密码不能为空!");
+			return false;
+		}
+		var captcha = $("input[name='captcha']").val();
+		captcha.trim();
+		if (captcha == "") {
+			$(".error").html("验证码不能为空!");
+			return false;
+		}
+		$.ajax({
+			url:"web/login.action",
+			data:"userId="+username+"&password="+password+"&captcha="+captcha,
+			dataType:"json",
+			type:"post",
+			success:function(data){
+				if(data.respCode == 0){
+					window.location = "web/toMain.action";
+				}else{
+					if(data.respCode==-1){
+						alert(data.respInfo);
+						imageCodeChange();
+					}else{
+						alert(data.respInfo);
+						imageCodeChange();
+					}
+					
+				}
+			},
+			error:function(data){
+				alert("error 后台出现错误！");
+			}
+		});
+	}
+	$(document).ready(function(){
+		
+		 document.onkeydown = function(e){   
+			    var ev = document.all ? window.event : e; 
+			    if(ev.keyCode==13) {
+			    	checkLogin();
+			    } 
+			  }
+		
+	});
+	function imageCodeChange(){
+		var src = "web/getCaptchaImage.action"+"?date=" + new Date();
+		$('#captchaimg').attr("src",src);
+		
+	}
+</script>
+</head>
+<body>
+<div id="header" style="min-height:25%;">
+<div><img src="image/login/shaoxingjiaojing.png" style="margin-top:10px;margin-left:70px;border: 0;" /></div>
+  
+</div>
+<div id="banner" style="min-height:70%;">
+  <div class="wrapper">
+    <div class="login-panel">
+
+      
+      <h3>登录</h3>
+      
+<div class="login-mod">
+
+  <form class="login-form" id="form1">
+    <div class="login-un">
+      <span class="icon-wrapper"><i class="icon24-login un"></i></span>
+      <input type="text" id="username" name="username" placeholder="用户名"/>
+    </div>
+    <div class="login-pwd">
+      <span class="icon-wrapper"><i class="icon24-login pwd"></i></span>
+      <input type="password" id="password" name="password" placeholder="密码"/>
+    </div>
+    <div class="login-un1" style="border-top:0px;">
+      <span class="icon-wrapper"><i class="icon24-login pwd1"></i></span>
+      <input type="text" id="captcha" name="captcha" placeholder="验证码" style="width:170px;"/>
+      <img alt="验证码图片" src="web/getCaptchaImage.action"  id="captchaimg" class="imageCode" onclick="imageCodeChange()">
+    </div>
+    
+  </form>
+<div class="error"></div>
+
+
+  <div class="login-btn-panel">
+    <input id="button" class="login-btn" style="height:40px;" name="button" value="登 录" type="button" onclick="checkLogin()"/>
+  </div>
+  
+</div>
+    </div>
+    
+  </div>
+</div>
+
+
+<div id="footer" style="min-height:5%;">    
+	<span>     
+	   技术支持:杭州冉思科技有限公司
+  </span><br />    
+  <span>Copyright © Hangzhou Rising Technology CO.LTD</span>
+  </div>
+</body>
+</html>

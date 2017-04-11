@@ -1,0 +1,168 @@
+.icon-blank{
+	background:url('icons/blank.gif') no-repeat center center;
+}
+.icon-add{
+	background:url('icons/edit_add.png') no-repeat center center;
+}
+.icon-add-left{
+	background:url('icons/edit_add.png') no-repeat;
+}
+.icon-edit{
+	background:url('icons/pencil.png') no-repeat center center;
+}
+.icon-edit-left{
+	background:url('icons/pencil.png') no-repeat;
+}
+.icon-remove{
+	background:url('icons/edit_remove.png') no-repeat center center;
+}
+.icon-remove-left{
+	background:url('icons/edit_remove.png') no-repeat;
+}
+.icon-save{
+	background:url('icons/filesave.png') no-repeat center center;
+}
+.icon-cut{
+	background:url('icons/cut.png') no-repeat center center;
+}
+.icon-ok{
+	background:url('icons/ok.png') no-repeat center center;
+}
+.icon-no{
+	background:url('icons/no.png') no-repeat center center;
+}
+.icon-cancel{
+	background:url('icons/cancel.png') no-repeat center center;
+}
+.icon-reload{
+	background:url('icons/reload.png') no-repeat center center;
+}
+.icon-search{
+	background:url('icons/search.png') no-repeat center center;
+}
+.icon-print{
+	background:url('icons/print.png') no-repeat center center;
+}
+.icon-help{
+	background:url('icons/help.png') no-repeat center center;
+}
+.icon-undo{
+	background:url('icons/undo.png') no-repeat center center;
+}
+.icon-redo{
+	background:url('icons/redo.png') no-repeat center center;
+}
+.icon-back{
+	background:url('icons/back.png') no-repeat center center;
+}
+.icon-sum{
+	background:url('icons/sum.png') no-repeat center center;
+}
+.icon-tip{
+	background:url('icons/tip.png') no-repeat center center;
+}
+
+.icon-mini-add{
+	background:url('icons/mini_add.png') no-repeat center center;
+}
+.icon-mini-edit{
+	background:url('icons/mini_edit.png') no-repeat center center;
+}
+.icon-mini-refresh{
+	background:url('icons/mini_refresh.png') no-repeat center center;
+}
+
+.icon-config{
+	background:url('../images/menu/config.gif') no-repeat center center;
+}
+.icon-config-Menu{
+	background:url('../images/menu/config.gif') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-config-Role{
+	background:url('../images/menu/role.gif') no-repeat center center;
+	margin-left: 30px;
+}
+.icon-config-User{
+	background:url('../images/menu/user.png') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-config-Operate{
+	background:url('../images/menu/operate.gif') no-repeat center center;
+	margin-left: 30px;
+}
+.icon-order{
+	background:url('../images/menu/orderinfo.gif') no-repeat center center;
+}
+
+.icon-order-jyjlcx{
+	background:url('../images/menu/jyjlcx.png') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-order-appyhjftj{
+	background:url('../images/menu/appyhjftj.png') no-repeat center center;
+	margin-left: 30px;
+}
+
+
+.icon-order-appyhxxtj{
+	background:url('../images/menu/appyhxxtj.png') no-repeat center center;
+	margin-left: 30px;
+}
+.icon-order-jyxxtj{
+	background:url('../images/menu/jyxxtj.png') no-repeat center center;
+	margin-left: 30px;
+}
+.icon-order-yhcjxxtj{
+	background:url('../images/menu/yhcjxxtj.png') no-repeat center center;
+	margin-left: 30px;
+}
+
+
+.icon-feedback{
+	background:url('../images/menu/feedback.gif') no-repeat center center;
+}
+
+.icon-feedback-check{
+	background:url('../images/menu/feedbackcheck.gif') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-app{
+	background:url('../images/menu/app.gif') no-repeat center center;
+}
+
+.icon-app-version{
+	background:url('../images/menu/version.gif') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-business{
+	background:url('../images/menu/business.gif') no-repeat center center;
+}
+
+
+.icon-business-product{
+	background:url('../images/menu/product.gif') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-business-phoneRound{
+	background:url('../images/menu/phoneRound.gif') no-repeat center center;
+	margin-left: 30px;
+}
+
+.icon-business-merchant{
+	background:url('../images/menu/merchant.gif') no-repeat center center;
+	margin-left: 30px;
+}
+.icon-business-faq{
+	background:url('../images/menu/faq.gif') no-repeat center center;
+	margin-left: 30px;
+}
+
+
+

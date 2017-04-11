@@ -1,0 +1,143 @@
+package com.detachment.web.service.impl;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.detachment.dao.PromotionDao;
+import com.detachment.dao.WeiUserDao;
+import com.detachment.pojo.TbPromotion;
+import com.detachment.pojo.vo.TbPromotionVo;
+import com.detachment.web.service.PromotionService;
+
+@Service
+public class PromotionServiceImpl implements PromotionService {
+
+	@Autowired
+	PromotionDao promotionDao;
+
+	@Autowired
+	WeiUserDao weiUserDao;
+
+	@Override
+	public HashMap<String, Object> getPromotion(Integer pageSize,
+			Integer pageIndex) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		Integer listSize = promotionDao.getPromotionSize();
+		Integer start = (pageIndex - 1) * pageSize;
+
+		HashMap<String, Integer> orgPpNumMap = new HashMap<String, Integer>();
+		orgPpNumMap.put("PT001", Integer.valueOf(20087));
+	    orgPpNumMap.put("PT002", Integer.valueOf(5147));
+	    orgPpNumMap.put("PT003", Integer.valueOf(4842));
+	    orgPpNumMap.put("PT004", Integer.valueOf(8437));
+	    orgPpNumMap.put("PT005", Integer.valueOf(4219));
+	    orgPpNumMap.put("PT006", Integer.valueOf(26890));
+	    orgPpNumMap.put("PT007", Integer.valueOf(25771));
+	    orgPpNumMap.put("PT008", Integer.valueOf(13430));
+	    orgPpNumMap.put("PT009", Integer.valueOf(6668));
+	    orgPpNumMap.put("PT010", Integer.valueOf(170));
+	    orgPpNumMap.put("PT011", Integer.valueOf(107));
+
+	    orgPpNumMap.put("DP001", Integer.valueOf(552));
+	    orgPpNumMap.put("DP002", Integer.valueOf(642));
+	    orgPpNumMap.put("DP003", Integer.valueOf(292));
+	    orgPpNumMap.put("DP004", Integer.valueOf(3251));
+	    orgPpNumMap.put("DP005", Integer.valueOf(651));
+	    orgPpNumMap.put("DP006", Integer.valueOf(2228));
+	    orgPpNumMap.put("DP007", Integer.valueOf(557));
+	    orgPpNumMap.put("DP008", Integer.valueOf(636));
+
+	    orgPpNumMap.put("SP001", Integer.valueOf(1437));
+	    orgPpNumMap.put("SP002", Integer.valueOf(2134));
+	    orgPpNumMap.put("SP003", Integer.valueOf(4641));
+	    orgPpNumMap.put("SP004", Integer.valueOf(732));
+
+	    orgPpNumMap.put("PJ002_1", Integer.valueOf(361));
+	    orgPpNumMap.put("PJ002_2", Integer.valueOf(72));
+	    orgPpNumMap.put("PJ002_3", Integer.valueOf(129));
+	    orgPpNumMap.put("PJ002_4", Integer.valueOf(64));
+	    orgPpNumMap.put("PJ002_5", Integer.valueOf(57));
+	    orgPpNumMap.put("PJ002_6", Integer.valueOf(36));
+	    orgPpNumMap.put("PJ002_7", Integer.valueOf(4));
+	    orgPpNumMap.put("PJ002_8", Integer.valueOf(0));
+	    orgPpNumMap.put("PJ002_9", Integer.valueOf(0));
+	    orgPpNumMap.put("PJ002_10", Integer.valueOf(6));
+	    orgPpNumMap.put("PJ002_11", Integer.valueOf(0));
+	    orgPpNumMap.put("PJ002_12", Integer.valueOf(12));
+	    orgPpNumMap.put("PJ002_13", Integer.valueOf(0));
+	    orgPpNumMap.put("PJ002_14", Integer.valueOf(290));
+	    orgPpNumMap.put("PJ002_15", Integer.valueOf(13));
+
+	    orgPpNumMap.put("PT003_1", Integer.valueOf(810));
+	    orgPpNumMap.put("PT003_2", Integer.valueOf(149));
+	    orgPpNumMap.put("PT003_3", Integer.valueOf(484));
+	    orgPpNumMap.put("PT003_4", Integer.valueOf(114));
+
+	    orgPpNumMap.put("PT001_1", Integer.valueOf(2058));
+	    orgPpNumMap.put("PT001_2", Integer.valueOf(840));
+	    orgPpNumMap.put("PT001_3", Integer.valueOf(743));
+	    orgPpNumMap.put("PT001_4", Integer.valueOf(1598));
+	    orgPpNumMap.put("PT001_5", Integer.valueOf(1444));
+	    orgPpNumMap.put("PT001_6", Integer.valueOf(1766));
+
+	    orgPpNumMap.put("GX001", Integer.valueOf(435));
+	    orgPpNumMap.put("GX002", Integer.valueOf(4));
+	    orgPpNumMap.put("GX003", Integer.valueOf(30));
+	    orgPpNumMap.put("GX004", Integer.valueOf(22));
+	    orgPpNumMap.put("GX005", Integer.valueOf(16));
+	    orgPpNumMap.put("GX006", Integer.valueOf(0));
+		
+		
+
+		ArrayList<TbPromotion> tps = promotionDao.getPromotion(start, pageSize);
+		ArrayList<TbPromotionVo> tpsVo = new ArrayList<TbPromotionVo>();
+
+		int num = 0;
+		int allNum = 0;
+		int orgPpNum = 0;
+		for (TbPromotion tp : tps) {
+			if (tp.getSceneId() == 8) {
+				num = weiUserDao
+						.findCount(
+								"select count(*) from TbWeiUser where(sceneId =?) or (sceneId >=?)",
+								tp.getSceneId(), 100);
+			} else {
+				num = weiUserDao.findCount(
+						"select count(*) from TbWeiUser where sceneId = ?",
+						tp.getSceneId());
+			}
+
+			TbPromotionVo tpv = new TbPromotionVo(tp, num);
+
+			if (orgPpNumMap.get(tp.getPromotionId()) == null) {
+				orgPpNum = 0;
+			} else {
+				orgPpNum = orgPpNumMap.get(tp.getPromotionId());
+			}
+			tpv.setOrgPpNum(orgPpNum);
+			tpv.setPeopleNum(tpv.getPeopleNum() - orgPpNum);
+
+			allNum += tpv.getPeopleNum();
+			tpsVo.add(tpv);
+		}
+		TbPromotionVo tpvv = new TbPromotionVo();
+		tpvv.setPeopleNum(allNum);
+		tpvv.setPromotionName("总计");
+		tpvv.setSceneId(100);
+		tpsVo.add(tpvv);
+		Collections.sort(tpsVo, new Comparator<TbPromotionVo>() {
+			public int compare(TbPromotionVo arg0, TbPromotionVo arg1) {
+				return arg0.getSceneId().compareTo(arg1.getSceneId());
+			}
+		});
+		resultMap.put("listSize", listSize);
+		resultMap.put("rows", tpsVo);
+		return resultMap;
+	}
+
+}

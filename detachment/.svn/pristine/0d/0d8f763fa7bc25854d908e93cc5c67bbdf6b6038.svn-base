@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title id="titleName">理赔点信息</title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="../css/paxy1.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+	
+</script>
+<style>
+.divtitle{
+	width:100%;height:30px;background-color: #456F9A;margin:0 auto;text-align:center;border: 1px solid #456F9A;
+}
+.divtitle span{
+	font-size:20px;color:#FFFFFF;
+}
+
+</style>
+
+</head>
+<body id="img-content">
+<div style="width:100%;margin-top:0px;" >
+	<div class="divtitle">
+		<span>车辆理赔服务点</span>
+	</div>
+</div>
+		<div class="cardexplain" id="content" style="margin-top:2px;">
+			<ul>
+				<li><img alt="" src="../image/accident/AccidentClaims.jpg" style="width:99.7%;border:1px solid #CFCFCF;border-radius:5px;"></li>
+			</ul>
+			<!-- <ul class="round" style="background-color:#F2F2F2;">
+				<li class="nob">
+					<h3 >福田大队</h3>
+					<p style="font-size:15px;">地址：福田区红荔路2011号（妇儿医院斜对面）</p>
+					<p style="font-size:15px;">报警电话：<a href="tel:83360197">83360197</a></p>
+					<p style="font-size:15px;">投诉电话：<a href="tel:83239886">83239886</a></p>
+				</li>
+			</ul> -->
+			<ul class="round" style="background-color:#F2F2F2;">
+				<li class="nob">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+						<tbody>
+							<tr>
+								<th style="font-size:18px;height:40px;color:#030303;font-weight:bold;" colspan="2"><span style="color:#3A5FCD;font-size:20px;">A </span>城区交警大队保险理赔点</th>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">理赔地点:</th>
+								<td style="height:30px;color:#030303;" valign="top">绍兴市越西路1号</td>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">联系电话:</th>
+								<td style="height:30px;" valign="top"><a href="tel:0575-81500345">0575-81500345</a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			<ul class="round" style="background-color:#F2F2F2;">
+				<li class="nob">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+						<tbody>
+							<tr>
+								<th style="font-size:18px;height:40px;color:#030303;font-weight:bold;" colspan="2"><span style="color:#3A5FCD;font-size:20px;">B </span>东区交警大队保险理赔点</th>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">理赔地点:</th>
+								<td style="height:30px;color:#030303;" valign="top">平江路与剡溪路交叉口</td>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">联系电话:</th>
+								<td style="height:30px;" valign="top"><a href="tel:0575-88644787">0575-88644787</a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			
+			<ul class="round" style="background-color:#F2F2F2;">
+				<li class="nob">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+						<tbody>
+							<tr>
+								<th style="font-size:18px;height:40px;color:#030303;font-weight:bold;" colspan="2"><span style="color:#3A5FCD;font-size:20px;">C </span>袍江交警大队保险理赔点<span style="font-size:11px;">(暂未开设)</span></th>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">理赔地点:</th>
+								<td style="height:30px;color:#030303;" valign="top">越东路中国文化城1号楼</td>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">联系电话:</th>
+								<td style="height:30px;" valign="top"><a href="tel:0575-88030110">0575-88030110</a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			
+			<ul class="round" style="background-color:#F2F2F2;">
+				<li class="nob">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+						<tbody>
+							<tr>
+								<th style="font-size:18px;height:40px;color:#030303;font-weight:bold;" colspan="2"><span style="color:#3A5FCD;font-size:20px;">D </span>镜湖交警大队保险理赔点<span style="font-size:11px;">(暂未开设)</span></th>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">理赔地点:</th>
+								<td style="height:30px;color:#030303;" valign="top">张市路2号（洋江路与越西路交叉口）</td>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">联系电话:</th>
+								<td style="height:30px;" valign="top"><a href="tel:0575-88019110">0575-88019110</a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			
+			<ul class="round" style="background-color:#F2F2F2;">
+				<li class="nob">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="kuang">
+						<tbody>
+							<tr>
+								<th style="font-size:18px;height:40px;color:#030303;font-weight:bold;" colspan="2"><span style="color:#3A5FCD;font-size:20px;">E </span>滨海交警大队保险理赔点<span style="font-size:11px;">(暂未开设)</span></th>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">理赔地点:</th>
+								<td style="height:30px;color:#030303;" valign="top">滨海新城城东路联邵村委旁</td>
+							</tr>
+							<tr>
+								<th id="th_bbxm" valign="top">联系电话:</th>
+								<td style="height:30px;" valign="top"><a href="tel:0575-82788110">0575-82788110</a></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</li>
+			</ul>
+			
+		</div>
+
+
+
+
+</body>
+</html>

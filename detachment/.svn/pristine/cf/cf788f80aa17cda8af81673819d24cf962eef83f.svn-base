@@ -1,0 +1,57 @@
+package com.detachment.wei.action;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts2.interceptor.ApplicationAware;
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.util.ServletContextAware;
+import org.rising.wei.bean.ErrCodeBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import cn.rising.model.SessionModel;
+
+import com.detachment.web.service.PlaceService;
+import com.detachment.wei.service.AttributionService;
+import com.detachment.wei.service.NetService;
+import com.detachment.wei.service.ProcessService;
+@Controller("testAction")
+public class TestAction   { 
+	@Autowired
+	private AttributionService attributionService; 
+	Log log = LogFactory.getLog(TestAction.class); 
+	public void test(){
+		 String locationX;
+		 String locationY;
+		 String departmentId;
+		 		 
+		 Long beginLong=System.currentTimeMillis(); 
+	     locationX="30.01761710242285";
+		 locationY="120.53051233291626";
+		 departmentId=attributionService.getAttributionDepartment(locationX, locationY);
+	     System.out.println("DP005 "+locationX+"  "+locationY+"   departmentId:"+departmentId);
+	     Long endLong=System.currentTimeMillis(); 
+	     System.out.println("时间" + (endLong-beginLong));   
+	}
+	public void tranPoiLocation(){
+		
+		attributionService.tranPoiLocation();
+	}
+}

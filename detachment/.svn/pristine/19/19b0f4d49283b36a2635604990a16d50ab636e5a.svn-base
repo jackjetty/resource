@@ -1,0 +1,359 @@
+package com.detachment.wei.service.impl;
+import java.io.File; 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.rising.wei.bean.BaseBean;
+import org.rising.wei.bean.ErrCodeBean;
+import org.rising.wei.bean.req.ClickEventReqBean;
+import org.rising.wei.bean.req.ImageReqBean;
+import org.rising.wei.bean.req.LocationReqBean;
+import org.rising.wei.bean.req.TextReqBean;
+import org.rising.wei.bean.res.NewsResBean;
+import org.rising.wei.bean.res.TextResBean;
+import org.rising.wei.bean.res.object.ItemResObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;   
+
+import cn.rising.model.SessionModel;
+
+import com.detachment.wei.action.PlatFormAction;
+import com.detachment.wei.bean.store.CarMoveStoreBean;
+import com.detachment.wei.bean.store.info.LocationStoreInfo;
+ 
+ 
+import com.detachment.dao.CarMoveDao;
+import com.detachment.dao.InfoPicDao; 
+import com.detachment.dao.UserDao; 
+import com.detachment.dao.ProcessDao; 
+import com.detachment.dao.WeiUserDao;
+import com.detachment.wei.process.CarMoveProcess;
+import com.detachment.wei.service.ProcessService;
+ 
+import com.detachment.pojo.TbCarMove;
+import com.detachment.pojo.TbInfoPic;
+import com.detachment.pojo.TbInfoPicId;
+import com.detachment.pojo.TbUser; 
+import com.detachment.pojo.TbWeiUser;
+import com.detachment.wei.thread.FileThread;
+import com.detachment.wei.wsdd.ClientWSDD;
+import com.detachment.util.Constant;  
+import com.detachment.util.CommonUtil; 
+@Service("carMoveProcessService")
+public class CarMoveProcessServiceImpl   extends ProcessServiceImpl{
+	Log log = LogFactory.getLog(CarMoveProcessServiceImpl.class); 
+	@Autowired
+	private UserDao userDao; 
+	@Autowired
+	private ProcessDao processDao;
+    
+	@Autowired
+	private WeiUserDao weiUserDao;
+	@Autowired
+	private InfoPicDao infoPicDao; 
+	@Autowired
+	private CarMoveDao carMoveDao;
+	
+	@Value("${wei.carmove.limittime}") 
+	private int   carmove_limittime;  
+	public boolean clickEventProcess(ClickEventReqBean clickEventReqBean){ 
+		super.clickEventProcess(clickEventReqBean);
+		String eventKey=clickEventReqBean.getEventKey();
+		boolean sign=true;
+		sign=eventKey.equalsIgnoreCase(Constant.CARMOVE)||eventKey.equalsIgnoreCase(Constant.SELFMOVECAR)?sign:false;
+		if(!sign) return false;  
+		if(!processDao.isUsing(Constant.CARMOVE)){
+			this.hopeMessage();
+			return true;
+		}
+		StringBuffer textBuffer=new StringBuffer("");  
+		textBuffer.append("欢迎使用自助移车服务， \n");
+		textBuffer.append("【适用范围】\n");
+		textBuffer.append("仅用于绍兴市范围内停放的绍兴牌照的车辆影响交通\n，"); 
+		textBuffer.append("车主不在现场，也没留联系方式的情况。\n");  
+		textBuffer.append("【限制说明】\n");
+		textBuffer.append("同一微信号一天只能自助移车2次,\n"); 
+		textBuffer.append("同一辆车12小时内只会通知1次。\n"); 
+		
+		int dayReportCount=carMoveDao.getDayReportCount(openId);
+		if(dayReportCount>1){
+			textBuffer.append("\n您好，您的微信号当天自助移车次数已超限!!");
+			this.tipMessage(textBuffer.toString()); 
+			return true;  
+		} 
+		TbWeiUser tbWeiUser=weiUserDao.findById(this.openId);  
+		String phoneNumber=CommonUtil.trim(tbWeiUser.getPhoneNumber()); 
+		
+		
+		
+		
+        if(phoneNumber.equals("")){
+        	textBuffer.append("为确保能及时与您联系，\n");
+        	textBuffer.append("请输入您的手机号码 ："); 
+        	this.session.setAttribute("lastOperationStage",CarMoveProcess.START); 
+        }
+        else{ 
+        	CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean();
+    		carMoveStoreBean.setReportPhoneNumber(phoneNumber);
+    		
+    		textBuffer.append("请输入对方车牌种类:\n"); 
+    		textBuffer.append("   [1]蓝色车牌\n");
+    		textBuffer.append("   [2]黄色车牌");
+    		this.session.setAttribute("carMoveStoreBean", carMoveStoreBean); 
+    		this.session.setAttribute("lastOperationStage",CarMoveProcess.PHONENUMBER);
+    		/*
+    		this.session.setAttribute("lastOperationStage",CarMoveProcess.PHONENUMBER);*/
+    		
+        } 
+		this.tipMessage(textBuffer.toString()); 
+		return true;  
+		 
+	}
+	public boolean imageProcess(ImageReqBean imageReqBean,String imageFilePath){ 
+		 super.imageProcess(imageReqBean,imageFilePath);
+		 
+		 if(imageProcess_CarMovePhote(imageReqBean)) return true;
+		 if(imageProcess_CarMoveWait(imageReqBean)) return true;
+		 return false;
+	}
+	private boolean imageProcess_CarMovePhote(ImageReqBean imageReqBean){  
+		 boolean sign=true;
+		 sign=stage!=null?sign:false;
+		 if(!sign) return false; 
+		 sign=stage instanceof  CarMoveProcess;  
+		 if(!sign) return false;
+		 sign=stage.equals(CarMoveProcess.LOCATION);
+		 if(!sign) return false;   
+		 CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean() ; 
+		 LocationStoreInfo locationInfo=carMoveStoreBean.getLocationInfo();
+		 TbCarMove tbCarMove=new TbCarMove(); 
+		 String carMoveId=carMoveDao.getNextCarMoveId("CM");
+		 carMoveStoreBean.setCarMoveId(carMoveId);
+		 tbCarMove.setCarMoveId(carMoveId);
+		 tbCarMove.setCarMoveState("上报");
+		 tbCarMove.setCarType(carMoveStoreBean.getCarType());
+		 tbCarMove.setCarNumber(carMoveStoreBean.getCarNumber());
+		 tbCarMove.setLocationX(locationInfo.getLocationX()) ;
+		 tbCarMove.setLocationY(locationInfo.getLocationY());
+		 tbCarMove.setAddress(locationInfo.getAddress());
+		 
+		 tbCarMove.setReportOpenId(this.openId);
+		 tbCarMove.setReportPhoneNumber(carMoveStoreBean.getReportPhoneNumber()); 
+		 Calendar cal = Calendar.getInstance(); 
+         Date date=cal.getTime();   
+         tbCarMove.setReportTime(new Timestamp(date.getTime()));  
+		 StringBuffer txtBuffer=new StringBuffer("");
+		 ClientWSDD clientWSDD=new ClientWSDD();
+		  
+		 ErrCodeBean errCodeBean=clientWSDD.sendCarMoveMessage(CommonUtil.trim(tbCarMove.getCarType()),
+				                                               CommonUtil.trim(tbCarMove.getCarNumber()) ,
+				                                               CommonUtil.trim(tbCarMove.getAddress()),  
+				                                               CommonUtil.trim(tbCarMove.getReportPhoneNumber()));
+		 
+		 txtBuffer.append("您的信息已收到，\n");
+		 txtBuffer.append("受理编号是:\n");
+		 txtBuffer.append(carMoveId+"\n");
+		 if(errCodeBean.getErrcode().equalsIgnoreCase("0")){
+			 tbCarMove.setCarMoveState("已通知");
+			 txtBuffer.append("我们已短信通知车主请耐心等候。\n"); 
+		 }
+		 else{
+			 tbCarMove.setCarMoveState("未通知");
+			 txtBuffer.append("短信发送失败，可拨"+this.DETACHMENT_CONTACT+"人工联系。\n");
+			 log.error("短信通知失败!编号是"+carMoveId+" "+errCodeBean.getErrmsg());
+		 } 
+		 txtBuffer.append("照片如需修改或补充，请继续上传照片");
+		 this.tipMessage(txtBuffer.toString());  
+		 TbInfoPicId tbInfoPicId; 
+		 tbInfoPicId= new TbInfoPicId();  
+		 tbInfoPicId.setProcessId(Constant.CARMOVE);
+		 tbInfoPicId.setRecordNo(carMoveId); 
+		 int picIndex=infoPicDao.getNextPicIndex(tbInfoPicId.getProcessId(), tbInfoPicId.getRecordNo()) ;
+		 tbInfoPicId.setPicIndex(picIndex); 
+		 String filePath= this.ROOT_DIR+Constant.CARMOVE+File.separator; 
+		 filePath+=CommonUtil.getDateForm()+File.separator+carMoveStoreBean.getCarMoveId(); 
+		 filePath+=File.separator+"信息.jpg";
+		 new FileThread(imageReqBean.getPicUrl(),filePath).start(); 
+		 TbInfoPic tbInfoPic;
+		 tbInfoPic=new TbInfoPic();
+		 tbInfoPic.setId(tbInfoPicId); 
+		 tbInfoPic.setPicInfo("信息照");
+		 tbInfoPic.setPicType("信息");
+		 tbInfoPic.setPicLocalStore(filePath); 
+		 infoPicDao.save(tbInfoPic);  
+		 this.session.setAttribute("carMoveStoreBean", carMoveStoreBean);
+		 this.session.setAttribute("lastOperationStage", CarMoveProcess.PHOTE); 
+		 carMoveDao.save(tbCarMove); 
+		 return sign; 
+	}
+	private boolean imageProcess_CarMoveWait(ImageReqBean imageReqBean){  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  CarMoveProcess;  
+		if(!sign) return false;
+		sign=stage.equals(CarMoveProcess.PHOTE)||stage.equals(CarMoveProcess.WAIT);
+		if(!sign) return false;   
+		CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean() ;  
+		String carMoveId=carMoveStoreBean.getCarMoveId();
+		if(carMoveId==null){
+			 this.tipMessage("受理编号未确定，请重新上报！");
+			 return true;
+		} 
+		TbInfoPicId tbInfoPicId; 
+		tbInfoPicId= new TbInfoPicId();  
+		tbInfoPicId.setProcessId(Constant.CARMOVE);
+		tbInfoPicId.setRecordNo(carMoveId);   
+		int picIndex=infoPicDao.getNextPicIndex(tbInfoPicId.getProcessId(), tbInfoPicId.getRecordNo()) ;
+		tbInfoPicId.setPicIndex(picIndex);  
+		String filePath=this.ROOT_DIR+Constant.CARMOVE+File.separator; 
+		filePath+=CommonUtil.getDateForm()+File.separator+carMoveId; 
+		filePath+=File.separator+"附图_"+picIndex+".jpg";
+		new FileThread(imageReqBean.getPicUrl(),filePath).start();
+		this.tipMessage("已收到"+picIndex+"张照片");  
+		TbInfoPic tbInfoPic;
+		tbInfoPic=new TbInfoPic();
+		tbInfoPic.setId(tbInfoPicId);  
+		tbInfoPic.setPicInfo("附图照"+picIndex);
+		tbInfoPic.setPicType("附图"+picIndex);
+		tbInfoPic.setPicLocalStore(filePath); 
+		infoPicDao.save(tbInfoPic);     
+		this.session.setAttribute("carMoveStoreBean", carMoveStoreBean);
+		this.session.setAttribute("lastOperationStage", CarMoveProcess.WAIT); 
+		return sign;  
+		
+	} 
+	public boolean locationProcess(LocationReqBean locationReqBean){
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  CarMoveProcess;  
+		if(!sign) return false;
+		 
+		sign=stage.equals(CarMoveProcess.CARNUMBER);
+		if(!sign) return false; 
+		if(locationReqBean.getLabel().trim().equals("")){
+			 this.tipMessage("您提交的地理位置信息不明确，请重新提交！");
+			 return true;
+		}
+		CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean(); 
+		LocationStoreInfo locationInfo=new  LocationStoreInfo();
+		locationInfo.setAddress(locationReqBean.getLabel());
+		locationInfo.setLocationX(locationReqBean.getLocation_X()); 
+		locationInfo.setLocationY(locationReqBean.getLocation_Y()); 
+		carMoveStoreBean.setLocationInfo(locationInfo); 
+		StringBuffer txtBuffer=new StringBuffer("");
+	    txtBuffer.append("您标注的地理位置是："+locationReqBean.getLabel()+"\n\n");  
+	     
+	    txtBuffer.append("请上传对方车辆照片,\n"); 
+	    txtBuffer.append("（近景，照片需含整车且能看清车牌）"); 
+	    this.tipMessage(txtBuffer.toString()); 
+		this.session.setAttribute("carMoveStoreBean", carMoveStoreBean); 
+		this.session.setAttribute("lastOperationStage",CarMoveProcess.LOCATION);  
+		return sign; 
+	}
+	public boolean textProcess(TextReqBean textReqBean){
+		super.textProcess(textReqBean);
+		if(textProcess_Phone(textReqBean)) return true;   
+		if(textProcess_CarNum(textReqBean)) return true;  
+		if(textProcess_CarType(textReqBean)) return true; 
+		return false;
+	}
+	
+	
+	private boolean  textProcess_Phone(TextReqBean textReqBean){
+		String content=CommonUtil.trim(textReqBean.getContent());   
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  CarMoveProcess;  
+		if(!sign) return false;
+		sign=stage.equals(CarMoveProcess.START);
+		if(!sign) return false; 
+		sign=CommonUtil.isMobilePhone(content); 
+		if(!sign){
+			this.tipMessage("请输入正确的手机号码 ....../:8*");
+			return true;
+		}
+		CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean();
+		StringBuffer txtBuffer=new StringBuffer(""); 
+		txtBuffer.append("请输入对方车牌种类:\n"); 
+		txtBuffer.append("   [1]蓝色车牌\n");
+		txtBuffer.append("   [2]黄色车牌"); 
+		this.tipMessage(txtBuffer.toString()); 
+		this.session.setAttribute("carMoveStoreBean", carMoveStoreBean); 
+		this.session.setAttribute("lastOperationStage",CarMoveProcess.PHONENUMBER);
+		return sign; 
+	}
+	 
+ 
+	private boolean textProcess_CarType(TextReqBean textReqBean){ 
+		String content=CommonUtil.trim(textReqBean.getContent());  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  CarMoveProcess;  
+		if(!sign) return false;
+		sign=stage.equals(CarMoveProcess.PHONENUMBER);
+		if(!sign) return false; 
+		
+		CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean();
+		if(content.equalsIgnoreCase("1")){
+			carMoveStoreBean.setCarType("02");
+			StringBuffer txtBuffer=new StringBuffer(""); 
+			txtBuffer.append("请输入对方车牌号码,格式如“浙D15678”");  
+		    this.tipMessage(txtBuffer.toString()); 
+			this.session.setAttribute("carMoveStoreBean", carMoveStoreBean); 
+			this.session.setAttribute("lastOperationStage",CarMoveProcess.CARTYPE); 
+			return sign; 
+		}
+		if(content.equalsIgnoreCase("2")){
+			carMoveStoreBean.setCarType("01");
+			StringBuffer txtBuffer=new StringBuffer(""); 
+			txtBuffer.append("请输入对方车牌号码,格式如“浙D15678”");  
+		    this.tipMessage(txtBuffer.toString()); 
+			this.session.setAttribute("carMoveStoreBean", carMoveStoreBean); 
+			this.session.setAttribute("lastOperationStage",CarMoveProcess.CARTYPE);
+			return sign; 
+		}	     
+		this.tipMessage("请输入正确车牌类型!!");
+		return sign; 
+	} 
+	
+	private boolean textProcess_CarNum(TextReqBean textReqBean){
+		String content=CommonUtil.trim(textReqBean.getContent());  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  CarMoveProcess;  
+		if(!sign) return false;
+		sign=stage.equals(CarMoveProcess.CARTYPE);
+		if(!sign) return false;  
+		sign=CommonUtil.isCarNumber(content); 
+		if(!sign){
+			this.tipMessage("请输入正确的车牌号码..../:8*");
+			return true;
+		} 
+		CarMoveStoreBean carMoveStoreBean=this.getSessionCarMoveStoreBean();
+		carMoveStoreBean.setCarNumber(content);
+		if(carMoveDao.isLimitReport(carmove_limittime,CommonUtil.trim(carMoveStoreBean.getCarType()),carMoveStoreBean.getCarNumber())){
+			this.tipMessage("车牌号为:"+carMoveStoreBean.getCarNumber()+"\n已经受理请耐心等候!");
+			return true;
+		}   
+		StringBuffer txtBuffer=new StringBuffer(""); 
+		txtBuffer.append("请点击“+”按钮然后点击“位置”，\n"); 
+		txtBuffer.append("待定位成功后点击“发送”,上传现场位置。"); 
+		this.tipMessage(txtBuffer.toString()); 
+		this.session.setAttribute("carMoveStoreBean", carMoveStoreBean); 
+		this.session.setAttribute("lastOperationStage",CarMoveProcess.CARNUMBER);  
+		return sign; 
+	}
+	
+}

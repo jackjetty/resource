@@ -1,0 +1,395 @@
+package com.detachment.wei.service.impl;
+import java.io.File; 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.rising.wei.bean.req.ClickEventReqBean;
+import org.rising.wei.bean.req.ImageReqBean;
+import org.rising.wei.bean.req.LocationReqBean;
+import org.rising.wei.bean.req.TextReqBean;
+import org.rising.wei.bean.res.NewsResBean;
+import org.rising.wei.bean.res.TextResBean;
+import org.rising.wei.bean.res.object.ItemResObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;  
+  
+ 
+import com.detachment.dao.DepartmentDao;
+import com.detachment.dao.FormalAccidentDao;
+import com.detachment.dao.InfoPicDao;
+ 
+import com.detachment.dao.ProcessDao;
+import com.detachment.dao.UserDao;
+import com.detachment.pojo.TbFormalAccident;
+import com.detachment.pojo.TbInfoPic;
+import com.detachment.pojo.TbInfoPicId;
+import com.detachment.util.CommonUtil;
+import com.detachment.util.Constant; 
+import com.detachment.util.WeiUtil; 
+import com.detachment.wei.action.PlatFormAction;
+import com.detachment.wei.bean.store.AccidentStoreBean;
+import com.detachment.wei.bean.store.info.LocationStoreInfo;
+import com.detachment.wei.bean.store.info.PictureStoreInfo;
+import com.detachment.wei.process.FormalAccidentProcess;
+import com.detachment.wei.service.AttributionService;
+import com.detachment.wei.service.ProcessService;
+import com.detachment.wei.thread.CopyThread;
+import com.detachment.wei.thread.FileThread;
+ 
+@Service("formalAccidentProcessService")
+public class FormalAccidentProcessServiceImpl   extends ProcessServiceImpl{
+	Log log = LogFactory.getLog(FormalAccidentProcessServiceImpl.class); 
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private FormalAccidentDao formalAccidentDao;
+	@Autowired
+	private ProcessDao processDao;
+	
+	@Autowired
+	private DepartmentDao departmentDao;
+	
+	@Autowired
+	private AttributionService attributionService; 
+	
+	 
+	
+	@Value("${wei.detachment.scope.url}") 
+	private String  detachementScope_Url; 
+	
+	@Value("${wei.picurl.accident.middle}") 
+	private String  pic_accident_middleUrl; 
+	
+	@Value("${wei.picurl.accident.rear}") 
+	private String  pic_accident_rearUrl; 
+	
+	@Value("${wei.picurl.accident.front}") 
+	private String  pic_accident_frontUrl; 
+	
+	
+	@Autowired
+	private InfoPicDao infoPicDao; 
+	
+	
+	public boolean clickEventProcess(ClickEventReqBean clickEventReqBean){ 
+		super.clickEventProcess(clickEventReqBean); 
+		return false; 
+	} 
+	public boolean imageProcess(ImageReqBean imageReqBean,String imageFilePath){ 
+		 super.imageProcess(imageReqBean, imageFilePath);
+		 if(imageProcess_Front(imageReqBean)) return true;
+		 if(imageProcess_Rear(imageReqBean)) return true;
+		 if(imageProcess_Middle(imageReqBean)) return true;
+		 if(imageProcess_Paper(imageReqBean)) return true;
+		 
+		 if(imageProcess_Wait(imageReqBean)) return true; 
+		 return false;
+	}
+	
+	private boolean imageProcess_Front(ImageReqBean imageReqBean)  {  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		sign=stage.equals(FormalAccidentProcess.PHONE);
+		if(!sign) return false;  
+		 
+		ItemResObject itemResObject;
+		ArrayList<ItemResObject> articles=new ArrayList<ItemResObject>();
+		itemResObject=new ItemResObject();
+		itemResObject.setTitle("【第3-2步：现场拍照——后方照】"); 
+		itemResObject.setDescription("已经收到第一张照片。请继续在事故车后方约5米处进行拍照上传，照片要求车号、道路标志、标线清晰。点击下方“+”图标，选择“图片”。");
+		itemResObject.setPicUrl(String.format(pic_accident_rearUrl,this.SERVER_IP));
+		itemResObject.setUrl("");
+		articles.add(itemResObject); 
+		this.outMsg=WeiUtil.getNewsMessage(imageReqBean, articles) ;  
+		this.session.setAttribute("lastOperationStage", FormalAccidentProcess.FRONT); 
+		this.addPicture("前方","前方照","前方照.jpg");  
+		return sign; 
+	}
+	
+	private boolean imageProcess_Rear(ImageReqBean imageReqBean) {  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		sign=stage.equals(FormalAccidentProcess.FRONT);
+		if(!sign) return false;  
+		 
+		ItemResObject itemResObject;
+		ArrayList<ItemResObject> articles=new ArrayList<ItemResObject>();
+		itemResObject=new ItemResObject();
+		itemResObject.setTitle("【第3-3步：现场拍照——细目照】");
+		itemResObject.setDescription("已经收到第二张照片。请继续按图示要求拍照，照片要求能看清楚车辆碰撞部位，损坏情况。点击下方“+”图标，选择“图片”。");
+		itemResObject.setPicUrl( String.format(pic_accident_middleUrl,this.SERVER_IP) );
+		itemResObject.setUrl("");
+		articles.add(itemResObject);  
+		this.outMsg=WeiUtil.getNewsMessage(imageReqBean, articles) ; 
+		this.session.setAttribute("lastOperationStage", FormalAccidentProcess.REAR);  
+		this.addPicture("后方","后方照","后方照.jpg"); 
+		return sign; 
+	} 
+	private boolean imageProcess_Middle(ImageReqBean imageReqBean){  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		sign=stage.equals(FormalAccidentProcess.REAR);
+		if(!sign) return false;  
+		StringBuffer textBuffer=new StringBuffer("");
+		textBuffer.append("已接收到第三张照片 请将双方驾驶证、行驶证、交强险保单（或交强险粘贴标志）一同拍照上传。");
+		this.tipMessage(textBuffer.toString());
+		 
+		this.session.setAttribute("lastOperationStage", FormalAccidentProcess.MIDDLE);   
+		this.addPicture("中心","中心照","中心照.jpg");  
+		return sign;
+		
+	}
+	private synchronized boolean imageProcess_Paper(ImageReqBean imageReqBean){  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		sign=stage.equals(FormalAccidentProcess.MIDDLE);
+		if(!sign) return false;  
+		String accidentProcessData="";
+		if(this.session.getAttribute("ACCIDENTPROCESSDATA")==null){
+			this.session.setAttribute("ACCIDENTPROCESSDATA", "false");
+		}
+		accidentProcessData=this.session.getAttribute("ACCIDENTPROCESSDATA").toString();
+		accidentProcessData=CommonUtil.trim(accidentProcessData);
+		if(accidentProcessData.equalsIgnoreCase("true")){
+			this.tipMessage("");
+			return true;
+		}
+		this.session.setAttribute("ACCIDENTPROCESSDATA", "true");
+		 
+		
+		this.addPicture("信息","信息照","信息照.jpg");
+		//文件保存
+		AccidentStoreBean accidentStoreBean=this.getSessionAccidentStoreBean();
+		LocationStoreInfo locationInfo=accidentStoreBean.getLocationInfo();
+		 
+		
+		String formalAccidentId=formalAccidentDao.getNextFormalAccidentId(processDao.getPrefix(Constant.ACCIDENT));
+		
+		 
+		
+		TbFormalAccident tbFormalAccident=formalAccidentDao.findById( formalAccidentId);
+		if(tbFormalAccident==null){
+			tbFormalAccident=new TbFormalAccident();
+			tbFormalAccident.setFormlAccidentId(formalAccidentId);
+		}
+		accidentStoreBean.setAccidentId(formalAccidentId); 
+		tbFormalAccident.setAccidentState("上报");
+		tbFormalAccident.setAddress(locationInfo.getAddress());
+		tbFormalAccident.setLocationX(locationInfo.getLocationX());
+		tbFormalAccident.setLocationY(locationInfo.getLocationY());
+		tbFormalAccident.setDepartmentId(locationInfo.getDepartmentId());
+		tbFormalAccident.setReporterType("公众");
+		tbFormalAccident.setReportOpenId(this.openId);
+		tbFormalAccident.setEmergencyCall(false);
+		tbFormalAccident.setReportPhoneNumber(accidentStoreBean.getReportPhoneNumber()); 
+		Calendar cal = Calendar.getInstance(); 
+        Date date=cal.getTime();   
+        tbFormalAccident.setReportTime(new Timestamp(date.getTime())); 
+		StringBuffer textBuffer=new StringBuffer("");
+		textBuffer.append("已接收到第四张照片,\n"); 
+		textBuffer.append("事故编号：\n");
+		textBuffer.append(tbFormalAccident.getFormlAccidentId());
+		textBuffer.append("您的信息正在审核中,请耐心等候，\n");
+		textBuffer.append("我们将以微信方式向您回复,\n");
+		textBuffer.append("如若5分钟未收到回复，请致电\n"); 
+		textBuffer.append(this.DETACHMENT_CONTACT+"查询。\n");
+		textBuffer.append("如有需要可继续上传图片。");
+		this.tipMessage(textBuffer.toString());
+		this.session.setAttribute("lastOperationStage", FormalAccidentProcess.PAPER); 
+		ArrayList<PictureStoreInfo> pictureInfoList= accidentStoreBean.getPictureInfoList();
+		int picIndex=0;
+		TbInfoPic tbInfoPic;
+		TbInfoPicId tbInfoPicId;
+		String   toPathDir=this.ROOT_DIR+"accident"+File.separator;
+		toPathDir+=CommonUtil.getDateForm()+File.separator;
+		toPathDir+=tbFormalAccident.getFormlAccidentId()+File.separator; 
+		for(PictureStoreInfo pictureInfo:pictureInfoList) {
+			picIndex++;  
+			tbInfoPicId= new TbInfoPicId();
+			tbInfoPicId.setProcessId(Constant.ACCIDENT);
+			tbInfoPicId.setRecordNo(formalAccidentId); 
+			tbInfoPicId.setPicIndex(picIndex);
+			tbInfoPic=infoPicDao.findById(tbInfoPicId);
+			if(tbInfoPic==null){
+				tbInfoPic=new TbInfoPic();
+				tbInfoPic.setId(tbInfoPicId);
+			}
+			
+			tbInfoPic.setPicInfo(pictureInfo.getInfo());
+			tbInfoPic.setPicType(pictureInfo.getType()); 
+			tbInfoPic.setPicLocalStore(toPathDir+ pictureInfo.getName());
+			if(picIndex==pictureInfoList.size()){
+				new FileThread(imageReqBean.getPicUrl(),tbInfoPic.getPicLocalStore()).start(); 
+			}
+			else{
+				new CopyThread(pictureInfo.getUrl(),tbInfoPic.getPicLocalStore()).start();  
+			} 
+			 
+			infoPicDao.saveOrUpdate (tbInfoPic); 
+			 
+			
+		}  
+		 
+		this.session.setAttribute("ACCIDENTPROCESSDATA", "false");
+		this.session.setAttribute("accidentStoreBean", accidentStoreBean);
+		formalAccidentDao.saveOrUpdate (tbFormalAccident); 
+		return sign; 
+	}  
+	private boolean imageProcess_Wait(ImageReqBean imageReqBean){  
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		
+		sign=stage.equals(FormalAccidentProcess.WAIT)
+				||stage.equals(FormalAccidentProcess.PAPER);
+		
+		
+		
+		if(!sign) return false;  
+		 
+		this.tipMessage("附加图片已上传！");
+		 
+		AccidentStoreBean accidentStoreBean=this.getSessionAccidentStoreBean(); 
+		ArrayList<PictureStoreInfo> pictureInfoList= accidentStoreBean.getPictureInfoList();
+		int picIndex=pictureInfoList.size()+1; 
+		String filePath=this.ROOT_DIR+"accident"+File.separator;
+		filePath+=CommonUtil.getDateForm()+File.separator+accidentStoreBean.getAccidentId()+File.separator+"附图_"+picIndex+".jpg";
+		CommonUtil.getInstance().saveToLocalFile(imageReqBean.getPicUrl(), filePath);
+		TbInfoPic tbInfoPic;
+		TbInfoPicId tbInfoPicId;
+		tbInfoPicId= new TbInfoPicId();
+		tbInfoPicId.setProcessId(Constant.ACCIDENT);
+		tbInfoPicId.setRecordNo(accidentStoreBean.getAccidentId()); 
+	 
+		tbInfoPicId.setPicIndex(picIndex);
+		tbInfoPic= infoPicDao.findById(tbInfoPicId);
+		if(tbInfoPic==null){
+			tbInfoPic=new TbInfoPic();
+			tbInfoPic.setId(tbInfoPicId);
+		}
+		
+		tbInfoPic.setPicInfo("附图照"+picIndex);
+		tbInfoPic.setPicType("附图");
+		tbInfoPic.setPicLocalStore(filePath);
+		
+		/*
+		if(!=null){
+			infoPicDao.merge(tbInfoPic); 
+		}else{
+			infoPicDao.save(tbInfoPic); 
+		}*/
+		
+		infoPicDao.saveOrUpdate (tbInfoPic);  
+		PictureStoreInfo pictureInfo= new PictureStoreInfo(); 
+		pictureInfo.setInfo("附图照");
+		pictureInfo.setType("附图");
+		pictureInfo.setUrl(filePath);
+		pictureInfoList.add(pictureInfo);  
+		accidentStoreBean.setPictureInfoList(pictureInfoList);
+		this.session.setAttribute("lastOperationStage", FormalAccidentProcess.WAIT);
+		this.session.setAttribute("accidentStoreBean",accidentStoreBean);  
+		return sign;  
+		
+	}
+	public boolean locationProcess(LocationReqBean locationReqBean){
+		super.locationProcess(locationReqBean);
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		 
+		sign=stage.equals(FormalAccidentProcess.START); 
+		if(!sign) return false;
+		
+		String label=CommonUtil.trim(locationReqBean.getLabel());
+		 
+		if(label.equals("")){
+			this.tipMessage("地理位置信息不明确，请重新上传地理位置");
+			return sign;
+		}
+		StringBuffer textBuffer=new StringBuffer("");
+		textBuffer.append("您标注的地理位置是："+locationReqBean.getLabel()+"\n");
+		textBuffer.append("【第2步：提供电话】请输入您的手机号，并确保通讯畅通，以便民警与您取得联系。");
+		this.tipMessage(textBuffer.toString()); 
+		
+		AccidentStoreBean accidentStoreBean=this.getSessionAccidentStoreBean();
+		LocationStoreInfo locationInfo=new LocationStoreInfo();
+		locationInfo.setAddress(locationReqBean.getLabel());
+		locationInfo.setLocationX(locationReqBean.getLocation_X()); 
+		locationInfo.setLocationY(locationReqBean.getLocation_Y()); 
+		
+        Long beginLong=System.currentTimeMillis(); 
+		float  destLatitude=Float.parseFloat(locationInfo.getLocationX());
+		float  destLongitude=Float.parseFloat(locationInfo.getLocationY()); 
+		String departmentId=attributionService.getAttributionDepartment(locationInfo.getLocationX(), locationInfo.getLocationY());
+		 
+		Long endLong=System.currentTimeMillis(); 
+		log.error("时间" + (endLong-beginLong));  
+		locationInfo.setDepartmentId(departmentId); 
+		
+		
+		accidentStoreBean.setLocationInfo(locationInfo); 
+		
+		this.session.setAttribute("accidentStoreBean",accidentStoreBean);
+		this.session.setAttribute("lastOperationStage",FormalAccidentProcess.LOCATION);   
+		return sign;
+	}
+	public boolean textProcess(TextReqBean textReqBean){
+		super.textProcess(textReqBean);
+		if(textProcess_Phone(textReqBean)) return true;  
+		return false;
+	}
+	private boolean textProcess_Phone(TextReqBean textReqBean){
+		String content=textReqBean.getContent().trim();   
+		boolean sign=true;
+		sign=stage!=null?sign:false;
+		if(!sign) return false; 
+		sign=stage instanceof  FormalAccidentProcess;  
+		if(!sign) return false;
+		sign=stage.equals(FormalAccidentProcess.LOCATION);
+		if(!sign) return false;
+		sign=CommonUtil.isMobilePhone(content);
+		if(!sign){
+			this.tipMessage("请输入正确的手机号码 ....../:8*");
+			return true;
+		} 
+		ItemResObject itemResObject;
+		ArrayList<ItemResObject> articles=new ArrayList<ItemResObject>();
+		itemResObject=new ItemResObject();
+		itemResObject.setTitle("【第3-1步：现场拍照——前方照】");
+		itemResObject.setDescription("站在道路中间拍摄，在事故车前方5米处进行拍照，照片要求车号、道路标志、标线清晰。点击下方“+”图标，选择“图片”。");
+		itemResObject.setPicUrl( String.format(pic_accident_frontUrl,this.SERVER_IP) );
+		itemResObject.setUrl("");
+		articles.add(itemResObject);
+		this.outMsg=WeiUtil.getNewsMessage(textReqBean, articles) ;  
+		AccidentStoreBean accidentStoreBean=this.getSessionAccidentStoreBean();
+		accidentStoreBean.setReportPhoneNumber(content);  
+		this.session.setAttribute("accidentStoreBean", accidentStoreBean); 
+		this.session.setAttribute("lastOperationStage",FormalAccidentProcess.PHONE);  
+		return sign; 
+	}
+	
+	 
+}

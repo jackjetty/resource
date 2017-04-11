@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title id="titleName">绍兴交警</title>
+<meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="../css/paxy.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript">
+
+</script>
+<style>
+
+.redfont{
+		color: red;
+	}
+.liTitle{
+	background-color: #5DD300;
+    background-image: -moz-linear-gradient(center bottom , #5DD300 0%, #5DD300 100%);
+    margin-bottom: 4px;
+}
+.xk{
+color:#FFFFFF;font-size:18px;
+}
+#titleDiv{
+    background-color: #179F00;
+    background-image: -moz-linear-gradient(center bottom , #179F00 0%, #5DD300 100%);
+    
+    box-shadow: 0 0px 0 #94E700 inset, 0 1px 2px rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+    width:100%;
+    line-height:40px;
+    margin:0 auto;
+    text-align:center;
+}
+</style>
+
+</head>
+<body id="img-content">
+<div style="width:100%;" >
+	<div id="titleDiv" >
+		<span style="font-size:18px;color:#FFFFFF;">绍兴交警微信轻微事故介绍</span>
+	</div>
+</div>
+		<div class="cardexplain" >
+			<ul class="round" >
+				<li class="title mb"><span class="none">绍兴交警微信轻微事故视频</span></li>
+				<li class="nob">
+					<iframe  style="width:100%" src="http://player.youku.com/embed/XNzM4OTM1MTYw" 
+					frameborder=0 allowfullscreen></iframe>
+				</li>
+			</ul>
+			
+		</div>
+		
+
+
+
+
+</body>
+</html>

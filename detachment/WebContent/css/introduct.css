@@ -1,0 +1,124 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	margin:0;
+	padding:0;
+}
+
+body{
+	background-color:white;
+}
+.page{
+	padding:15px 3%;
+}
+.J_mess h5{
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#5c5c5c;
+	line-height:30px;
+	font-weight:normal;
+}
+.J_mess b{
+	font-weight:bold;
+}
+.J_top{
+	overflow:hidden;
+}
+.J_top .J_tL{
+	
+	
+	background-color:#4ab4de;	
+}
+.J_top span{
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:white;
+	width:100%;
+	display:block;
+	text-align:center;
+	line-height:34px;
+}
+.J_top .J_tR{
+	
+	margin-top:30px;
+	background-color:#4ab4de;
+}
+.J_cent{
+	overflow:hidden;
+	padding-top:10px;
+}
+.J_cent .J_cL{
+	
+	
+}
+.J_cent .J_cL .one{
+	overflow:hidden;
+}
+.J_cent .J_cL h3{
+	
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#5c5c5c;
+	
+	text-align:left;
+	padding-right:1%;
+	font-weight:normal;
+	line-height:38px;
+}
+.J_cent .J_cL h4{
+	
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#5c5c5c;
+	
+	font-weight:normal;
+	line-height:30px;
+}
+.J_cent .J_cL span{
+	font-weight:bold;
+}
+.J_cent .J_cR{
+	float:right;
+}
+.J_cent .J_cR .img1{
+	width:69px;
+	height:77px;
+	display:block;
+	border:1px solid #f0f0f0;
+}
+.J_mess{
+	margin-top:15px;
+}
+.J_mess p{
+	display:block;
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#5c5c5c;
+	margin-left:32px;
+	line-height:26px;
+	padding-top:5px;
+}
+.J_mess .two{
+	display:block;
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#5c5c5c;
+	
+	text-indent:2em;
+	line-height:26px;
+	padding-top:5px;
+}
+.J_top .img2{
+	width:24px;
+	height:24px;
+	float:left;
+	margin-right:8px;
+}
+.J_top h5{
+	float:left;
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#5c5c5c;
+	text-align:center;
+	line-height:24px;
+}

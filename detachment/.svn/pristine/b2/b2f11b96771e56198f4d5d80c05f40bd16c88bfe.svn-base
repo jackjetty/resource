@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>无标题文档</title>
+<link href="css/index.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<script>
+  var count=0;
+	function disable(){
+	count=0;
+	  var box = "check";
+	  var pig = "Hiden";
+	  for(var i=1;i<=4;i++){
+		  var x = box+i;
+		  var pic = pig+i;
+		  var obj = document.getElementById(x);
+		  var pObj = document.getElementById(pic);
+		 if(obj.disabled==true){
+			obj.disabled=false;
+			pObj.style.display="none";
+			button.value="取消选择";
+			button.style.color="red";
+		  }else{
+			obj.disabled=true; 
+			pObj.style.display="none";
+			button.value="点击选择";
+			button.style.color="#4ab4de";
+			}
+		}
+  }
+
+function change(t){
+	var checkBox =  document.getElementById("check"+t.id).disabled;
+	var check =  document.getElementById("Hiden"+t.id).style.display;
+	var obj = document.getElementById("Hiden"+t.id);
+	var cObj = document.getElementById("check"+t.id);		
+	if(checkBox == false){
+		if(check == "none"){
+			obj.style.display = "block";
+			cObj.checked = true;
+			count++;
+		}else{
+			obj.style.display = "none";
+			cObj.checked = false;
+			count--;
+		}
+		document.getElementById("button").value="取消选择("+count+")";
+	}
+	
+} 
+
+function start_(){
+	var eles=document.getElementsByName("hobby");
+	var checkCount=0;
+	for(var i=0;i<eles.length;i++){
+		if(eles[i].checked){
+			checkCount++;
+		}
+	}
+	if(checkCount<4){	
+		 alert("至少选择4人,已选"+count+"人");
+		 console.log("至少选择4位");
+	}
+}
+</script>
+<div class="page">
+	<div class="main">
+    	<div class="con">
+        <a href="#">
+        	<div class="conLeft" id='1' onclick="change(this)">
+            	<img src="images/i1.png"/>
+                <div class="conBottom">
+                	<h3>姓名</h3>
+                    <div class="test">
+                    	<span class="S1">简介简简简简介简简简简简...</span>
+                        <span class="S2">[详情]</span>
+                    </div>
+                    
+                </div>
+                <input type="checkbox" name="hobby" value="姓名" class="checkbox" id="check1" disabled="false">
+                <div class="Z" id="Hiden1" >
+                	<div class="L"></div>
+                	<img src="images/check.png" class="Y"/>
+                </div>
+            </div>
+            </a>
+            <a href="#">
+            <div class="conRight" id='2' onclick="change(this)">
+            	<img src="images/i1.png"/>
+                <div class="conBottom">
+                	<h3>姓名</h3>
+                    <div class="test">
+                    	<span class="S1">简介简简简简介简简简简简...</span>
+                        <span class="S2">[详情]</span>
+                    </div>
+                </div>
+                <input type="checkbox" name="hobby" value="姓名" class="checkbox"id="check2" disabled="false">
+                <div class="Z"  id="Hiden2">
+                	<div class="L"></div>
+                	<img src="images/check.png" class="Y"/>
+                </div>
+                
+            </div>
+            </a>
+        </div>
+
+        <div class="con">
+        <a href="#">
+        	<div class="conLeft" id='3' onclick="change(this)">
+            	<img src="images/i1.png"/>
+                <div class="conBottom">
+                	<h3>姓名</h3>
+                    <div class="test">
+                    	<span class="S1">简介简简简简介简简简简简...</span>
+                        <span class="S2">[详情]</span>
+                    </div>
+                </div>
+                <input type="checkbox" name="hobby" value="姓名" class="checkbox"id="check3" disabled="false">
+                 <div class="Z"  id="Hiden3">
+                	<div class="L"></div>
+                	<img src="images/check.png" class="Y"/>
+                </div>
+            </div>
+            </a>
+            <a href="#">
+            <div class="conRight" id='4' onclick="change(this)">
+            	<img src="images/i1.png"/>
+                <div class="conBottom">
+                	<h3>姓名</h3>
+                    <div class="test">
+                    	<span class="S1">简介简简简简介简简简简简...</span>
+                        <span class="S2">[详情]</span>
+                    </div>
+                </div>
+               <input type="checkbox" name="hobby" value="姓名" class="checkbox"id="check4" disabled="false">
+                 <div class="Z"  id="Hiden4">
+                	<div class="L"></div>
+                	<img src="images/check.png" class="Y"/>
+                </div>
+            </div>
+            </a>
+        </div>
+        
+        
+    </div>
+    <div class="footer">
+    	<div class="bottomLeft">
+        	<input type="button" id="button" onclick="disable()" value="点击选择"/>
+        </div>
+        <div class="bottomRight">
+        	<input type="button" value="开始投票" id="startBtn" onclick="start_()"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

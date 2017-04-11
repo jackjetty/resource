@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>图解轻微事故自行定责</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../css/responsibility.css" type="text/css" charset="utf-8">
+    <link media="screen and (min-width:1000px)" rel="stylesheet" type="text/css" href="../css/pc-page1d0858.css"/>
+    <style>
+        body{ -webkit-touch-callout: none; -webkit-text-size-adjust: none; }
+    </style>
+    <style>
+        #nickname{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:90%;}
+                ol,ul{list-style-position:inside;}
+        #activity-detail .page-content .text{font-size:16px;}
+            </style>
+</head> 
+
+<body id="activity-detail">
+       
+         <div class="page-bizinfo">
+            <div class="header">
+            <h1 id="activity-name">交警图解轻微事故自行定责</h1>
+            <p class="activity-info">
+                <span id="post-date" class="activity-meta no-extra">2014-06-17</span>
+                                                <a href="" id="post-user" class="activity-meta">
+                    <span class="text-ellipsis">绍兴交警</span><i class="icon_link_arrow"></i>
+                </a>
+             </p>
+            </div>
+        </div>
+        
+        <div id="page-content" class="page-content">
+            <div id="img-content">
+                                    
+                        <div class="media" id="media">
+            <img  src="../image/responsibility/0.jpg" />
+            </div>
+            	<span style="color:#030303;font-weight:bold;">交警教你轻微交通事故自行定责</span>
+             <div class="media" id="media">
+             <img  src="../image/responsibility/1.gif" />
+            </div>
+            <div class="media" id="media">
+             <img  src="../image/responsibility/2.gif" />
+            </div>  
+            <div class="media" id="media">
+             <img  src="../image/responsibility/3.gif" />
+            </div>  
+            <div class="media" id="media">
+             <img  src="../image/responsibility/4.gif" />
+            </div>  
+            <div class="media" id="media">
+             <img  src="../image/responsibility/5.gif" />
+            </div>  
+            <div class="media" id="media">
+             <img  src="../image/responsibility/6.gif" />
+            </div>  
+            <div class="media" id="media">
+             <img  src="../image/responsibility/7.gif" />
+            </div>  
+            <div class="media" id="media">
+             <img  src="../image/responsibility/8.gif" />
+            </div>  
+               <div class="media" id="media">
+             <img  src="../image/responsibility/9.gif" />
+            </div>  <div class="media" id="media">
+             <img  src="../image/responsibility/10.gif" />
+            </div>         
+            </div>
+                    </div>
+    
+</body>
+</html>
+

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title></title>
+<link href="../css/N1.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="page">
+	<img src="../image/vote/one.jpg"/>
+    <div class="main">
+    	<p>
+			为进一步加强机动车驾驶人的教育管理工作，全面提升机动车驾驶人的安全文明驾驶素养，进一步推进全市“三有三好” 驾驶人队伍建设，按照《绍兴市公安局绍兴市交通运输局关于印发绍兴市驾驶人“三有三好”教育活动工作方案的通知》（绍公通[2014]68号）要求，市公安局、市交通运输局决定联合开展绍兴市“三有三好”十佳驾驶人评选活动。
+		</p>
+		<p>
+		    网友可通过绍兴交警官方微信，投票选出心目中的绍兴市“三有三好”十佳驾驶人。届时将会根据网友的投票情况，结合候选对象的实际表现，确定当选名单。
+		</p>
+		<p>
+		投票途径和规则：
+		</p>
+		<p>
+		关注绍兴交警官方微信（微信号：shaoxingjiaojing）参与“警民互动”栏目中的“三有三好十佳驾驶人”评选投票，选投10位。每个微信号每天限投1次。
+		</p>
+		<p>
+		投票时间：2015年2月10日至2月14日24时。
+		</p>
+    </div>
+    <div class="footer">
+    	<div class="Left">
+        	<span>投票首页</span>
+        </div>
+        <div class="Right" onclick="javascript:window.location.href='getAllCandidate.action?topID=2'" style="cursor:pointer;">
+        	<span>开始投票</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
