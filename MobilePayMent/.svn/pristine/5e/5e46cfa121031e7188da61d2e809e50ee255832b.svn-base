@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.FlowLogMapper">
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.FlowLog">
+		insert into RS_FLOW_LOG (f_order,phoneNumber,f_type,dateTime,f_context,code) values (#{order},#{phoneNumber},#{type},#{dateTime},#{context},#{code})
+	</insert>
+</mapper>

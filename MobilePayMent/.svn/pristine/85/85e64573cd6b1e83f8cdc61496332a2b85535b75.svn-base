@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.OrderIdHelperMapper">
+	<select id="getMaxOrderId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select LastOrderId from RS_OrderIdHelper where TheDate = #{time}
+	</select>
+	<insert id="add" parameterType="java.util.HashMap" >
+		insert into RS_OrderIdHelper(TheDate,LastOrderId) values (#{time},#{id})
+	</insert>
+	<update id="update" parameterType="java.util.HashMap">
+		update RS_OrderIdHelper set LastOrderId = #{nextId} where TheDate = #{time}
+	</update>
+	<select id="getNextId" resultType="java.lang.Integer">
+		select OrderIdNext.nextval from dual
+	</select>
+	<select id="reNewSequence" statementType="CALLABLE">
+		{call  DROP_SEQUENCE} 
+	</select>
+</mapper>

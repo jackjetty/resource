@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.SweepStakesPrizeMapper">
+	<select id="findBySweepStakes" resultType="com.rising.mobilepayment.bean.SweepStakesPrize">
+		select * from RS_SweepStakesPrize where activityId = #{id} and prizeNumber > 0
+	</select>
+	<select id="findPrizeByLotteryId" resultType="com.rising.mobilepayment.bean.SweepStakesPrize">
+		select * from RS_SweepStakesPrize where prizeId = #{prizeId}
+	</select>	
+	
+	<update id="updateStakesPrize" parameterType="com.rising.mobilepayment.bean.SweepStakesPrize" >
+		update RS_SweepStakesPrize set prizeNumber = #{prizeNumber} where id = #{id}
+	</update>
+</mapper>

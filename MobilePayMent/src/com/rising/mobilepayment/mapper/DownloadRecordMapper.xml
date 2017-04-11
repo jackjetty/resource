@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.DownloadRecordMapper">
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.DownloadRecord">
+	    insert into RS_DownloadRecord(fromWay,downloadTime,ipAddress) values(#{fromWay},#{downloadTime},#{ipAddress})
+	</insert>
+	
+	<select id="find" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.DownloadRecord">
+	    select * from RS_DownloadRecord where ipAddress = #{Ip} and FromWay = #{FromWay} and downloadTime &gt; #{Start} and downloadTime &lt; #{End}
+	</select>
+</mapper>

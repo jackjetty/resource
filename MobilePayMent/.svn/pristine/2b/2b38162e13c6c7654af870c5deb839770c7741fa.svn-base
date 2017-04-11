@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+ 	http://www.springframework.org/schema/context
+ 	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+ 	http://www.springframework.org/schema/tx 
+ 	http://www.springframework.org/schema/tx/spring-tx.xsd
+ 	http://www.springframework.org/schema/mvc
+ 	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+ 	http://www.springframework.org/schema/aop   
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	<!-- 默认扫描的包路径 -->
+	<context:component-scan base-package="com.rising"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Component" />
+	</context:component-scan>
+	<!-- 添加注解驱动 -->
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	<aop:aspectj-autoproxy />
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@172.25.21.182:1521:orcl">
+		</property>
+		<property name="user" value="RISING_MOBILEPAYMENT_DBA"></property>
+		<property name="password" value="DBA654321"></property>
+		<property name="minPoolSize">
+			<value>10</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>30</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>1800</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>2</value>
+		</property>
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>2</value>
+		</property>
+		<property name="idleConnectionTestPeriod">
+			<value>1800</value>
+		</property>
+		<property name="acquireRetryAttempts">
+			<value>30</value>
+		</property>
+		<property name="breakAfterAcquireFailure">
+			<value>true</value>
+		</property>
+		<property name="testConnectionOnCheckout">
+			<value>false</value>
+		</property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.rising.*.bean" />
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.rising.*.mapper" />
+	</bean>
+	<bean id="propertiesReader"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:RISINGConfig.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!--  
+	
+	<bean id="qqMonthPayCheckJob"
+	    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="qqPerMonthCheckTask" />
+		<property name="targetMethod" value="qqMonthPayCheck" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="qqMonthPayInitJob"
+	    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="qqPerMonthCheckTask" />
+		<property name="targetMethod" value="qqMonthPayInit" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	
+	<bean id="qqAgentPayJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="qqAgentPayTask" />
+		<property name="targetMethod" value="qqAgentPay" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	 
+	
+	<bean id="jobDetail2" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.rising.mobilepayment.job.DailyQQPerMonthCheckJob"></property>
+		<property name="applicationContextJobDataKey" value="applicationContext" />
+	</bean>
+	<bean id="flowJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.rising.mobilepayment.job.FlowCheckJob"></property>
+		<property name="applicationContextJobDataKey" value="applicationContext" />
+	</bean>
+	
+	<bean id="statisticsJob1" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.rising.mobilepayment.job.QQPerMonthStatisticsJob1"></property>
+		<property name="applicationContextJobDataKey" value="applicationContext" />
+	</bean>
+	
+	<bean id="statisticsJob2" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.rising.mobilepayment.job.QQPerMonthStatisticsJob2"></property>
+		<property name="applicationContextJobDataKey" value="applicationContext" />
+	</bean>
+	<bean id="statisticsJob3" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass"
+			value="com.rising.mobilepayment.job.QQPerMonthStatisticsJob3"></property>
+		<property name="applicationContextJobDataKey" value="applicationContext" />
+	</bean>
+	
+	
+	    <bean id="qqAgentPayCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="qqAgentPayJob"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 0/2 * * * ?</value>
+            </property>
+        </bean>
+        
+        <bean id="qqMonthPayInitTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="qqMonthPayInitJob"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 2 1 1 * ?</value>
+            </property>
+        </bean>
+        
+	  <bean id="qqMonthPayCheckTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="qqMonthPayCheckJob"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 3 * * * ?</value>
+            </property>
+        </bean>
+        
+        <bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="flowJob"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 0/2 * * * ?</value>
+            </property>
+        </bean>
+        <bean id="cronTrigger4" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="statisticsJob1"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 30 23 ? * SUN</value>
+            </property>
+        </bean>
+        <bean id="cronTrigger5" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="statisticsJob2"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 30 23 L * ?</value>
+            </property>
+        </bean>
+        <bean id="cronTrigger6" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="statisticsJob3"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 30 23 31 12 ?</value>
+            </property>
+        </bean>
+        
+         <bean id="cronTrigger7" class="org.springframework.scheduling.quartz.CronTriggerBean">
+            <property name="jobDetail">
+                <ref bean="jobDetail2"/>
+            </property>
+            <property name="cronExpression">
+                <value>0 0/5 * * * ?</value>
+            </property>
+        </bean>
+
+	<bean id="schedulerFactory"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list> 
+				<ref local="qqMonthPayCheckTrigger" />
+				<ref local="qqMonthPayInitTrigger" />
+				<ref local="cronTrigger3" />
+				<ref local="cronTrigger4" />
+				<ref local="cronTrigger5" />
+				<ref local="cronTrigger6" />
+				<ref local="cronTrigger7" />
+				<ref local="qqAgentPayCronTrigger" />
+				
+			</list>
+		</property>
+	</bean> 
+	-->
+</beans>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.QQAgentOrderMapper">
+	 <select id="findById" resultType="com.rising.mobilepayment.bean.QQAgentOrder" parameterType="java.lang.String">
+		select * from RS_QQAgentOrder 
+		where    agentOrderId =#{agentOrderId} 
+	 </select>
+	 
+	 
+	 
+	
+	 
+	 <insert id="add" parameterType="com.rising.mobilepayment.bean.QQAgentOrder">
+		insert into RS_QQAgentOrder(agentOrderId,orderTime,phoneNumber,targetQQNum,agentQQNum,price,payMoney,busId,serviceCode,serviceName,openMonth,agentAdd1,agentAdd2,agentAdd3,remark ,subject,tradeNo,tradeStatus,buyerId,buyerEmail,totalFee,refundStatus,refundTime,chargeStatus,chargeTime,payTime,batchNo)
+		values (#{agentOrderId,jdbcType=VARCHAR}, 
+		                      #{orderTime,jdbcType=TIMESTAMP},
+		                           #{phoneNumber,jdbcType=VARCHAR},
+		                                #{targetQQNum,jdbcType=VARCHAR},
+		                                      #{agentQQNum,jdbcType=VARCHAR},
+		                                            #{price,jdbcType=FLOAT},
+		                                                   #{payMoney,jdbcType=FLOAT},
+		                                                          #{busId,jdbcType=VARCHAR},
+		                                                            	#{serviceCode,jdbcType=VARCHAR},
+		                                                         			 #{serviceName,jdbcType=VARCHAR},
+		                                                         					 #{openMonth,jdbcType=VARCHAR},
+		                                                         							 #{agentAdd1,jdbcType=VARCHAR},
+		                                                        									  #{agentAdd2,jdbcType=VARCHAR},
+		                                                       											   #{agentAdd3,jdbcType=VARCHAR},
+		                                                        												  #{remark,jdbcType=VARCHAR}, 
+		                                                        																  #{subject,jdbcType=VARCHAR},
+																		                                                                   #{tradeNo,jdbcType=VARCHAR},
+																		                                                                          #{tradeStatus,jdbcType=VARCHAR},
+																		                                                                                   #{buyerId,jdbcType=VARCHAR},
+																		                                                                                            #{buyerEmail,jdbcType=VARCHAR},
+																		                                                                                                   #{totalFee,jdbcType=VARCHAR},
+																		                                                                                                  		 #{refundStatus,jdbcType=VARCHAR},
+																		                                                                                                  				 #{refundTime,jdbcType=TIMESTAMP}, 
+																		                                                                                                       				     #{chargeStatus,jdbcType=VARCHAR},
+																		                                                                                                       				               #{chargeTime,jdbcType=TIMESTAMP},
+																		                                                                                                       				                         #{payTime,jdbcType=TIMESTAMP},
+																		                                                                                                       				                                #{batchNo,jdbcType=VARCHAR} ) 
+	</insert>
+	
+	 
+	 <update id="update" parameterType="com.rising.mobilepayment.bean.QQAgentOrder">
+		update RS_QQAgentOrder set   
+		           orderTime= #{orderTime,jdbcType=TIMESTAMP},
+		           phoneNumber= #{phoneNumber,jdbcType=VARCHAR},
+		           targetQQNum= #{targetQQNum,jdbcType=VARCHAR},
+		           agentQQNum= #{agentQQNum,jdbcType=VARCHAR},
+		           price= #{price,jdbcType=FLOAT},
+		           payMoney= #{payMoney,jdbcType=FLOAT},
+		           busId= #{busId,jdbcType=VARCHAR},
+		           serviceCode= #{serviceCode,jdbcType=VARCHAR},
+		           serviceName= #{serviceName,jdbcType=VARCHAR},
+		           openMonth= #{openMonth,jdbcType=VARCHAR},
+		           agentAdd1= #{agentAdd1,jdbcType=VARCHAR},
+		           agentAdd2= #{agentAdd2,jdbcType=VARCHAR},
+		           agentAdd3= #{agentAdd3,jdbcType=VARCHAR},
+		           remark= #{remark,jdbcType=VARCHAR},
+		           subject= #{subject,jdbcType=VARCHAR},
+		           tradeNo= #{tradeNo,jdbcType=VARCHAR},
+		           tradeStatus= #{tradeStatus,jdbcType=VARCHAR},
+		           buyerId= #{buyerId,jdbcType=VARCHAR},
+		           buyerEmail= #{buyerEmail,jdbcType=VARCHAR},
+		           totalFee= #{totalFee,jdbcType=VARCHAR},
+		           refundStatus= #{refundStatus,jdbcType=VARCHAR},
+		           refundTime= #{refundTime,jdbcType=TIMESTAMP},
+		           chargeStatus= #{chargeStatus,jdbcType=VARCHAR},
+		           chargeTime= #{chargeTime,jdbcType=TIMESTAMP},
+		           payTime= #{payTime,jdbcType=TIMESTAMP},
+		           batchNo = #{batchNo,jdbcType=VARCHAR}
+		             where agentOrderId = #{agentOrderId}
+	</update>
+	
+	 
+	 
+	 <select id="getUnPayList" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.QQAgentOrder">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQAgentOrder where  
+				(chargeStatus is null or chargeStatus!='0') 
+				and  TO_CHAR(orderTime,'YYYY-MM-DD HH24:MI')&gt;=#{fromOrderTime}  
+				and (refundStatus is null or refundStatus='')
+				order by orderTime desc
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= #{pageSize}
+		 
+	</select>
+	<select id="getPayFailList" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.QQAgentOrder">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQAgentOrder where  
+				(chargeStatus is null or chargeStatus!='0') 
+				and  TO_CHAR(orderTime,'YYYY-MM-DD HH24:MI')&gt;=#{fromOrderTime}  
+				and  TO_CHAR(orderTime,'YYYY-MM-DD HH24:MI')&lt;=#{endOrderTime} 
+				and (refundStatus is null or refundStatus='')
+				order by orderTime 
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= #{pageSize}
+		 
+	</select>
+	
+	
+	<select id="getSumNumByBatchNo" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(*) as allSize from RS_QQAgentOrder 
+		where batchNo=#{batchNo}  
+		    and  TO_CHAR(orderTime,'YYYY-MM-DD')&gt;=#{fromOrderTime}  
+				and  TO_CHAR(orderTime,'YYYY-MM-DD')&lt;=#{endOrderTime} 
+	</select>
+	
+	<select id="getListByBatchNo" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.QQAgentOrder">
+		select * from RS_QQAgentOrder 
+		where batchNo=#{batchNo}  
+		and (chargeStatus is null or chargeStatus!='0') 
+		    
+	</select>
+	 
+	 
+	 
+</mapper>

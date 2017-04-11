@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.SweepStakesMapper">
+	<select id="getSweepStakes" resultType="com.rising.mobilepayment.bean.SweepStakes">
+		select * from RS_SweepStakes where status = '启用'
+	</select>
+	<select id="getSweepStakesByImgName" resultType="com.rising.mobilepayment.bean.SweepStakes">
+		select * from RS_SweepStakes where lotteryImgBeforeName = #{imgName} or lotteryImgAfterName = #{imgName}
+	</select>
+</mapper>

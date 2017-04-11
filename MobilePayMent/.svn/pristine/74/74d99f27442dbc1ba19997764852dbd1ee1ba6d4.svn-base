@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.UserBindInfoMapper">
+
+	<select id="findValid" resultType="com.rising.mobilepayment.bean.UserBindInfo" parameterType="java.util.HashMap">
+		select * from RS_UserBindInfo where valid = '有效' and (registerPhoneNumber  = #{registerPhoneNumber} or bindNumber = #{bindNumber}) 
+	</select>
+	<insert id="addRecord" parameterType="com.rising.mobilepayment.bean.UserBindInfo">
+		insert into RS_UserBindInfo (registerPhoneNumber,bindNumber,checkTime,bindTime,checkResult,bindResult,valid,remark) values (#{registerPhoneNumber},#{bindNumber},#{checkTime},#{bindTime},#{checkResult},#{bindResult},#{valid},#{remark})
+	</insert>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.general.mapper.OrderMapper">
+	<select id="queryPhoneNumberListForThisTargetNumber" parameterType="java.util.HashMap"
+		resultType="com.rising.general.bean.Order">
+		select PhoneNumber,TargetNumber from RS_OrderInfo where TargetNumber = #{TargetNumber} and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PhoneNumber != #{PhoneNumber} group by PhoneNumber,TargetNumber
+	</select>
+	
+	<insert id="add" parameterType="com.rising.general.bean.Order">
+		insert into RS_OrderInfo(OrderId,ProductId,BusId,TargetNumber,PayMoney,PhoneNumber,OrderTime,OrderStatus,SPID,SendScore,PayStatus,PayMethodId,HcOrderId,Os,Client,Version,PayReturnCode,PayTime)
+		values (#{OrderId},#{ProductId},#{BusId},#{TargetNumber},#{PayMoney},#{PhoneNumber},#{OrderTime},#{OrderStatus},#{SPID},#{SendScore},#{PayStatus},#{PayMethodId},#{HcOrderId},#{Os},#{Client},#{Version},#{PayReturnCode},#{PayTime}) 
+	</insert>
+	
+	<insert id="place" parameterType="com.rising.general.bean.Order">
+		insert into RS_OrderInfo(OrderId,ProductId,BusId,TargetNumber,PayMoney,PhoneNumber,OrderTime,OrderStatus,SPID,SendScore,PayStatus,PayMethodId,HcOrderId,Os,Client,Version)
+		values (#{OrderId},#{ProductId},#{BusId},#{TargetNumber},#{PayMoney},#{PhoneNumber},#{OrderTime},#{OrderStatus},#{SPID},#{SendScore},#{PayStatus},#{PayMethodId},#{HcOrderId},#{Os},#{Client},#{Version}) 
+	</insert>
+	<insert id="add2" parameterType="com.rising.general.bean.Order">
+		insert into RS_OrderInfo(OrderId,ProductId,BusId,TargetNumber,PayMoney,PhoneNumber,OrderTime,OrderStatus,SPID,SendScore,PayStatus,PayMethodId,HcOrderId,Os,Client,Version)
+		values (#{OrderId},#{ProductId},#{BusId},#{TargetNumber},#{PayMoney},#{PhoneNumber},#{OrderTime},#{OrderStatus},#{SPID},#{SendScore},#{PayStatus},#{PayMethodId},#{HcOrderId},#{Os},#{Client},#{Version}) 
+	</insert>
+	
+	<update id="update" parameterType="com.rising.general.bean.Order">
+		update RS_OrderInfo set PayStatus = #{PayStatus},PayTime = #{PayTime},SendScore = #{SendScore},PayReturnCode = #{PayReturnCode} where OrderId = #{OrderId}
+	</update>
+	
+	<select id="findByExample" parameterType="com.rising.general.bean.Order" resultType="com.rising.general.bean.Order">
+		select * from RS_OrderInfo where OrderId = #{OrderId} and ProductId = #{ProductId} and PhoneNumber = #{PhoneNumber}
+		and SPID = #{SPID} and TargetNumber = #{TargetNumber} and PayMoney = #{PayMoney} and PayMethodId = #{PayMethodId} and HcOrderId = #{HcOrderId}
+	</select>
+	
+	<select id="findByHcOrderIdAndPayMethodId" resultType="com.rising.general.bean.Order">
+		select * from RS_OrderInfo where HcOrderId = #{param1} and PayMethodId = #{param2}
+	</select>
+	
+	
+	
+	<select id="getLastTimeSuccessOrderNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+         select count(*) as orderNum from RS_OrderInfo a where a.PhoneNumber=#{param1}
+         and  a.BusId = #{param2} 
+         and  a.PayStatus = #{param3} 
+         and  TO_CHAR(a.PayTime,'YYYY-MM-DD HH24:MI:SS')&gt;=#{param4}    
+	</select>
+	
+	 
+	<select id="findByHcOrderId" parameterType="java.util.HashMap"
+		resultType="com.rising.general.bean.Order">
+		
+	    select * from ( select temp.*, rownum row_id from (
+				select * from   RS_OrderInfo 
+		        where   TO_CHAR(OrderTime,'YYYY-MM-DD') &gt;= #{StartTime} 
+		          and TO_CHAR(OrderTime,'YYYY-MM-DD') &lt;= #{EndTime}  
+		          and HcOrderId = #{HcOrderId}  
+		          order by OrderTime desc
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= 1
+	    
+		 
+	</select>
+	
+	
+	<select id="getDateOrderList" parameterType="java.util.HashMap"
+	        resultType="com.rising.general.bean.Order">
+		select * from RS_OrderInfo where TO_CHAR(OrderTime,'YYYY-MM-DD') = #{statisticsDate}
+		  and PayMethodId = #{payMethodId}  order by OrderId asc
+	</select>
+	
+</mapper>

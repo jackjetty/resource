@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.HotGameMapper">
+	<select id="findByImgName" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.HotGame" >
+		select * from RS_HotGame where icoName = #{imgName} 
+	</select>
+	<select id="getHotGame" resultType="com.rising.mobilepayment.bean.HotGame" parameterType="java.util.HashMap">
+		select * from (select a.*,rownum rn from (select * from RS_HotGame) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end}
+	</select>
+	
+	<select id="getAllSize" resultType="java.lang.Integer">
+		select count(*) from RS_HotGame
+	</select>
+</mapper>

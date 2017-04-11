@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.general.mapper.MerchantMapper">
+	<select id="findByPartnerCode" parameterType="java.lang.String" resultType="com.rising.general.bean.Merchant">
+		select * from
+		RS_Merchant where PartnerCode = #{partnercode}
+	</select>
+	 
+</mapper>

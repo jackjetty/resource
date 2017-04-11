@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.SalesInformationMapper">
+    <select id="findByInforId" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.SalesInformation">
+		select * from RS_SalesInformation where InforId =#{inforId}
+	</select>
+	<select id="findById" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.SalesInformation">
+		select * from RS_SalesInformation where InforId =
+		#{inforId}
+	</select>
+	<select id="getAllSalesInfo" resultType="com.rising.mobilepayment.bean.SalesInformation">
+		select *
+		from RS_SalesInformation where to_char(sysdate,'yyyy-mm-dd') &gt;=
+		ActStartTime and to_char(sysdate, 'yyyy-mm-dd') &lt;= ActEndTime and ImgName is not null order
+		by SortCode
+	</select>
+	<select id="getAllSalesInfo2" resultType="com.rising.mobilepayment.bean.SalesInformation">
+		select InforId,ActContent,ImgName
+		from RS_SalesInformation where to_char(sysdate,'yyyy-mm-dd') &gt;=
+		ActStartTime and to_char(sysdate, 'yyyy-mm-dd') &lt;= ActEndTime and ImgName is not null order
+		by SortCode
+	</select>
+	<select id="getBusinessSalesInfo" resultType="com.rising.mobilepayment.bean.SalesInformation">
+		select *
+		from RS_SalesInformation where to_char(sysdate,'yyyy-mm-dd') &gt;=
+		ActStartTime and to_char(sysdate, 'yyyy-mm-dd') &lt;= ActEndTime and BusId is not null order
+		by SortCode
+	</select>
+	
+	
+	
+	<select id="getValiSalesInfo" resultType="com.rising.mobilepayment.bean.SalesInformation">
+		select
+		ProductId,ActContent,Discount from RS_SalesInformation
+		where
+		to_char(sysdate,'yyyy-mm-dd') &gt;= ActStartTime and to_char(sysdate,
+		'yyyy-mm-dd') &lt;= ActEndTime and ProductId is not null
+	</select>
+	<select id="getValiSalesInfo2" resultType="com.rising.mobilepayment.bean.SalesInformation" parameterType="java.util.HashMap">
+		select * from (select a.*,rownum rn from (select
+		* from RS_SalesInformation
+		where
+		to_char(sysdate,'yyyy-mm-dd') &gt;= ActStartTime and to_char(sysdate,
+		'yyyy-mm-dd') &lt;= ActEndTime and ImgName is not null and InforId != 1 and InforId != 4 order by SortCode desc) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end} order by b.SortCode asc
+	</select>
+
+	<select id="getImage" resultType="com.rising.mobilepayment.bean.SalesInformation"
+		parameterType="java.util.HashMap">
+		select * from RS_SalesInformation where ImgName =
+		#{ImgName} and InforId = #{InforId}
+	</select>
+</mapper>

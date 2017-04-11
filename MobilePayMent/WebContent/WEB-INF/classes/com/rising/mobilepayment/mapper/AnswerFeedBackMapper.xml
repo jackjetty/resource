@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.AnswerFeedBackMapper">
+	<select id="getAllSize" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) as allSize from RS_AnswerFeedBack where toUserPhoneNumber = #{param1}	
+	</select>
+	<select id="getNotReadAnswerFeedBackNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+         select count(*) as allSize from RS_AnswerFeedBack a where a.toUserPhoneNumber = #{param1} and a.readed = 'NO'	
+	</select>
+	
+	<update id="setAnswerFeedBackReaded">
+		update RS_AnswerFeedBack a set a.readed = 'YES' where a.toUserPhoneNumber = #{param1} and a.id &lt;= #{param2}
+	</update>
+	
+	<select id="getAnswerFeedBack" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.AnswerFeedBack">
+		select * from (select a.*,rownum rn from (select * from RS_AnswerFeedBack where toUserPhoneNumber = #{PhoneNumber} order by answerTime desc) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end} order by b.answerTime asc
+	</select>
+</mapper>

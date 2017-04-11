@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.QQPerMonthStatusMapper">
+	<insert id="addQQPerMonthStatus" parameterType="com.rising.mobilepayment.bean.QQPerMonthStatus" > 
+		insert into	RS_QQPerMonthStatus(phoneNumber,qqNumber,fee,status,applyDate,cancelDate,regDate,updateDate,month) values (#{phoneNumber},#{qqNumber},#{fee},#{status},#{applyDate},#{cancelDate},#{regDate},#{updateDate},#{month})
+	</insert>
+	<update id="updateQQPerMonthStatus" parameterType="com.rising.mobilepayment.bean.QQPerMonthStatus">
+		update RS_QQPerMonthStatus set qqNumber = #{qqNumber},fee = #{fee},status = #{status},applyDate = #{applyDate},cancelDate = #{cancelDate},regDate = #{regDate},updateDate = #{updateDate},month = #{month} where phoneNumber = #{phoneNumber}
+	</update>
+	<select id="findByPhoneNumber" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.QQPerMonthStatus">
+		select * from RS_QQPerMonthStatus where phoneNumber = #{phoneNumber}
+	</select>
+	<select id="getKaiTongNumber" resultType="java.lang.Integer">
+		select count(*) from RS_QQPerMonthStatus where status = '1'
+	</select>
+	
+	<select id="getQuXiaoNumber" resultType="java.lang.Integer">
+		select count(*) from RS_QQPerMonthStatus where status = '2'
+	</select>
+
+	<select id="getKaiTongButPayFailed" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.QQPerMonthStatus">
+		select * from RS_QQPerMonthStatus where status = '1' and (month != #{thisMonth} or month is null)
+	</select>
+	
+</mapper>

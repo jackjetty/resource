@@ -1,0 +1,12 @@
+package com.rising.general.service;
+
+import java.util.HashMap;
+
+public interface PayOrder {
+
+	public HashMap<String, String> getParameterMap(HashMap<String, String> map);
+
+	public boolean payOrder(HashMap<String, String> paraMap, String url,
+			HashMap<String, Object> resultMap) throws Exception;
+
+}

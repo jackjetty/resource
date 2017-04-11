@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.QQPerMonthRecordMapper2">
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.QQPerMonthRecord">
+		insert into RS_QQPerMonthRecord2(PhoneNumber,QQNumber,CheckTime,SendScore,Status,PayMoney,Cost,Month)
+		values (#{phoneNumber},#{QQNumber},#{checkTime},#{sendScore},#{status},#{payMoney},#{cost},#{month}) 
+	</insert>
+	
+	<select id="getQQPerMonthHasPay" parameterType="java.util.HashMap" resultType="java.lang.String">
+		select phoneNumber from RS_QQPerMonthRecord2 where CheckTime &gt; = #{Start} and CheckTime &lt;= #{End}
+	</select>
+</mapper>

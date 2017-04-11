@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+	<constant name="struts.multipart.saveDir" value="/tmp"/>
+	<package name="struts" extends="struts-default,json-default">	
+		<action name="getCaptchaImage" class="captchaAction" method="getCaptchaImage" />
+		<action name="login" class="managerAction" method="login">
+			<result name="login" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="getUser" class="managerAction" method="getUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addUser" class="managerAction" method="addUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="doUser" class="managerAction" method="doUser">
+			<result name="success">page/doUser.jsp</result>
+		</action>
+		<action name="logout" class="managerAction" method="logout">
+			<result name="success">index.html</result>
+		</action>
+		<action name="deleteUser" class="managerAction" method="deleteUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="updateUser" class="managerAction" method="updateUser">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="modifyPassword" class="managerAction" method="modifyPassword">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="logout" class="managerAction" method="logout">
+			<result name="success">index.html</result>
+		</action>
+		<action name="modifyPassword" class="managerAction" method="modifyPassword">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+
+		<action name="toMain" class="mainAction" method="toMain">
+			<result name="toMain">page/main.jsp</result>
+		</action>
+		<action name="getMenu" class="menuAction" method="getMenu">
+			<result name="success" type="json"><param name="root">result</param></result>
+		</action>
+		<action name="addMenu" class="menuAction" method="addMenu">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateMenu" class="menuAction" method="updateMenu">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeMenu" class="menuAction" method="removeMenu">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getMenuByPage" class="menuAction" method="getMenuByPage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getMenuTextId" class="menuAction" method="getTextAndId">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="getMenulikeId" class="menuAction" method="getMenuLikeId">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doMenu" class="menuAction" method="doMenu">
+			<result name="success">page/doMenu.jsp</result>
+		</action>
+		<action name="getAllMenu" class="menuAction" method="getAllMenu">
+			<result name="success" type="json"><param name="root">tree</param></result>
+			<result name="failed" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getMerchant" class="merchantAction" method="getMerchant">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doRole" class="roleAction" method="doRole">
+			<result name="success">page/doRole.jsp</result>
+		</action>
+		<action name="getRoleByPage" class="roleAction" method="getRoleByPage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeRole" class="roleAction" method="removeRole">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addRole" class="roleAction" method="addRole">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateRole" class="roleAction" method="updateRole">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getRole" class="roleAction" method="getRole">
+			<result name="success" type="json"><param name="root">array</param></result>
+		</action>
+		<action name="developRoleRight" class="roleRightAction" method="developRoleRight">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="selectFeedBack" class="feedBackAction" method="selectFeedBack">
+			<result name="success">page/doBackInfo.jsp</result>
+		</action>
+		<action name="searchBackInfo" class="feedBackAction" method="searchBackInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="modifyStatus" class="feedBackAction" method="modifyStatus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="saveProcedureMessage" class="feedBackAction" method="saveProcedureMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+
+		<action name="developManagerRole" class="managerRoleAction" method="developManagerRole">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doAppVersion" class="appVersionAction" method="doAppVersion">
+			<result name="success">page/doAppVersion.jsp</result>
+		</action>
+		<action name="getAppVersion" class="appVersionAction" method="getAppVersion">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addAppVersion" class="appVersionAction" method="addAppVersion">
+			<result name="success" type="json"><param name="contentType">text/html</param><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeAppVersion" class="appVersionAction" method="removeAppVersion">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateAppVersion" class="appVersionAction" method="updateAppVersion">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doSaleInformation" class="saleInformationAction" method="doSale">
+			<result name="success">page/doSaleInfo.jsp</result>
+		</action>
+		<action name="getSalesInformation" class="saleInformationAction" method="getSalesInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addSalesInformation" class="saleInformationAction" method="addSalesInformation">
+			<result name="success" type="json"><param name="contentType">text/html</param><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateSalesInformation" class="saleInformationAction" method="updateSalesInformation">
+			<result name="success" type="json"><param name="contentType">text/html</param><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeSalesInformation" class="saleInformationAction" method="removeSalesInformation">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="changeSortCode" class="saleInformationAction" method="changeSortCode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+
+		<action name="exchangeStatus" class="appVersionAction" method="exchangeStatus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doOrderInfo" class="orderInfoAction" method="doOrderInfo">
+			<result name="success">page/doOrderInfo.jsp</result>
+		</action>
+		<action name="doRandomDraw" class="randomDrawAction" method="doRandom">
+			<result name="success">page/doRandomDraw1.jsp</result>
+		</action>
+		<action name="getTenInfo" class="randomDrawAction" method="doTenInfo">
+			<result name="success" type="json"><param name="root">ard</param></result>
+		</action>
+
+		<action name="getOrderInfo" class="orderInfoAction" method="getOrderInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getBusinessType" class="businessAction" method="getBusinessType">
+			<result name="success" type="json"><param name="root">ab</param></result>
+
+		</action>
+		<action name="doBusiness" class="businessAction" method="doBusiness">
+			<result name="success">page/doBusiness.jsp</result>
+		</action>
+		<action name="getBusinessInfo" class="businessAction" method="getBusinessInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addBusiness" class="businessAction" method="addBusiness">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateBusiness" class="businessAction" method="updateBusiness">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeBusiness" class="businessAction" method="removeBusiness">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doProduct" class="productAction" method="doProduct">
+			<result name="success">page/doProduct.jsp</result>
+		</action>
+		<action name="getProductInfo" class="productAction" method="getProductInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addProduct" class="productAction" method="addProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeProduct" class="productAction" method="removeProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateProduct" class="productAction" method="updateProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getProductSimpleInfo" class="productAction" method="getProductSimpleInfo">
+			<result name="success" type="json"><param name="root">AHSO</param></result>
+		</action>	
+		<action name="getBusAndBtype" class="businessAction" method="getBusAndBtype">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getProduct" class="productAction" method="getProduct">
+			<result name="success" type="json"><param name="root">ap</param></result>
+		</action>	
+		<action name="getProductByStatus" class="productAction" method="getProductByStatus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doStatistics" class="statisticsAction" method="doStatistics">
+			<result name="success">page/doStatistics.jsp</result>
+		</action>
+		<action name="getStatisticsAllByProduct" class="statisticsAction" method="getStatisticsAllByProduct">
+			<result name="success">page/doStatistics.jsp</result>
+		</action>
+		<action name="doStatisticsAll" class="statisticsAction" method="doStatisticsAll">
+			<result name="success">page/doStatisticsAll.jsp</result>
+		</action>
+		<action name="doStatisticsAll2" class="statisticsAction" method="doStatisticsAll2">
+			<result name="success">page/doStatisticsAll2.jsp</result>
+		</action>
+		<action name="doStatisticsByPlace" class="statisticsAction" method="doStatisticsByPlace">
+			<result name="success">page/doStatisticsByPlace.jsp</result>
+		</action>
+		<action name="toDownloadImage" class="downloadImageAction" method="dowloadImage"></action>
+		<action name="getStatisticsByPlace" class="statisticsAction" method="getStatisticsByPlace">
+			<result name="success">page/doStatisticsByPlace.jsp</result>
+		</action>
+		<action name="doStatisticsInfoByPlace" class="statisticsAction" method="doStatisticsInfoByPlace">
+			<result name="success">page/doStatisticsInfoByPlace.jsp</result>
+		</action>
+		<action name="doStatisticsInfoByPlace2" class="statisticsAction" method="doStatisticsInfoByPlace2">
+			<result name="success">page/doStatisticsInfoByPlace2.jsp</result>
+		</action>
+		<action name="getStatisticsInfoByPlace" class="statisticsAction" method="getStatisticsInfoByPlace">
+			<result name="success">page/doStatisticsInfoByPlace.jsp</result>
+		</action>
+		<action name="getStatisticsInfoByPlace2" class="statisticsAction" method="getStatisticsInfoByPlace2">
+			<result name="success">page/doStatisticsInfoByPlace2.jsp</result>
+		</action>
+		
+		<action name="doStatisticsByPlaceAll" class="statisticsAction" method="doStatisticsByPlaceAll">
+			<result name="success">page/doStatisticsByPlaceAll.jsp</result>
+		</action>
+		<action name="getStatisticsByPlaceAll" class="statisticsAction" method="getStatisticsByPlaceAll">
+			<result name="success">page/doStatisticsByPlaceAll.jsp</result>
+		</action>
+		<action name="doStatisticsByHighCharts" class="statisticsAction" method="doStatisticsByHighCharts">
+			<result name="success">page/doStatisticsAllByHighCharts.jsp</result>
+		</action>
+		<action name="getStatisticsByHighCharts" class="statisticsAction" method="getStatisticsByHighCharts">
+			<result name="success" type="json"><param name="root">listMap</param></result>
+		</action>
+		<action name="getStatistics" class="statisticsAction" method="getStatistics">
+			<result name="success">page/doStatistics.jsp</result>
+		</action>
+		<action name="getStatisticsAll" class="statisticsAction" method="getStatisticsAll">
+			<result name="success">page/doStatisticsAll.jsp</result>
+		</action>
+		<action name="getStatisticsAll2" class="statisticsAction" method="getStatisticsAll2">
+			<result name="success">page/doStatisticsAll.jsp</result>
+		</action>
+		<action name="getStatisticsAll3" class="statisticsAction" method="getStatisticsAll3">
+			<result name="success">page/doStatisticsAll2.jsp</result>
+		</action>
+		<action name="findAll" class="statisticsAction" method="findAll">
+			<result name="success">page/doStatistics.jsp</result>
+		</action>
+		<action name="doAppUserStatistics" class="statisticsAction" method="doAppUserStatistics">
+			<result name="success">page/doAppUserStatistics.jsp</result>
+		</action>
+		<action name="doLostUser" class="statisticsAction" method="doLostUser">
+			<result name="success">page/doLostUser.jsp</result>
+		</action>
+		
+		<action name="getLostUser" class="statisticsAction" method="getLostUser">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doAppUserStatisticsAll" class="statisticsAction" method="doAppUserStatisticsAll">
+			<result name="success">page/doAppUserStatisticsAll.jsp</result>
+		</action>
+		<action name="getAppUserStatistics" class="statisticsAction" method="getAppUserStatistics">
+			<result name="success">page/doAppUserStatistics.jsp</result>
+		</action>
+		<action name="getAppUserStatisticsAll" class="statisticsAction" method="getAppUserStatisticsAll">
+			<result name="success">page/doAppUserStatisticsAll.jsp</result>
+		</action>
+		<action name="doUserScore" class="statisticsAction" method="doUserScore">
+			<result name="success">page/doAppUserScore.jsp</result>
+		</action>
+		<action name="creditsNumbers" class="statisticsAction" method="creditsNumbers">
+			<result name="success">page/doCreditsNumbers.jsp</result>
+		</action>
+		<action name="viewNewRegister" class="statisticsAction" method="viewNewRegister">
+			<result name="success">page/viewNewRegister.jsp</result>
+		</action>
+		<action name="viewUserDetail" class="statisticsAction" method="viewUserDetail">
+			<result name="success">page/viewUserDetail.jsp</result>
+		</action>
+		<action name="getUserOrderInfo" class="statisticsAction" method="getUserOrderInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getUserCheckInInfo" class="statisticsAction" method="getUserCheckInInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getUserWinningInfo" class="statisticsAction" method="getUserWinningInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getUserQQPerMonthInfo" class="statisticsAction" method="getUserQQPerMonthInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getCreditsNumbers" class="statisticsAction" method="getCreditsNumbers">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<!-- action name="doQQStatistics" class="statisticsAction" method="doQQStatistics">
+			<result name="success">page/doQQPermonthStatistics.jsp</result>
+		</action> -->
+		<action name="doQQStatistics" class="statisticsAction" method="doQQStatistics">
+			<result name="success">page/doQQPerMonthStatisticsByRecharge.jsp</result>
+		</action>
+		
+		<action name="getQQStatistics" class="statisticsAction" method="getQQStatistics">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doStatisticsByCode" class="statisticsAction" method="doStatisticsByCode">
+			<result name="success">page/doStatisticsByCode.jsp</result>
+		</action>
+		<action name="getStatisticsByCode" class="statisticsAction" method="getStatisticsByCode">
+			<result name="success">page/doStatisticsByCode.jsp</result>
+		</action>
+		<action name="getNewUser" class="statisticsAction" method="getNewUser">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doAppUserStatisticsByImage" class="statisticsByImageAction" method="doAppUserStatisticsByImage">
+			<result name="success">page/doAppUserStatisticsByImage.jsp</result>
+		</action>
+		<action name="getAllAppUserInfo" class="statisticsByImageAction" method="getAllAppUserInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doStatisticsByRecharge" class="statisticsByImageAction" method="doStatisticsByRecharge">
+			<result name="success">page/doStatisticsByRecharge.jsp</result>
+		</action>
+		<action name="getStatisticsByRecharge" class="statisticsByImageAction" method="getStatisticsByRecharge">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doStatisticsByRecharge2" class="statisticsByImageAction" method="doStatisticsByRecharge2">
+			<result name="success">page/doStatisticsByRecharge2.jsp</result>
+		</action>
+		<action name="getStatisticsByRecharge2" class="statisticsByImageAction" method="getStatisticsByRecharge2">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doUserActivity" class="statisticsByImageAction" method="doUserActivity">
+			<result name="success">page/doUserActivity.jsp</result>
+		</action>
+		<action name="getUserActivity" class="statisticsByImageAction" method="getUserActivity">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doUserCheckinByImage" class="statisticsByImageAction" method="doUserCheckinByImage">
+			<result name="success">page/doUserCheckinByImage.jsp</result>
+		</action>
+		<action name="getUserCheckinByImage" class="statisticsByImageAction" method="getUserCheckinByImage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doReturnCode" class="returnCodeAction" method="doReturnCode">
+			<result name="success">page/doReturnCode.jsp</result>
+		</action>
+		<action name="doReturnCodeInfo" class="returnCodeAction" method="doReturnCodeInfo">
+			<result name="success">page/doReturnCodeInfo.jsp</result>
+		</action>
+		<action name="getReturnCodeInfo" class="returnCodeAction" method="getReturnCodeInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addReturnCode" class="returnCodeAction" method="addReturnCode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeReturnCode" class="returnCodeAction" method="removeReturnCode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateReturnCode" class="returnCodeAction" method="updateReturnCode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doProduct" class="productAction" method="doProduct">
+			<result name="success">page/doProduct.jsp</result>
+		</action>
+		<action name="getProductInfo" class="productAction" method="getProductInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addProduct" class="productAction" method="addProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeProduct" class="productAction" method="removeProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateProduct" class="productAction" method="updateProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doOperateLog" class="operateLogAction" method="doOperateLog">
+			<result name="success">page/doOperateLog.jsp</result>
+		</action>
+		<action name="getOperateLog" class="operateLogAction" method="getOperateLog">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doPhoneRound" class="phoneRoundAction" method="doPhoneRound">
+			<result name="success">page/doPhoneRound.jsp</result>
+		</action>
+		<action name="getPhoneRoundInfo" class="phoneRoundAction" method="getPhoneRoundInfo">
+		<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPhoneRound" class="phoneRoundAction" method="addPhoneRound">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePhoneRound" class="phoneRoundAction" method="updatePhoneRound">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>	
+		<action name="removePhoneRound" class="phoneRoundAction" method="removePhoneRound">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>	
+		<action name="doMerchant" class="merchantAction" method="doMerchant">
+			<result name="success">page/doMerchant.jsp</result>
+		</action>
+		<action name="getMerchantInfo" class="merchantAction" method="getMerchantInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getMerchantType" class="merchantAction" method="getMerchantType">
+			<result name="success" type="json"><param name="root">m</param></result>
+
+		</action>
+			<action name="addMerchant" class="merchantAction" method="addMerchant" >
+		<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateMerchant" class="merchantAction" method="updateMerchant" >
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>	
+		<action name="removeMerchant" class="merchantAction" method="removeMerchant" >
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>		
+		<action name="addWinner" class="winnerListAction" method="addWinner">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getWinnerListByPlace" class="winnerListAction" method="getWinnerListByPlace">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="deleteWinnerList" class="winnerListAction" method="deleteWinnerList">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doWinningInfo" class="winnerListAction" method="doWinningInfo">
+			<result name="success">page/doWinningInfo.jsp</result>
+		</action>
+		<action name="getWinningInfo" class="winnerListAction" method="getWinningInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doPhoneMessage" class="phoneMessageAction" method="doPhoneMessage">
+			<result name="success">page/doPhoneMessage.jsp</result>
+		</action>
+		<action name="getPhoneMessage" class="phoneMessageAction" method="getPhoneMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPhoneMessage" class="phoneMessageAction" method="addPhoneMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePhoneMessage" class="phoneMessageAction" method="updatePhoneMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removePhoneMessage" class="phoneMessageAction" method="removePhoneMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doAppUserInfo" class="appUserInfoAction" method="doAppUserInfo">
+			<result name="success">page/doAppUserInfo.jsp</result>
+		</action>
+		<action name="getAppUserInfo" class="appUserInfoAction" method="getAppUserInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getNewUser" class="statisticsAction" method="getNewUser">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doPrize" class="prizeAction" method="doPrize">
+			<result name="success">page/doPrize.jsp</result>
+		</action>
+		<action name="doAppUserPrize" class="prizeAction" method="doAppUserPrize">
+			<result name="success">page/doAppUserPrize.jsp</result>
+		</action>
+		<action name="getPrize" class="prizeAction" method="getPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getPrizeInfo" class="prizeAction" method="getPrizeInfo">
+			<result name="success" type="json"><param name="root">ap</param></result>
+		</action>
+		<action name="getPrizeInfoById" class="prizeAction" method="getPrizeInfoById">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPrize" class="prizeAction" method="addPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePrize" class="prizeAction" method="updatePrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="deletePrize" class="prizeAction" method="deletePrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getPlaceCodeName" class="placeAction" method="getPlaceCodeName">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="toDownloadExcle" class="downloadExcleAction" method="toExportData">
+        </action>
+        
+		<action name="getPlaceInfo" class="placeAction" method="getPlaceInfo">
+			<result name="success" type="json"><param name="root">ap</param></result>
+		</action>
+
+		
+		<action name="doCompanyTree" class="departmentTreeAction" method="doCompanyTree">
+			<result name="success">page/doCompanyTree.jsp</result>
+		</action>
+		<action name="getAllDepartment" class="departmentTreeAction" method="getAllDepartment">
+			<result name="success" type="json"><param name="root">tree</param></result>
+			<result name="failed" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getDepartmentNameAndNo" class="departmentTreeAction" method="getDepartmentNameAndNo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getDepartmentByName" class="departmentTreeAction" method="getDepartmentByName">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addDepartment" class="departmentTreeAction" method="addDepartment">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeDepartment" class="departmentTreeAction" method="removeDepartment">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateDepartment" class="departmentTreeAction" method="updateDepartment">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="getEmployee" class="employeeAction" method="getEmployee">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addEmployee" class="employeeAction" method="addEmployee">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateEmployee" class="employeeAction" method="updateEmployee">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeEmployee" class="employeeAction" method="removeEmployee">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doAppStartPicture" class="appStartPictureAction" method="doAppStartPicture">
+			<result name="success">page/doAppStartPicture.jsp</result>
+		</action>
+		<action name="getAppStartPicture" class="appStartPictureAction" method="getAppStartPicture">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addAppStartPicture" class="appStartPictureAction" method="addAppStartPicture">
+			<result name="success" type="json"><param name="contentType">text/html</param><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateAppStartPicture" class="appStartPictureAction" method="updateAppStartPicture">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeAppStartPicture" class="appStartPictureAction" method="removeAppStartPicture">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="changeOperate" class="appStartPictureAction" method="changeOperate">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doFaq" class="faqAction" method="doFaq">
+			<result name="success">page/doFaq.jsp</result>
+		</action>
+		<action name="doFaqPageData" class="faqAction" method="doFaqPageData" >
+		     <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doFaqById" class="faqAction" method="doFaqById" >
+		     <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doUpdateFaq" class="faqAction" method="doUpdateFaq" >
+		     <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doReplaceFaqRand" class="faqAction" method="doReplaceFaqRand" >
+		     <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="toDownloadByImage" class="downloadImageAction" method="dowloadImage"></action>
+		<action name="doScoreRule" class="scoreRuleAction" method="doScoreRule">
+			<result name="success">page/doScoreRule.jsp</result>
+		</action>
+		<action name="getScoreRule" class="scoreRuleAction" method="getScoreRule">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addScoreRule" class="scoreRuleAction" method="addScoreRule">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateScoreRule" class="scoreRuleAction" method="updateScoreRule">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeScoreRule" class="scoreRuleAction" method="removeScoreRule">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doPayLimit" class="payLimitAction" method="doPayLimit">
+		<result name="success">page/doPayLimit.jsp</result>
+		</action>
+		<action name="getPayLimit" class="payLimitAction" method="getPayLimit">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPayLimit" class="payLimitAction" method="addPayLimit">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removePayLimit" class="payLimitAction" method="removePayLimit">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePayLimit" class="payLimitAction" method="updatePayLimit">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doQQPermonthRecode" class="qqPermonthRecodeAction" method="doQQPermonthRecode">
+			<result name="success">page/doQQPermonthRecode.jsp</result>
+		</action>
+		<action name="getQQPermonthRecode" class="qqPermonthRecodeAction" method="getQQPermonthRecode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doQQPermonthStatus" class="qqPermonthRecodeAction" method="doQQPermonthStatus">
+			<result name="success">page/doQQPermonthStatus.jsp</result>
+		</action>
+		<action name="getQQPermonthStatus" class="qqPermonthRecodeAction" method="getQQPermonthStatus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doLimitToBusiness" class="limitToBusinessAction" method="doLimitToBusiness">
+			<result name="success">page/doLimitToBusiness.jsp</result>
+		</action>
+		<action name="getLimitToBusiness" class="limitToBusinessAction" method="getLimitToBusiness">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getLimitAndBusInfo" class="limitToBusinessAction" method="getLimitAndBusInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="addLimitToBus" class="limitToBusinessAction" method="addLimitToBus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateLimitToBus" class="limitToBusinessAction" method="updateLimitToBus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeLimitToBus" class="limitToBusinessAction" method="removeLimitToBus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doSweepStakes" class="sweepStakesAction" method="doSweepStakes">
+			<result name="success">page/doSweepStakes.jsp</result>
+		</action>
+		<action name="getSweepStakes" class="sweepStakesAction" method="getSweepStakes">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addSweepStakes" class="sweepStakesAction" method="addSweepStakes">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateSweepStakes" class="sweepStakesAction" method="updateSweepStakes">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeSweepStakes" class="sweepStakesAction" method="removeSweepStakes">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="changeStatus" class="sweepStakesAction" method="changeStatus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doSweepstakesPrize" class="sweepstakesPrizeAction" method="doSweepstakesPrize">
+			<result name="success">page/doSweepstakesPrize.jsp</result>
+		</action>
+		<action name="getSweepStakesPrize" class="sweepstakesPrizeAction" method="getSweepStakesPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getPrizeInfoAndSweepInfo" class="sweepstakesPrizeAction" method="getPrizeInfoAndSweepInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addSweepStakesPrize" class="sweepstakesPrizeAction" method="addSweepStakesPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateSweepStakesPrize" class="sweepstakesPrizeAction" method="updateSweepStakesPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeSweepStakesPrize" class="sweepstakesPrizeAction" method="removeSweepStakesPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doUserCheckin" class="userCheckinAction" method="doUserCheckin">
+			<result name="success">page/doUserCheckin.jsp</result>
+		</action>
+		<action name="getUserCheckin" class="userCheckinAction" method="getUserCheckin">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doHotGame" class="hotGameAction" method="doHotGame">
+			<result name="success">page/doHotGame.jsp</result>
+		</action>
+		<action name="getHotGameInfo" class="hotGameAction" method="getHotGameInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addHotGame" class="hotGameAction" method="addHotGame">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateHotGame" class="hotGameAction" method="updateHotGame">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeHotGame" class="hotGameAction" method="removeHotGame">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doPrizeShortMessage" class="prizeShortMessageAction" method="doPrizeShortMessage">
+			<result name="success">page/doPrizeShortMessage.jsp</result>
+		</action>
+		<action name="getPrizeShortMessage" class="prizeShortMessageAction" method="getPrizeShortMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removePrizeShortMessage" class="prizeShortMessageAction" method="removePrizeShortMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPrizeShortMessage" class="prizeShortMessageAction" method="addPrizeShortMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePrizeShortMessage" class="prizeShortMessageAction" method="updatePrizeShortMessage">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="doPrizeCode" class="prizeCodeAction" method="doPrizeCode">
+			<result name="success">page/doPrizeCode.jsp</result>
+		</action>
+		<action name="getPrizeCode" class="prizeCodeAction" method="getPrizeCode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="importFromFile" class="prizeCodeAction" method="importFromFile">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removePrizeCode" class="prizeCodeAction" method="removePrizeCode">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doAdvertisingWay" class="advertisingWayAction" method="doAdvertisingWay">
+			<result name="success">page/doAdvertisingWay.jsp</result>
+		</action>
+		<action name="getAdvertisingWay" class="advertisingWayAction" method="getAdvertisingWay">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addAdvertisingWay" class="advertisingWayAction" method="addAdvertisingWay">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateAdvertisingWay" class="advertisingWayAction" method="updateAdvertisingWay">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeAdvertisingWay" class="advertisingWayAction" method="removeAdvertisingWay">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getAdvertisingDetail" class="advertisingWayAction" method="getAdvertisingDetail">
+			<result name="success" type="json"><param name="root">ab</param></result>
+
+		</action>
+		<action name="doDownloadRecord" class="downloadRecordAction" method="doDownloadRecord">
+			<result name="success">page/doDownloadRecord.jsp</result>
+		</action>
+		<action name="getDownloadRecord" class="downloadRecordAction" method="getDownloadRecord">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="doFreeProduct" class="freeProductAction" method="doFreeProduct">
+			<result name="success">page/doFreeProduct.jsp</result>
+		</action>
+		<action name="getFreeProduct" class="freeProductAction" method="getFreeProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addFreeProduct" class="freeProductAction" method="addFreeProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updateFreeProduct" class="freeProductAction" method="updateFreeProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removeFreeProduct" class="freeProductAction" method="removeFreeProduct">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="getFreeProductMap" class="freeProductAction" method="getFreeProductMap">
+			<result name="success" type="json"><param name="root">AHSO</param></result>
+		</action>
+		
+		<action name="doPayPrize" class="payPrizeAction" method="doPayPrize">
+			<result name="success">page/doPayPrize.jsp</result>
+		</action>
+		<action name="getPayPrize" class="payPrizeAction" method="getPayPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPayPrize" class="payPrizeAction" method="addPayPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePayPrize" class="payPrizeAction" method="updatePayPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removePayPrize" class="payPrizeAction" method="removePayPrize">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+
+		<action name="changePayPrizeStatus" class="payPrizeAction" method="changePayPrizeStatus">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+
+		<action name="doPublicInfo" class="publicInfoAction" method="doPublicInfo">
+			<result name="success">page/doPublicInfo.jsp</result>
+		</action>
+		<action name="getPublicInfoList" class="publicInfoAction" method="getPublicInfoList">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="addPublicInfo" class="publicInfoAction" method="addPublicInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="updatePublicInfo" class="publicInfoAction" method="updatePublicInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		<action name="removePublicInfo" class="publicInfoAction" method="removePublicInfo">
+			<result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+		
+		<action name="saveAnswerFeedBack" class="answerFeedBackAction" method="saveAnswerFeedBack">
+		    <result name="success" type="json"><param name="root">resultMap</param></result>
+		</action>
+	</package>
+</struts>

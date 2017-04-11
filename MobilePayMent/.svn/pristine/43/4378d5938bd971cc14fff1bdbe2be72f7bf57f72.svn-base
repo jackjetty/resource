@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.QQRefundBatchMapper">
+
+    <update id="update" parameterType="com.rising.mobilepayment.bean.QQRefundBatch">
+		update RS_QQRefundBatch set 
+		          batchNum = #{batchNum,jdbcType=VARCHAR},
+		          refundDate = #{refundDate,jdbcType=TIMESTAMP},
+		          detailData = #{detailData,jdbcType=VARCHAR},
+		          createDate = #{createDate,jdbcType=TIMESTAMP},
+		          status = #{status,jdbcType=VARCHAR},
+		          remark = #{remark,jdbcType=VARCHAR} 
+		             where batchNo = #{batchNo}
+	</update>
+	
+    <select id="findById" resultType="com.rising.mobilepayment.bean.QQRefundBatch" parameterType="java.lang.String">
+		select * from RS_QQRefundBatch 
+		where    batchNo =#{batchNo} 
+	 </select>
+	 
+    <insert id="add" parameterType="com.rising.mobilepayment.bean.QQRefundBatch">
+		insert into RS_QQRefundBatch(batchNo,batchNum,refundDate,detailData,createDate,status,remark)
+		values (#{batchNo,jdbcType=VARCHAR}, 
+		                 #{batchNum,jdbcType=VARCHAR},    
+		                      #{refundDate,jdbcType=TIMESTAMP}, 
+		                                #{detailData,jdbcType=VARCHAR},
+		                                      #{createDate,jdbcType=TIMESTAMP},
+		                                            #{status,jdbcType=VARCHAR},
+		                                                   #{remark,jdbcType=VARCHAR})
+   </insert>
+   
+    
+    <select id="findByTradeNo" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.QQRefundBatch">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQRefundBatch where  
+				 detailData   like concat('%',concat(#{tradeNo},'%')) 
+				order by createDate desc 
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;=1
+		 
+	</select>
+	
+    
+     <select id="getUnSubmitList" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.QQRefundBatch">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQRefundBatch where  
+				(status is null or status='') 
+				and  TO_CHAR(createDate,'YYYY-MM-DD')&gt;=#{fromCreateDate}   
+				order by createDate desc
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= #{pageSize}
+		 
+	</select>
+   
+    
+</mapper>

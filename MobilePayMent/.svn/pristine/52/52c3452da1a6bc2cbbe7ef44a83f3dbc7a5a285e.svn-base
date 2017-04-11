@@ -1,0 +1,1098 @@
+package com.rising.general.service.impl;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
+import com.rising.general.bean.Business;
+import com.rising.general.bean.Order;
+import com.rising.general.bean.Product;
+import com.rising.general.bean.ReturnCode;
+import com.rising.general.bean.UserInfo;
+import com.rising.general.mapper.BusinessMapper;
+import com.rising.general.mapper.OrderIdHelperMapper;
+import com.rising.general.mapper.OrderMapper;
+import com.rising.general.mapper.ProductMapper;
+import com.rising.general.mapper.ReturnCodeMapper;
+import com.rising.general.mapper.UserInfoMapper;
+import com.rising.general.service.OrderService;
+import com.rising.general.service.PayOrder;
+import com.rising.mobilepayment.bean.QQMonthLog;
+import com.rising.mobilepayment.bean.SecurityCode;
+import com.rising.mobilepayment.bean.SendMessageLog;
+import com.rising.mobilepayment.commom.CommonUtil;
+import com.rising.mobilepayment.commom.Constant;
+import com.rising.mobilepayment.commom.MD5;
+import com.rising.mobilepayment.mapper.OrderInfoMapper;
+import com.rising.mobilepayment.mapper.QQMonthLogMapper;
+import com.rising.mobilepayment.mapper.SecurityCodeMapper;
+import com.rising.mobilepayment.mapper.SendMessageLogMapper;
+
+@Service("gOrderService")
+public class OrderServiceImpl implements OrderService {
+	
+	private String phoneNumberCheckIp;
+
+	Log log = LogFactory.getLog(OrderServiceImpl.class);
+
+	@Autowired
+	OrderIdHelperMapper gOrderIdHelperMapper;
+
+	@Autowired
+	ProductMapper gProductMapper;
+
+	@Autowired
+	OrderMapper gOrderMapper;
+    
+	
+	@Autowired
+	private OrderInfoMapper orderInfoMapper;
+	
+	@Autowired
+	BusinessMapper gBusinessMapper;
+	
+	@Autowired
+	UserInfoMapper gUserInfoMapper;
+
+	@Autowired
+	ReturnCodeMapper gReturnCodeMapper;
+	
+	
+	@Autowired
+	private SendMessageLogMapper sendMessageLogMapper;
+	 
+
+	@Autowired
+	TakeOrderFactoryBean gTakeOrderFactoryBean;
+
+	@Autowired
+	PayOrderFactoryBean gPayOrderFactoryBean;
+	
+	
+	@Autowired
+	SecurityCodeMapper securityCodeMapper;
+	
+	@Autowired
+	private QQMonthLogMapper qqMonthLogMapper;
+	
+	
+
+	public String getPhoneNumberCheckIp() {
+		return phoneNumberCheckIp;
+	}
+
+	@Value("#{propertiesReader[phoneNumberCheckIp]}")
+	public void setPhoneNumberCheckIp(String phoneNumberCheckIp) {
+		this.phoneNumberCheckIp = phoneNumberCheckIp;
+	}
+	
+	
+
+	private String generateOrderId() {
+		String Time = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		Integer maxOrderId = gOrderIdHelperMapper.getMaxOrderId(Time);
+		if (maxOrderId != null) {
+			Integer nextId = gOrderIdHelperMapper.getNextId();
+			String id = String.valueOf(nextId);
+			for (int i = id.length(); i < 8; i++) {
+				id = "0" + id;
+			}
+			id = Time + id;
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("time", Time);
+			map.put("nextId", nextId);
+			gOrderIdHelperMapper.update(map);
+			return id;
+		} else {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			gOrderIdHelperMapper.reNewSequence();
+			Integer nextId = gOrderIdHelperMapper.getNextId();
+			map.put("time", Time);
+			map.put("id", nextId);
+			gOrderIdHelperMapper.add(map);
+			String id = String.valueOf(nextId);
+			for (int i = id.length(); i < 8; i++) {
+				id = "0" + id;
+			}
+			return Time + id;
+		}
+	}
+	//翼支付
+	@Override
+	public String unSmsPay(HashMap<String, String> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>(); 
+	    
+		String paymentNumber = CommonUtil.trim(map.get("paymentNumber"));
+		String phoneNumber = CommonUtil.trim(map.get("phoneNumber"));
+		String qqNumber = CommonUtil.trim(map.get("qqNumber"));
+		String productId = CommonUtil.trim(map.get("productId"));
+		String paymoney = CommonUtil.trim(map.get("paymoney"));
+		String payMethodId= CommonUtil.trim(map.get("payMethodId"));
+		Calendar calendar;
+		HashMap<String, Object>  paraMap;
+		paraMap =new HashMap<String, Object> ();
+		paraMap.put("HcOrderId",paymentNumber); 
+		calendar = Calendar.getInstance(); 
+		calendar.add(Calendar.DAY_OF_YEAR , -150 );
+		paraMap.put("StartTime", CommonUtil.doDateForm(calendar.getTime(), "yyyy-MM-dd"));
+		calendar = Calendar.getInstance(); 
+		calendar.add(Calendar.DAY_OF_YEAR , 150 );
+		paraMap.put("EndTime", CommonUtil.doDateForm(calendar.getTime(), "yyyy-MM-dd"));
+		try{
+			if(gOrderMapper.findByHcOrderId(paraMap)!=null){ 
+				resultMap.put("respCode", 55);
+				resultMap.put("respInfo", "充值出错，支付编号"+paymentNumber+"已经成功充值！");
+				return  new Gson().toJson(resultMap);
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+			resultMap.put("respCode", 57);
+			resultMap.put("respInfo", "充值出错，支付编号"+paymentNumber+"已经成功充值！");
+			return  new Gson().toJson(resultMap);
+		}
+		
+		
+		
+		calendar = Calendar.getInstance();
+		Date curDate= calendar.getTime(); 
+		
+		payMethodId="27";
+		Product product = gProductMapper.findProductById(productId);
+		if(product==null){
+			resultMap.put("respCode", -8);
+			resultMap.put("respInfo", "未查询到产品信息！");
+			return  new Gson().toJson(resultMap);
+		} 
+		String busId=CommonUtil.trim(product.getBusId());
+		String orderId=generateOrderId();
+		Order order = new Order();
+		order.setOrderId(orderId);
+		order.setProductId(productId);
+		order.setBusId(CommonUtil.castInt(busId)); 
+		order.setPhoneNumber(phoneNumber);
+		order.setTargetNumber(qqNumber);
+		order.setSPID(product.getSPID());
+		order.setOrderTime(curDate);
+		order.setPayMoney(Float.parseFloat(paymoney));
+		order.setPayMethodId(Integer.parseInt(payMethodId));
+		order.setOrderStatus("成功"); 
+		order.setOs("BEST");
+		order.setClient("best");
+		order.setVersion("");
+		order.setSendScore(0);
+		order.setPayStatus("未支付"); 
+		order.setHcOrderId(paymentNumber);
+		
+		
+		
+		HashMap<String, Object> payParaMap = new HashMap<String, Object>();
+		payParaMap.put("caller", phoneNumber);
+		payParaMap.put("objid", productId+"88");
+		payParaMap.put("payid", paymentNumber);
+		payParaMap.put("spid", "003");
+		payParaMap.put("paymoney", String.valueOf(product.getCost()));
+		payParaMap.put("username", qqNumber); 
+		
+		
+		String hbResult=callHBHttp(  CommonUtil.mapToString(payParaMap));
+		if(hbResult.equalsIgnoreCase("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "充值返回结果为空");
+			return  new Gson().toJson(resultMap);
+		}
+		 
+		HashMap<String, Object>  hbResultMap =CommonUtil.stringToLowerMap(hbResult); 
+		String hbResultMap_result=CommonUtil.trim(hbResultMap.get("result"));
+		
+		
+	 
+		if (hbResultMap_result.equals("0")) {
+			order.setPayReturnCode(hbResultMap_result);
+			order.setPayStatus("成功");
+			order.setPayTime(curDate);
+			order.setSendScore(0);
+			gOrderMapper.add(order); 
+			resultMap.put("respCode", 0);
+			resultMap.put("respInfo","充值成功！"); 
+			return  new Gson().toJson(resultMap);
+		} 
+		order.setPayStatus("失败");
+		order.setPayTime(curDate); 
+		
+		order.setPayReturnCode(hbResultMap_result);
+		order.setSendScore(0);
+		gOrderMapper.add(order);
+		ArrayList<ReturnCode> arc = gReturnCodeMapper.getByBusIdAndReturnCode(order.getBusId(), hbResultMap_result);
+		if (arc != null && arc.size() > 0) {
+			ReturnCode r = arc.get(0);
+			resultMap.put("respInfo", "充值失败！" + r.getShow());
+			 
+		} else {
+			resultMap.put("respInfo", "亲，系统维护中，给您带来的不便敬请谅解！");
+		}
+		resultMap.put("respCode", 2);
+		return  new Gson().toJson(resultMap); 
+	}
+	
+	
+	
+	
+	 
+		
+	@Override	
+	public String dateOrderRecord(HashMap<String, String> map){
+        HashMap<String, Object> resultMap = new HashMap<String, Object>(); 
+	    
+		String payMethodId = CommonUtil.trim(map.get("payMethodId"));
+		String statisticsDate = CommonUtil.trim(map.get("statisticsDate"));
+		HashMap<String, Object>  paraMap;
+		paraMap =new HashMap<String, Object> ();
+		paraMap.put("payMethodId", payMethodId);
+		paraMap.put("statisticsDate", statisticsDate);
+		
+		List<Order> orderList=gOrderMapper.getDateOrderList(paraMap);
+		
+		resultMap.put("respCode", 0);
+		resultMap.put("respInfo", "查询成功！");
+		resultMap.put("orderList", orderList);
+		return  new Gson().toJson(resultMap);
+	}
+	
+	
+	@Override
+	public String pay(HashMap<String, String> map){
+		 
+		String phoneNumber = CommonUtil.trim(map.get("PhoneNumber"));
+		String smsValiCode = CommonUtil.trim(map.get("SmsValiCode"));
+		Date curDate=new Date();
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();  
+		SecurityCode lastCode = securityCodeMapper.findCodeByPhoneNumber(phoneNumber);
+		try {
+			if (MD5.encryptByMD5With16Bit(smsValiCode).equals(lastCode.getCode())) {
+				if (!lastCode.getInvalidTime().after(new Date())) {
+					resultMap.put("respCode", -8);
+					resultMap.put("respInfo", "验证码超时！");
+					return  new Gson().toJson(resultMap);
+				}
+			} else {
+				resultMap.put("respCode", -4);
+				resultMap.put("respInfo", "验证码错误！");
+				return  new Gson().toJson(resultMap);
+			}
+		} catch (Exception e) {
+			log.error("isSecurityCodeValidate()->该号码未获取短信验证码！"); 
+			resultMap.put("respCode", -9);
+			resultMap.put("respInfo", "请先获取短信验证码！");
+			return  new Gson().toJson(resultMap);
+		}  
+		
+		String payMethodId= CommonUtil.trim(map.get("PayMethodId"));
+		String targetNumber= CommonUtil.trim(map.get("TargetNumber"));
+		String payMoney=CommonUtil.trim(map.get("PayMoney"));
+		String productId= CommonUtil.trim(map.get("ProductId"));
+		String orderId=generateOrderId(); 
+		Product product = gProductMapper.findProductById(productId);
+		String busId=CommonUtil.trim(product.getBusId());
+		Order order = new Order();
+		order.setOrderId(orderId);
+		order.setProductId(productId);
+		order.setBusId(CommonUtil.castInt(busId)); 
+		order.setPhoneNumber(phoneNumber);
+		order.setTargetNumber(targetNumber);
+		order.setSPID(product.getSPID());
+		order.setOrderTime(curDate);
+		order.setPayMoney(Float.parseFloat(payMoney));
+		order.setPayMethodId(Integer.parseInt(payMethodId));
+		order.setOrderStatus("成功");
+		order.setHcOrderId("");
+		order.setOs("WAP"); 
+		
+		order.setClient("weixin");
+        if(payMethodId.equalsIgnoreCase("12"))
+        	order.setClient("电信微视窗");
+        
+        
+        if(payMethodId.equalsIgnoreCase("50"))
+        	order.setClient("校讯通");
+        
+		order.setVersion("");
+		order.setSendScore(0);
+		order.setPayStatus("未支付"); 
+		/*
+		System.out.println(order.getOrderId()+"','"+order.getProductId()+"','"+order.getBusId()
+				+"','"+order.getTargetNumber()+"','"+order.getPayMoney()+"','"+
+				order.getPhoneNumber()+"','"+order.getOrderTime()+"','"+
+				order.getOrderStatus()+"','"+order.getSPID()+"','"+order.getSendScore()+
+				"','"+order.getPayStatus()+"','"+order.getPayMethodId()+"','"+order.getHcOrderId()+"','"+order.getOs()+"','"+order.getClient()+"','"+order.getVersion());
+		*/
+		//values (#{OrderId},#{ProductId},#{BusId},#{TargetNumber},#{PayMoney},#{PhoneNumber},#{OrderTime},#{OrderStatus},#{SPID},#{SendScore},#{PayStatus},#{PayMethodId},#{HcOrderId},#{Os},#{Client},#{Version}) 
+		gOrderMapper.place(order);  
+		Business business = gBusinessMapper.findById(product.getBusId());
+		PayOrder payOrder = gPayOrderFactoryBean.getBean(business.getPayOrderInterfaceName()); 
+		HashMap<String, String> payParaMap = new HashMap<String, String>();
+		payParaMap.put("caller", phoneNumber);
+		payParaMap.put("objid", productId);
+		payParaMap.put("payid", orderId);
+		payParaMap.put("spid", "003");
+		payParaMap.put("paymoney", String.valueOf(product.getCost()));
+		payParaMap.put("username", targetNumber);  
+		//Q币
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		/*
+		if(busId.equalsIgnoreCase("100")&&calendar.get(Calendar.MONTH)<2){
+		 //&&validateTimeLimit(5,12)
+			if (payMethodId.equalsIgnoreCase("5")) {  
+				  
+					payParaMap.put("objid", productId.replace("160", "162")+"90");
+				 
+			}
+			 
+			
+			if( payMethodId.equals("26")){
+				payParaMap.put("objid",productId+"90");  
+			}
+			
+			
+			if( CommonUtil.isInteger(payMethodId) 
+					&&(CommonUtil.castInt(payMethodId)>=13)
+					&&(CommonUtil.castInt(payMethodId)<=23)){
+				payParaMap.put("objid",productId+"90");  
+			}
+			if( CommonUtil.isInteger(payMethodId) 
+					&&(CommonUtil.castInt(payMethodId)>=28)
+					&&(CommonUtil.castInt(payMethodId)<=38)){
+				payParaMap.put("objid",productId+"90");  
+			}
+				 
+		}*/
+		
+		if(busId.equalsIgnoreCase("100")&&validateTimeLimit(7,9)){
+			
+			
+			//1642290，1642190，1642090，1641990，分别对应50,30,20,10
+			
+			//16019
+			if( payMethodId.equals("50")){
+				payParaMap.put("objid",productId.replace("160", "164")+"90");  
+			}
+			
+		}
+		
+		//会员包月
+		if(busId.equalsIgnoreCase("104")){
+			payParaMap.put("objid",productId.substring(0, 5));  
+			payParaMap.put("payid",productId.substring(6, 7)); 
+		}
+		//Q币包月 
+		if(busId.equalsIgnoreCase("103")){
+			
+			if(CommonUtil.hasCurPM(  phoneNumber)){
+				resultMap.put("respCode", -2);
+				resultMap.put("respInfo", "该手机已有包月信息，请先取消后再办理！");
+				return  new Gson().toJson(resultMap);
+			}
+			
+			payParaMap.put("objid",productId.substring(0, 5));  
+			payParaMap.put("username", "z"+targetNumber);
+			payParaMap.put("payid", "");
+			
+		}
+		HashMap<String, Object> payRstMap = new HashMap<String, Object>();
+		boolean sign=false;
+		try {
+			sign=payOrder.payOrder(payParaMap, business.getPayOrderURL(), payRstMap);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//Q币包月  包月插入
+		if(sign&&busId.equalsIgnoreCase("103")){
+			String fee=product.getCost().toString(); 
+			String curMonthForm=CommonUtil.doDateForm(curDate,"yyyyMM"); 
+			QQMonthLog qqMonthLog;
+			qqMonthLog=qqMonthLogMapper.findByPQM(phoneNumber, targetNumber, curMonthForm);
+			if(qqMonthLog==null){
+				qqMonthLog =new QQMonthLog(); 
+				qqMonthLog.setApplyDate(curDate);
+				qqMonthLog.setCancelDate(null);
+				qqMonthLog.setCreateDate(curDate);
+				qqMonthLog.setFee(fee);
+				qqMonthLog.setFromSource(Constant.SOURCE168);
+				qqMonthLog.setLastCheckDate(CommonUtil.firstMonthDate());
+				qqMonthLog.setMsgDate (null);
+				qqMonthLog.setMsgSign("1");
+				qqMonthLog.setOrderStatus("1");
+				qqMonthLog.setPaymethodId(CommonUtil.trim(order.getPayMethodId()) );
+				qqMonthLog.setPayMoney(CommonUtil.trim(order.getPayMoney()));
+				qqMonthLog.setPayStatus("未扣费");
+				qqMonthLog.setPhoneNumber(phoneNumber);
+				qqMonthLog.setQqNumber(targetNumber);
+				qqMonthLog.setRegDate(curDate);
+				qqMonthLog.setTargetMonth(curMonthForm);
+				qqMonthLogMapper.add(qqMonthLog);
+			}
+			else{
+				qqMonthLog.setApplyDate(curDate);
+				qqMonthLog.setCancelDate(null); 
+				qqMonthLog.setFee(fee);
+				qqMonthLog.setFromSource(Constant.SOURCE168);
+				qqMonthLog.setLastCheckDate(CommonUtil.firstMonthDate());
+				qqMonthLog.setMsgDate (null);
+				//qqMonthLog.setMsgSign("1");
+				qqMonthLog.setOrderStatus("1");
+				qqMonthLog.setPaymethodId(CommonUtil.trim(order.getPayMethodId()) );
+				qqMonthLog.setPayMoney(CommonUtil.trim(order.getPayMoney()));
+				//qqMonthLog.setPayStatus("未扣费");
+				qqMonthLog.setPhoneNumber(phoneNumber); 
+				qqMonthLogMapper.update(qqMonthLog);
+			}
+		}
+		 
+		
+		
+		
+		
+		
+		
+		
+		
+		try {
+			if (sign) {
+				order.setPayReturnCode(String.valueOf(payRstMap.get("result")));
+				order.setPayStatus(String.valueOf(payRstMap.get("resultInfo")));
+				order.setPayTime(curDate);
+				order.setSendScore(0);
+				gOrderMapper.update(order); 
+				resultMap.put("respCode", 0);
+				resultMap.put("respInfo",payRstMap.get("resultInfo")); 
+				//noticMsg(order, String.valueOf(product.getCost())); 
+				 
+				UserInfo  userInfo = gUserInfoMapper.findUserByPhoneNumber(phoneNumber);
+				if(userInfo==null&&validateTimeLimit(7,8)){
+					noticMsgGift(order, String.valueOf(product.getCost())); 
+				}
+				else{
+				    noticMsg(order, String.valueOf(product.getCost())); 
+				}  
+				
+			 
+				
+				return  new Gson().toJson(resultMap);
+			} 
+			order.setPayStatus("失败");
+			order.setPayTime(curDate);
+			String resultCode = String.valueOf(payRstMap.get("result")); 
+			resultCode=checkReturnCode(phoneNumber,String.valueOf(order.getBusId()),resultCode);
+			
+			
+			order.setPayReturnCode(resultCode);
+			order.setSendScore(0);
+			gOrderMapper.update(order);
+			ArrayList<ReturnCode> arc = gReturnCodeMapper
+					.getByBusIdAndReturnCode(order.getBusId(), resultCode);
+			if (arc != null && arc.size() > 0) {
+				ReturnCode r = arc.get(0);
+				resultMap.put("respInfo", "充值失败！" + r.getShow());
+				 
+			} else {
+				resultMap.put("respInfo", "亲，系统维护中，给您带来的不便敬请谅解！");
+			}
+			resultMap.put("respCode", 2);
+			return  new Gson().toJson(resultMap);
+			
+		   
+		} catch (Exception e) {
+			resultMap.put("respCode", -9);
+			resultMap.put("respInfo", "支付出错！");
+			return  new Gson().toJson(resultMap);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		 
+		
+	}
+	
+	
+	
+
+	@Override
+	public HashMap<String, Object> apply(HashMap<String, String> map)
+			throws Exception {
+		String order_no = map.get("order_no");
+		String payMethodId = map.get("payMethodId");
+		ArrayList<Order> ao = gOrderMapper.findByHcOrderIdAndPayMethodId(order_no,payMethodId);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		if(ao!=null && ao.size() >0){
+			result.put("respCode", -8);
+			result.put("respInfo", "订单多次提交");
+			return result;
+		}
+		Product product = gProductMapper.findProductById(map.get("productId"));
+		Order order = new Order();
+		order.setOrderId(generateOrderId());
+		order.setProductId(map.get("productId"));
+		order.setBusId(product.getBusId());
+		String phoneNumber = map.get("phoneNumber");
+		order.setPhoneNumber(phoneNumber);
+		order.setSPID(product.getSPID());
+		order.setOrderTime(new Date());
+		map.put("sPID", product.getSPID());
+		map.put("orderId", order.getOrderId());
+		
+		String  targetNumber=CommonUtil.trim(map.get("targetNumber"));
+		if(targetNumber.equals("")){
+			result.put("respCode", -2);
+			result.put("respInfo", "提交QQ号码为空");
+			return result;
+		}
+		
+		order.setTargetNumber(targetNumber);
+		 
+		
+		
+		order.setPayMoney(Float.parseFloat((map.get("cost"))));
+		order.setPayMethodId(Integer.parseInt(map.get("payMethodId")));
+		order.setOrderStatus("成功");
+		order.setHcOrderId(map.get("order_no"));
+		order.setOs(map.get("remark"));
+		order.setClient(map.get("methodDetail"));
+		order.setVersion("");
+		Business b = gBusinessMapper.findById(product.getBusId());
+		PayOrder payOrder = gPayOrderFactoryBean.getBean(b
+				.getPayOrderInterfaceName());
+		map.put("cost", String.valueOf(product.getCost()));
+		
+		
+		
+		ArrayList<String> productIds = new ArrayList<String>();
+		productIds.add("16019");
+		productIds.add("16020");
+		productIds.add("16021");
+		productIds.add("16022");
+		
+		
+		String productId = map.get("productId");
+		
+		
+		Calendar calendar = Calendar.getInstance();
+		
+		
+		/* 
+		if (productIds.contains(productId)&&calendar.get(Calendar.MONTH)<2&&payMethodId.equalsIgnoreCase("12")) { 
+			  
+				if(validateTimeLimit(5,6)) {  
+					 map.put("productId",  productId.replace("160", "161")+"90");
+					 // map.put("productId",  productId +"90");
+					 
+				}
+					
+				 
+			 
+		}
+		
+		if (productIds.contains(productId)&&calendar.get(Calendar.MONTH)<2&&payMethodId.equalsIgnoreCase("5")) {  
+			 
+				 map.put("productId",  productId.replace("160", "162")+"90"); 
+				 
+			 
+		}
+		if (productIds.contains(productId)&&calendar.get(Calendar.MONTH)<2&&payMethodId.equalsIgnoreCase("24")) { 
+			  
+			if(validateTimeLimit(5,7)) {  
+				 map.put("productId",  productId.replace("160", "163")+"90"); 
+				 
+			}
+		}*/
+		
+   	 /*16022	50元
+16021	30元
+16020	20元
+16019	10元	 
+		
+		1622290   50元九折
+		1622190   30元九折
+		1622090   20元九折
+		1621990   10元九折
+		
+		*
+		1632290   50元九折
+1632190   30元九折
+1632090   20元九折
+1631990   10元九折
+*/
+		
+		
+		
+		
+		
+		
+		
+		HashMap<String, String> paraMap = payOrder.getParameterMap(map);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			if (payOrder.payOrder(paraMap, b.getPayOrderURL(), resultMap)) {
+				order.setPayReturnCode(String.valueOf(resultMap
+						.get("result")));
+				order.setPayStatus(String.valueOf(resultMap.get("resultInfo")));
+				order.setPayTime(new Date());
+				order.setSendScore(0);
+				gOrderMapper.add(order);
+				result = new HashMap<String, Object>();
+				result.put("respCode", 0);
+				result.put("respInfo",resultMap.get("resultInfo"));
+				/*noticMsg(order, String.valueOf(product.getCost())); */
+				
+				UserInfo  userInfo = gUserInfoMapper.findUserByPhoneNumber(phoneNumber);
+				if(userInfo==null&&validateTimeLimit(7,8)){
+					noticMsgGift(order, String.valueOf(product.getCost())); 
+				}
+				else{
+				    noticMsg(order, String.valueOf(product.getCost())); 
+				} 
+				return result;
+			} else {
+				order.setPayStatus("失败");
+				order.setPayTime(new Date());
+				String resultCode = String.valueOf(resultMap.get("result"));
+				
+				resultCode=checkReturnCode(phoneNumber,String.valueOf(order.getBusId()),resultCode);
+				
+				
+				order.setPayReturnCode(resultCode);
+				order.setSendScore(0);
+				gOrderMapper.add(order);
+				ArrayList<ReturnCode> arc = gReturnCodeMapper
+						.getByBusIdAndReturnCode(order.getBusId(), resultCode);
+				if (arc != null && arc.size() > 0) {
+					ReturnCode r = arc.get(0);
+					result.put("respInfo", "充值失败！" + r.getShow());
+					 
+				} else {
+					result.put("respInfo", "亲，系统维护中，给您带来的不便敬请谅解！");
+				}
+				result.put("respCode", 2);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		
+		return result;
+	}
+	@Override
+	public String pminfo(HashMap<String, String> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>(); 
+		String phoneNumber = CommonUtil.trim(map.get("PhoneNumber"));
+		if(!CommonUtil.isPhoneNum(phoneNumber)){
+			resultMap.put("respCode", -1);
+			resultMap.put("respInfo", "提交手机号码有误！！");
+			return  new Gson().toJson(resultMap);
+		}
+		HashMap<String, Object> paraMap = new HashMap<String, Object>();
+		paraMap.put("objid", "16052");
+		paraMap.put("caller", phoneNumber);
+		paraMap.put("username", "1165945426");
+		paraMap.put("paymoney", 30); 
+		String hbResult=callHBHttp(  CommonUtil.mapToString(paraMap));
+		if(hbResult.equalsIgnoreCase("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "获取包月信息出错！！");
+			return  new Gson().toJson(resultMap);
+		}
+		 
+		HashMap<String, Object>  hbResultMap =CommonUtil.stringToLowerMap(hbResult); 
+		String hbResultMap_result=CommonUtil.trim(hbResultMap.get("result"));
+		if(!hbResultMap_result.equalsIgnoreCase("0")){
+			resultMap.put("respCode", -3);
+			resultMap.put("respInfo", "没有包月信息！！");
+			return  new Gson().toJson(resultMap);
+		}
+		
+		String hbResultMap_regdate=CommonUtil.trim(hbResultMap.get("regdate"));
+		String hbResultMap_status=CommonUtil.trim(hbResultMap.get("status"));
+		String hbResultMap_fee=CommonUtil.trim(hbResultMap.get("fee"));
+		String hbResultMap_month=CommonUtil.trim(hbResultMap.get("month"));
+		String hbResultMap_qqnum=CommonUtil.trim(hbResultMap.get("qqnum"));
+		if(!hbResultMap_status.equalsIgnoreCase("1")){
+			resultMap.put("respCode", -4);
+			resultMap.put("respInfo", "您的包月已经取消！！");
+			return  new Gson().toJson(resultMap);
+		}
+		Date curDate=new Date();
+		String curMonthForm=CommonUtil.doDateForm(curDate,"yyyyMM");
+		if(hbResultMap_regdate.length()>10){
+			hbResultMap_regdate=hbResultMap_regdate.substring(0,10);
+		}
+		if(curMonthForm.equalsIgnoreCase(hbResultMap_month)){
+			hbResultMap_status="已扣费";
+		}
+		else{
+			hbResultMap_status="未扣费";
+		}
+		
+		
+		resultMap.put("respCode", 0);
+		resultMap.put("respInfo", "");
+		resultMap.put("phoneNumber", phoneNumber);
+		resultMap.put("qqNumber", hbResultMap_qqnum); 
+		resultMap.put("regDate", hbResultMap_regdate);
+		resultMap.put("monthSatus", hbResultMap_status);
+		resultMap.put("monthFee", hbResultMap_fee);
+		
+		
+		return  new Gson().toJson(resultMap);  
+	}
+	
+	 
+	
+	
+	@Override
+	public String pmcancel(HashMap<String, String> map){
+		HashMap<String, Object> resultMap = new HashMap<String, Object>(); 
+		String phoneNumber = CommonUtil.trim(map.get("PhoneNumber"));
+		String smsValiCode = CommonUtil.trim(map.get("SmsValiCode"));
+		
+		if(!CommonUtil.isPhoneNum(phoneNumber)){
+			resultMap.put("respCode", -1);
+			resultMap.put("respInfo", "提交手机号码有误！！");
+			return  new Gson().toJson(resultMap);
+		}
+		if(smsValiCode.equals("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "请提交短信验证码！！");
+			return  new Gson().toJson(resultMap);
+		}
+		
+		if(!smsValiCode.equalsIgnoreCase(Constant.INPMCANCELSMSCODE)){
+			SecurityCode lastCode = securityCodeMapper.findCodeByPhoneNumber(phoneNumber); 
+			try {
+				if (MD5.encryptByMD5With16Bit(smsValiCode).equals(lastCode.getCode())) {
+					if (!lastCode.getInvalidTime().after(new Date())) {
+						resultMap.put("respCode", -8);
+						resultMap.put("respInfo", "验证码超时！");
+						return  new Gson().toJson(resultMap);
+					}
+				} else {
+					resultMap.put("respCode", -4);
+					resultMap.put("respInfo", "验证码错误！");
+					return  new Gson().toJson(resultMap);
+				}
+			} catch (Exception e) {
+				log.error("isSecurityCodeValidate()->该号码未获取短信验证码！"); 
+				resultMap.put("respCode", -9);
+				resultMap.put("respInfo", "请先获取短信验证码！");
+				return  new Gson().toJson(resultMap);
+			}  
+		}
+		HashMap<String, Object> paraMap = new HashMap<String, Object>();
+		paraMap.put("objid", "16052");
+		paraMap.put("caller", phoneNumber);
+		paraMap.put("username", "1165945426");
+		paraMap.put("paymoney", 30); 
+		String hbResult=callHBHttp(CommonUtil.mapToString(paraMap));
+		if(hbResult.equalsIgnoreCase("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "获取包月信息出错！！");
+			return  new Gson().toJson(resultMap);
+		}
+		 
+		HashMap<String, Object>  hbResultMap =CommonUtil.stringToLowerMap(hbResult); 
+		String hbResultMap_result=CommonUtil.trim(hbResultMap.get("result"));
+		if(!hbResultMap_result.equalsIgnoreCase("0")){
+			resultMap.put("respCode", -3);
+			resultMap.put("respInfo", "没有包月信息！！");
+			return  new Gson().toJson(resultMap);
+		}
+		 
+		String hbResultMap_status=CommonUtil.trim(hbResultMap.get("status"));
+		String hbResultMap_fee=CommonUtil.trim(hbResultMap.get("fee")); 
+		String hbResultMap_qqnum=CommonUtil.trim(hbResultMap.get("qqnum"));
+		if(!hbResultMap_status.equalsIgnoreCase("1")){
+			resultMap.put("respCode", -4);
+			resultMap.put("respInfo", "您的包月已经取消！！");
+			return  new Gson().toJson(resultMap);
+		}
+		String parameter = "objid=16051$caller="+phoneNumber+"$username=z"+hbResultMap_qqnum+"$paymoney="+hbResultMap_fee+"$payid=";
+		hbResult=callHBHttp(parameter);
+		if(hbResult.equalsIgnoreCase("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "取消包月出错！！");
+			return  new Gson().toJson(resultMap);
+		}
+		hbResultMap=CommonUtil.stringToLowerMap(hbResult);
+		if(!CommonUtil.trim(hbResultMap.get("result")).equalsIgnoreCase("0")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "取消包月出错返回码"+hbResultMap.get("result")+"!!");
+			return  new Gson().toJson(resultMap);
+		}
+		resultMap.put("respCode", 0);
+		resultMap.put("respInfo", "取消包月成功!!");
+		return  new Gson().toJson(resultMap);
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	@Override
+	public String msgnotice(HashMap<String, String> map) {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>(); 
+		String phoneNumber = CommonUtil.trim(map.get("PhoneNumber"));
+		String msgContent = CommonUtil.trim(map.get("MsgContent"));
+		
+		if(!CommonUtil.isPhoneNum(phoneNumber)){
+			resultMap.put("respCode", -1);
+			resultMap.put("respInfo", "提交手机号码有误！！");
+			return  new Gson().toJson(resultMap);
+		}
+		if(msgContent.equals("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "请提交短信内容！！");
+			return  new Gson().toJson(resultMap);
+		}
+		Date curDate=new Date();
+		SendMessageLog log1 = new SendMessageLog();
+		log1.setLogTime( curDate);
+		log1.setLogType("notice");
+		log1.setMessageContent(msgContent.toString());
+		log1.setMessageType("通知");
+		log1.setSendPhoneNumber(phoneNumber);
+		String hbResult="";
+		try {
+			String dataString = "objid=16670$username="
+					+ URLEncoder.encode(msgContent.toString(), "GB2312")
+					+ "$paymoney=$payid=$caller="
+					+ phoneNumber;
+			log1.setDataString(dataString);
+			sendMessageLogMapper.add(log1);
+			hbResult=callHBHttp(dataString); 
+			
+			 
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace(); 
+		}  
+		
+		if(hbResult.equalsIgnoreCase("")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "发送短信出错！！");
+			return  new Gson().toJson(resultMap);
+		}
+		
+		HashMap<String, Object>   hbResultMap=CommonUtil.stringToLowerMap(hbResult);
+		if(!CommonUtil.trim(hbResultMap.get("result")).equalsIgnoreCase("0")){
+			resultMap.put("respCode", -2);
+			resultMap.put("respInfo", "发送短信出错返回码"+hbResultMap.get("result")+"!!");
+			return  new Gson().toJson(resultMap);
+		}
+		resultMap.put("respCode", 0);
+		resultMap.put("respInfo", "发送短信成功!!");
+		return  new Gson().toJson(resultMap);
+		
+	}
+	
+	
+	
+	private String callHBHttp(String parameter){
+		String result = "";
+		java.net.URL httpUrl;
+		try {
+			httpUrl = new URL(Constant.HBSERVERURL);
+			URLConnection uc = (URLConnection) httpUrl.openConnection();
+			uc.setDoOutput(true);
+			uc.setDoInput(true);
+			PrintWriter out = new PrintWriter(uc.getOutputStream());
+			out.write(parameter);
+			out.flush();
+			out.close();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					uc.getInputStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+			
+			in.close();
+		} catch (Exception e1) {
+			log.error("checkPerMonthStatus()->发送包月情况查询请求失败！" + e1.toString());
+            return "";
+		}
+		return result; 
+		
+	}
+	
+	
+	 
+	
+	public Boolean validateTimeLimit(int beginMM,int endMM) { 
+		Date monthStart = null;
+		Date monthEnd = null;
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MONTH, beginMM);
+		calendar.set(Calendar.DAY_OF_MONTH, 0);
+		monthStart = calendar.getTime();
+		calendar.set(Calendar.MONTH, endMM);
+		calendar.set(Calendar.DAY_OF_MONTH, 0); 
+		monthEnd = calendar.getTime(); 
+		
+		Date payTime = new Date();
+		if (payTime.after(monthStart) && payTime.before(monthEnd))  
+		    return true;
+		else	
+			return false;
+		 
+	}
+	
+	public String  checkReturnCode(String phoneNumber,String busId,String resultCode){
+		resultCode=CommonUtil.trim(resultCode);
+		busId=CommonUtil.trim(busId);
+		Calendar calendar = Calendar.getInstance();
+		if(resultCode.equalsIgnoreCase("9999")){
+			calendar.add(Calendar.MINUTE, -35);
+			int lastTimeSuccessOrderNumber=0;
+			lastTimeSuccessOrderNumber=gOrderMapper.getLastTimeSuccessOrderNumber(phoneNumber, busId,"成功",CommonUtil.doDateForm(calendar.getTime(),"yyyy-MM-dd HH:mm:ss"));
+			if(lastTimeSuccessOrderNumber>0)
+				resultCode="99991";
+			return resultCode;
+		}
+		return resultCode;
+		
+	}
+	
+	public boolean noticMsgGift(Order order,String cost){
+		String phoneNumber =CommonUtil.trim(order.getPhoneNumber());
+		String busId=CommonUtil.trim(order.getBusId());
+		if(!busId.equalsIgnoreCase("100"))
+			 return false;
+		
+		Calendar calendar = Calendar.getInstance();
+		Date curDate= calendar.getTime(); 
+		StringBuffer msgContent=new StringBuffer("");
+		
+		 
+		msgContent.append("尊敬的客户：您好，");
+		msgContent.append(CommonUtil.doDateForm(curDate,"yyyy年MM月dd日 HH时mm分"));
+		msgContent.append("成功充值").append(CommonUtil.trim(cost));
+		msgContent.append("个Q币,详询 16887885,下载注册客户端即送1-5个Q币   www.zj114.net.cn/168  ");
+		
+		SendMessageLog log1 = new SendMessageLog();
+		log1.setLogTime( curDate);
+		log1.setLogType("request");
+		log1.setMessageContent(msgContent.toString());
+		log1.setMessageType("Q币直充赠送Q币");
+		log1.setSendPhoneNumber(phoneNumber);
+		try {
+			String dataString = "objid=16670$username="
+					+ URLEncoder.encode(msgContent.toString(), "GB2312")
+					+ "$paymoney=$payid=$caller="
+					+ phoneNumber;
+			log1.setDataString(dataString);
+			sendMessageLogMapper.add(log1);
+			String returnString = sendMessage(
+					"http://172.25.21.14:8090", dataString);
+			 
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;  
+		
+	}
+	
+	
+	public boolean noticMsg(Order order,String cost){
+		String phoneNumber =CommonUtil.trim(order.getPhoneNumber());
+		String busId=CommonUtil.trim(order.getBusId());
+		if(!busId.equalsIgnoreCase("100"))
+			 return false;
+		
+		Calendar calendar = Calendar.getInstance();
+		Date curDate= calendar.getTime(); 
+		StringBuffer msgContent=new StringBuffer("");
+		msgContent.append("尊敬的客户：您好，");
+		msgContent.append(CommonUtil.doDateForm(curDate,"yyyy年MM月dd日 HH时mm分"));
+		msgContent.append("成功充值").append(CommonUtil.trim(cost));
+		msgContent.append("个Q币,详询 16887885,登陆   www.zj114.net.cn/168  享更多优惠。");
+		
+		SendMessageLog log1 = new SendMessageLog();
+		log1.setLogTime( curDate);
+		log1.setLogType("request");
+		log1.setMessageContent(msgContent.toString());
+		log1.setMessageType("Q币直充");
+		log1.setSendPhoneNumber(phoneNumber);
+		try {
+			String dataString = "objid=16670$username="
+					+ URLEncoder.encode(msgContent.toString(), "GB2312")
+					+ "$paymoney=$payid=$caller="
+					+ phoneNumber;
+			log1.setDataString(dataString);
+			sendMessageLogMapper.add(log1);
+			String returnString = sendMessage(
+					"http://172.25.21.14:8090", dataString);
+			 
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;  
+		
+	}
+	
+	
+	public String sendMessage(String url, String parameter) {
+		String result = "";
+		java.net.URL httpUrl;
+		try {
+			httpUrl = new URL(url);
+			URLConnection uc = (URLConnection) httpUrl.openConnection();
+			uc.setDoOutput(true);
+			uc.setDoInput(true);
+			PrintWriter out = new PrintWriter(uc.getOutputStream());
+			out.write(parameter);
+			out.flush();
+			out.close();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					uc.getInputStream(), "gb2312"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+			in.close();
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+
+}

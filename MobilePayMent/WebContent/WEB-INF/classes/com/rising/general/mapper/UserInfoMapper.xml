@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.general.mapper.UserInfoMapper">
+	<select id="findUserByPhoneNumber" resultType="com.rising.general.bean.UserInfo">
+	    
+	    select * from ( select temp.*, rownum row_id from (
+				select * from RS_UserInfo where PhoneNumber = #{PhoneNumber}
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= 1
+	    
+		
+	</select>
+	<insert id="addUser" parameterType="com.rising.general.bean.UserInfo">
+		insert into	RS_UserInfo(PhoneNumber,AllScore,Address,UserStatus) values (#{PhoneNumber},#{AllScore},#{Address},#{UserStatus})
+	</insert>
+</mapper>

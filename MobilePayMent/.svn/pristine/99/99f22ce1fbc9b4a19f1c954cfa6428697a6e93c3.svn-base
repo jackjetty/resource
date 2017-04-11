@@ -1,0 +1,125 @@
+package com.rising.general.service.impl;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
+import com.rising.general.service.PayOrder;
+import com.rising.mobilepayment.commom.CommonUtil;
+
+@Service("qBPayOrderService")
+public class QBPayOrderServiceImpl implements PayOrder {
+
+	Log log = LogFactory.getLog(QBPayOrderServiceImpl.class);
+
+	private static String caller = "phoneNumber";
+
+	private static String objid = "productId";
+
+	private static String payid = "orderId";
+
+	private static String paymoney = "cost";
+
+	private static String username = "targetNumber";
+
+	@Override
+	public HashMap<String, String> getParameterMap(HashMap<String, String> map) {
+		HashMap<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("caller", map.get(caller));
+		resultMap.put("objid", map.get(objid));
+		resultMap.put("payid", map.get(payid));
+		resultMap.put("spid", "003");
+		resultMap.put("paymoney", map.get(paymoney));
+		resultMap.put("username", map.get(username)); 
+		return resultMap;
+	}
+
+	@Override
+	public boolean payOrder(HashMap<String, String> paraMap, String url,
+			HashMap<String, Object> resultMap) throws Exception {				
+		
+		String result = "";
+		java.net.URL httpUrl;
+		String parameter = mapToString(paraMap);
+		httpUrl = new URL(url);
+		URLConnection uc = (URLConnection) httpUrl.openConnection();
+		uc.setDoOutput(true);
+		uc.setDoInput(true);
+		PrintWriter out = new PrintWriter(uc.getOutputStream());
+		out.write(parameter);
+		out.flush();
+		out.close();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				uc.getInputStream()));
+		String line;
+		while ((line = in.readLine()) != null) {
+			result += line;
+		}
+		in.close();
+		
+		
+		
+		Pattern responsePtn = Pattern.compile("\\$+"); 
+		String[] strs = responsePtn.split(result); 
+		Pattern cellPtn = Pattern.compile("^(.+)=(.*?)$"); 
+		for (String cellRst:strs) { 
+			Matcher matcher = cellPtn.matcher(cellRst ); 
+			if(matcher.find()){
+				
+				
+				resultMap.put(CommonUtil.trim(matcher.group(1)), CommonUtil.trim(matcher.group(2)));
+			       
+			} 
+		        
+		
+		} 
+		
+		
+		/*
+		result = result.replace("$", ",");
+		String[] params = result.split(",");
+		String key = "";
+		String value = "";
+		for (String a : params) {
+			key = a.split("=")[0];
+			try {
+				value = a.split("=")[1];
+				value = value.trim();
+			} catch (ArrayIndexOutOfBoundsException e) {
+				value = "";
+			}
+			resultMap.put(key, value);
+		}*/
+		if ("0".equals(resultMap.get("result"))) {
+			resultMap.put("resultInfo", "成功");
+			return true;
+		} else {
+			resultMap.put("resultInfo", "失败");
+			return false;
+		}
+	}
+
+	private String mapToString(HashMap<String, String> map) {
+		String parameter = "";
+		Set<String> set = map.keySet();
+		Iterator<String> it = set.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			String value = map.get(key);
+			parameter = parameter + key + "=" + value + "$";
+		}
+		return parameter;
+	}
+
+}

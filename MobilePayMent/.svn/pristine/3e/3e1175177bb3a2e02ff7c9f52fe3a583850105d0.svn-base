@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.general.mapper.ProductMapper">
+	<select id="findProductsByMerchantId" parameterType="java.lang.String" resultType="com.rising.general.bean.Product">
+		select product.ProductId,business.Btype,product.Cost from
+		RS_Product product,RS_MerchantProduct merchantProduct,RS_Business business where product.ProductId = merchantProduct.productId and product.BusId = business.BusId and merchantProduct.merchantId = #{MerchantId}
+	</select>
+	
+	<select id="findProductById" parameterType="java.lang.String" resultType="com.rising.general.bean.Product">
+		select * from
+		RS_Product product where product.ProductId = #{ProductId}
+	</select>
+</mapper>

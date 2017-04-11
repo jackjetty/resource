@@ -1,0 +1,136 @@
+package com.rising.mobilepayment.service.impl;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+ 
+
+
+
+
+import com.rising.mobilepayment.bean.PhoneNumber;
+import com.rising.mobilepayment.commom.CommonUtil;
+import com.rising.mobilepayment.commom.Constant;
+import com.rising.mobilepayment.mapper.PhoneNumberMapper;
+import com.rising.mobilepayment.service.PhoneNumberCheckService;
+
+@Service("phoneNumberCheckService")
+public class PhoneNumberServiceImpl implements PhoneNumberCheckService {
+
+	Log log = LogFactory.getLog(PhoneNumberServiceImpl.class);
+	
+	 
+	@Autowired
+	private PhoneNumberMapper phoneNumberMapper; 
+	 
+
+	private String checkUserPhoneNumberParameter;
+
+	public String getCheckUserPhoneNumberParameter() {
+		return checkUserPhoneNumberParameter;
+	}
+
+	@Value("#{propertiesReader[checkUserPhoneNumberParameter]}")
+	public void setCheckUserPhoneNumberParameter(
+			String checkUserPhoneNumberParameter) {
+		this.checkUserPhoneNumberParameter = checkUserPhoneNumberParameter;
+	}
+
+	@Override
+	public Boolean check(String phoneNumber, HashMap<String, Object> resultMap) {
+		if(!CommonUtil.isTelePhoneNumber (phoneNumber)){
+			resultMap.put("respCode", -10);
+			resultMap.put("respInfo", "不支持非浙江电信手机号码!");
+			return false;
+		}
+		PhoneNumber phoneNumberObj;
+		phoneNumberObj=phoneNumberMapper.findId(phoneNumber);
+		if(phoneNumberObj!=null){
+			resultMap.put("citycode",CommonUtil.trim(phoneNumberObj.getCityCode()) );
+		}
+		if(resultMap.get("MessageType")!=null &&resultMap.get("MessageType").equals("register")){
+			return true;
+		}
+		resultMap.remove("MessageType");
+		if(phoneNumberObj!=null&&
+				 (!CommonUtil.trim(phoneNumberObj.getCityCode()).equalsIgnoreCase(""))){
+			return true;
+		}  
+		String parameter = checkUserPhoneNumberParameter + "caller="+ phoneNumber;
+		System.out.println("check phonenumber ="+parameter);
+		
+		
+		
+		String hbResult=callHBHttp(parameter); 
+		HashMap<String, Object>  hbResultMap =CommonUtil.stringToLowerMap(hbResult);  
+		if ("333".equals(hbResultMap.get("result"))) {
+			if(hbResultMap.get("citycode")!=null){
+				resultMap.put("citycode",CommonUtil.trim(hbResultMap.get("citycode")) ); 
+				if(phoneNumberObj==null){
+					phoneNumberObj=new PhoneNumber();
+					phoneNumberObj.setCityCode(CommonUtil.trim(hbResultMap.get("citycode")) );
+					phoneNumberObj.setCarriers(Constant.CARRIERS_TELECOM); 
+					phoneNumberObj.setFromSource(Constant.SOURCE168);
+					phoneNumberObj.setPaymethodId("");
+					phoneNumberObj.setPhoneNumber(phoneNumber); 
+					phoneNumberMapper.add(phoneNumberObj); 
+				}else{
+					phoneNumberObj.setCityCode(CommonUtil.trim(hbResultMap.get("citycode")) );
+					phoneNumberMapper.update(phoneNumberObj); 
+				}
+				
+			}
+			return true;
+		} else if ("555".equals(hbResultMap.get("result"))) {
+			resultMap.put("respCode", -14);
+			resultMap.put("respInfo", "限制注册用户请到电信营业厅或拨打10000号申请开通！");
+			return false;
+		} else {
+			resultMap.put("respCode", -11);
+			resultMap.put("respInfo", "本服务仅限浙江省电信天翼用户使用！");
+			return false;
+		}
+	}
+	
+	
+	private String callHBHttp(String parameter){
+		String result = "";
+		java.net.URL httpUrl;
+		try {
+			httpUrl = new URL(Constant.HBSERVERURL);
+			URLConnection uc = (URLConnection) httpUrl.openConnection();
+			uc.setDoOutput(true);
+			uc.setDoInput(true);
+			PrintWriter out = new PrintWriter(uc.getOutputStream());
+			out.write(parameter);
+			out.flush();
+			out.close();
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					uc.getInputStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result += line;
+			}
+			
+			in.close();
+		} catch (Exception e1) {
+			log.error("checkPerMonthStatus()->发送包月情况查询请求失败！" + e1.toString());
+            return "";
+		}
+		return result; 
+		
+	}
+	
+	 
+}

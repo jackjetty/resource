@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.MessageMapper">
+	<select id="getMessageContentByUse" parameterType="java.lang.String" resultType="java.lang.String" >
+		select content from RS_Message where use = #{use} 
+	</select>
+	
+	<select id="getMessageContentByUse2" resultType="java.util.HashMap">
+		select content,use from RS_Message where use in
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">  
+        #{item}  
+    	</foreach>
+	</select>
+</mapper>

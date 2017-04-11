@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.PrizeMapper">
+	<select id="findPrizeById" parameterType="java.lang.Integer" resultType="com.rising.mobilepayment.bean.Prize" >
+		select * from RS_Prize where prizeId = #{prizeId}
+	</select>
+	
+	<select id="findByPrizeIds" resultType="com.rising.mobilepayment.bean.Prize" >
+		select * from RS_Prize where prizeId in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+        #{item}  
+    	</foreach>
+	</select>
+	
+	<select id="findByImgName" resultType="com.rising.mobilepayment.bean.Prize">
+		select * from RS_Prize where imgName = #{imgName}
+	</select>
+	<update id="updatePrzie" parameterType ="com.rising.mobilepayment.bean.Prize">
+		update RS_Prize set leftAmount = #{leftAmount} where prizeId = #{prizeId}
+	</update>
+	<select id="findSendMinScore" resultType="com.rising.mobilepayment.bean.Prize">
+		SELECT d.prizeid,d.leftamount,d.sendscore,d.imgname,d.name FROM (select c.*,ROWNUM rn from (select a.* from RS_Prize a,rs_sweepstakesprize b where a.leftAmount > 0 and b.prizenumber > 0 and a.prizeid = b.prizeid and a.sendway = 'SENDSCORE' order by sendScore asc) c ) d WHERE d.rn=1 
+	</select>
+	
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.UserLotteryTimesMapper">
+	
+	<select id="findByPhoneNumber" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.UserLotteryTimes">
+		select * from RS_UserLotteryTimes where phoneNumber = #{phoneNumber}
+	</select>
+	
+	<insert id="addLotteryTimes" parameterType="com.rising.mobilepayment.bean.UserLotteryTimes" >
+		insert into RS_UserLotteryTimes (phoneNumber,lotteryTimes,lastLotteryTime) values(#{phoneNumber},#{lotteryTimes},#{lastLotteryTime})
+	</insert>
+	
+	<update id="updateLotteryTimes" parameterType="com.rising.mobilepayment.bean.UserLotteryTimes">
+		update RS_UserLotteryTimes set lotteryTimes = #{lotteryTimes},lastLotteryTime = #{lastLotteryTime} where phoneNumber = #{phoneNumber}
+	</update>
+</mapper>

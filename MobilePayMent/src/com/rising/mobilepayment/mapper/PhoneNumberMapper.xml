@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.PhoneNumberMapper">
+	<select id="findId" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.PhoneNumber" >
+		select * from RS_PhoneNumber where   phoneNumber= #{phoneNumber}
+	</select>
+	
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.PhoneNumber">
+		insert into RS_PhoneNumber(phoneNumber,cityCode,carriers,fromSource,paymethodId)
+		values (#{phoneNumber,jdbcType=VARCHAR},
+		             #{cityCode,jdbcType=VARCHAR},
+		                  #{carriers,jdbcType=VARCHAR},
+		                      #{fromSource,jdbcType=VARCHAR},
+		                             #{paymethodId,jdbcType=VARCHAR}) 
+	</insert>
+	
+	<update id="update" parameterType="com.rising.mobilepayment.bean.PhoneNumber">
+		update RS_PhoneNumber set  
+		          cityCode = #{cityCode,jdbcType=VARCHAR},
+		          carriers = #{carriers,jdbcType=VARCHAR},
+		          fromSource = #{fromSource,jdbcType=VARCHAR},
+		          paymethodId = #{paymethodId,jdbcType=VARCHAR} 
+		                    where phoneNumber = #{phoneNumber}
+	</update>
+</mapper>

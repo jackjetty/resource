@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<title>浙江号百168充值宝管理系统</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+
+<style type="text/css">
+<!--
+body {
+	font-size: 12px;
+	font-family: '宋体';
+	color: #000;
+	background: url(images/login/bg.jpg) center 0 repeat-x #ffffff;
+	margin: 0;
+	padding: 0;
+}
+
+div,h1,h2,h3,h4,p,form,label,input,textarea,img,span {
+	margin: 0;
+	padding: 0;
+}
+
+h1,h2,h3,h4 {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+img {
+	border: 0;
+}
+
+ol,ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.clear {
+	clear: both;
+	font-size: 0;
+	line-height: 0;
+}
+
+.login {
+	width: 306px;
+	height: 190px;
+	position: relative;
+	top: 184px;
+	left: 50%;
+	margin-left: -131px;
+}
+
+.login h1 {
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 30px 0 0 80px;
+	background: url(images/login/bg02.gif) 41px 28px no-repeat;
+	color: #ff5803;
+}
+
+.login h1 span {
+	color: #070506;
+}
+
+.login form label {
+	font-weight: bold;
+	color: #6e6e6e;
+}
+
+.login form label.username {
+	position: absolute;
+	left: 40px;
+	top: 83px;
+}
+
+.login form label.password {
+	position: absolute;
+	left: 40px;
+	top: 111px;
+}
+
+.login form label.captcha {
+	position: absolute;
+	left: 40px;
+	top: 139px;
+}
+
+.login form input.user {
+	width: 160px;
+	height: 16px;
+	line-height: 16px;
+	border: solid 1px #d1d1d1;
+	background: url('images/login/bg.gif') 0 0 repeat-x;
+	position: absolute;
+	left: 93px;
+	top: 80px;
+}
+
+.login form input.pwd {
+	width: 160px;
+	height: 16px;
+	line-height: 16px;
+	border: solid 1px #d1d1d1;
+	background: url('images/login/bg.gif') 0 0 repeat-x;
+	position: absolute;
+	left: 93px;
+	top: 108px;
+}
+
+.login form input.captcha {
+	width: 90px;
+	height: 16px;
+	line-height: 16px;
+	border: solid 1px #d1d1d1;
+	background: url('images/login/bg.gif') 0 0 repeat-x;
+	position: absolute;
+	left: 93px;
+	top: 136px;
+}
+
+.login form img.captchaimg {
+	width: 60px;
+	height: 16px;
+	line-height: 16px;
+	border: solid 1px #d1d1d1;
+	position: absolute;
+	left: 187px;
+	top: 136px;
+	cursor:pointer;
+}
+
+
+.login form input.denglu {
+	width: 72px;
+	height: 25px;
+	background: url('images/login/bt.gif') 0 0 no-repeat;
+	font-weight: bold;
+	color: #FFF;
+	border: none 0;
+	cursor: pointer;
+	position: absolute;
+	left: 183px;
+	top: 159px;
+}
+
+.login .error {
+	width: 150px;
+	height: 5px;
+	padding-top: 12px;
+	text-align: center;
+	color: red;
+	background-color: #fcfcfc;
+	position: absolute;
+	left: 0;
+	top: 154px;
+}
+-->
+</style>
+
+<script type="text/javascript">
+	String.prototype.trim = function() {
+	  return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+	}
+	function checkLogin() {
+		var username = $("input[name='username']").val();
+		username.trim();
+		if (username == "") {
+			$(".error").show();
+			$(".error").html("用户名不能为空!");
+			return false;
+		}
+		var password = $("input[name='password']").val();
+		password.trim();
+		if (password == "") {
+			$(".error").show();
+			$(".error").html("密码不能为空!");
+			return false;
+		}
+		var captcha = $("input[name='captcha']").val();
+		captcha.trim();
+		if (captcha == "") {
+			$(".error").show();
+			$(".error").html("验证码不能为空!");
+			return false;
+		}
+		$.ajax({
+			url:"login.action",
+			data:"username="+username+"&password="+password+"&captcha="+captcha,
+			dataType:"json",
+			type:"post",
+			success:function(data){
+				if(data.respCode == 0){
+					window.location = "toMain.action";
+				}else{
+					alert(data.respInfo);
+				}
+			},
+			error:function(data){
+				alert("error 后台出现错误！");
+			}
+		});
+	}
+	$(document).ready(function(){
+		$("#captchaimg").click(function(){
+			var src = "getCaptchaImage.action"+"?date=" + new Date();
+			$(this).attr("src",src);
+		});
+		 document.onkeydown = function(e){   
+			    var ev = document.all ? window.event : e; 
+			    if(ev.keyCode==13) {
+			    	checkLogin();
+			    } 
+			  }
+		
+	});
+</script>
+</head>
+<body>
+	<div class="login">
+		<h1>
+			浙江号百168充值宝<span>管理系统</span>
+		</h1>
+		<form id="form1" method="post" name="form1">
+			<label class="username">用户名：</label> 
+			<input id="username" class="user" name="username" type="text" />
+			<label class="password">密 &nbsp;码：</label>
+			<input id="password" class="pwd" name="password" type="password" />
+			<label class="captcha">验证码：</label>
+			<input id="captcha" class="captcha" name="captcha" type="text" /> 
+				<img alt="验证码图片" src="getCaptchaImage.action" class="captchaimg" id="captchaimg">
+			<span style="display: none;" class="error"></span><input id="button" class="denglu" name="button" value="登 录" type="button" onclick="checkLogin()"/>
+		</form>
+		
+	</div>
+</body>
+</html>

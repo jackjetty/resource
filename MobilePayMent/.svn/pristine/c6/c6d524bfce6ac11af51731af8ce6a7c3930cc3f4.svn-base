@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.FeedBackInfoMapper">
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.FeedBackInfo">
+		insert into RS_FeedBackInfo (PhoneNumber,ContactNumber,Email,FBContent,FBTime) values (#{PhoneNumber},#{ContactNumber},#{Email},#{FBContent},#{FBTime})
+	</insert>
+</mapper>

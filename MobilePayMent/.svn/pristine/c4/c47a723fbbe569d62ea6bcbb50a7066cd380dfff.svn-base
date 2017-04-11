@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.SendMessageLogMapper">
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.SendMessageLog">
+		insert into RS_SendMessageLog(sendPhoneNumber,MessageType,MessageContent,logType,logTime,dataString)
+		values (#{sendPhoneNumber,jdbcType=VARCHAR},#{MessageType,jdbcType=VARCHAR},#{MessageContent,jdbcType=VARCHAR},#{logType,jdbcType=VARCHAR},#{logTime,jdbcType=TIMESTAMP},#{dataString,jdbcType=VARCHAR}) 
+	</insert>
+</mapper>

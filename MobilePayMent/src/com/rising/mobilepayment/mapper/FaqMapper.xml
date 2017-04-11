@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.FaqMapper">
+	<select id="getFaq" resultType="com.rising.mobilepayment.bean.Faq" parameterType="java.util.HashMap">
+		select Title,Content from (select a.*,rownum rn from (select * from RS_FAQ where SHOW = '显示' order by Rank asc) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end}
+	</select>
+	<select id="getAllSize" resultType="java.lang.Integer">
+		select count(*) as allSize from RS_Faq where  SHOW = '显示'
+	</select>
+	<select id="getAll" resultType="com.rising.mobilepayment.bean.Faq">
+		select Title,Content from RS_Faq where SHOW = '显示' order by Rank desc
+	</select>
+</mapper>

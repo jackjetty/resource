@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.OrderInfoMapper">
+
+	<select id="findById" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo where OrderId = #{OrderId}
+	</select>
+	
+	<select id="queryOrderInfoList" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from (select a.*,rownum rn from (select * from RS_OrderInfo where PhoneNumber = #{PhoneNumber} and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PayStatus is not null order by OrderTime desc) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end}
+	</select>
+	
+	<select id="queryOrderInfoList2" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from (select a.*,rownum rn from (SELECT * FROM (SELECT PRODUCTID ,BUSID AS BUSINESSTYPE ,PAYTIME AS RECHARGETIME,TARGETNUMBER AS RECHARGENUMBER,PAYRETURNCODE AS RECHARGERESULT,PAYMONEY AS PARVALUE,PAYMONEY AS ORDERAMOUNT FROM RS_ORDERINFO WHERE PHONENUMBER = #{PhoneNumber} and PAYTIME &gt;= #{StartTime} and PAYTIME &lt;= #{EndTime} AND PAYRETURNCODE IS NOT NULL UNION ALL
+
+		SELECT '0' AS PRODUCTID ,1031 AS BUSINESSTYPE,CHECKTIME AS RECHARGETIME,QQNUMBER AS RECHARGENUMBER,STATUS AS RECHARGERESULT,COST AS PARVALUE,PAYMONEY AS ORDERAMOUNT FROM RS_QQPERMONTHRECORD WHERE PHONENUMBER = #{PhoneNumber} and CHECKTIME &gt;= #{StartTime} and CHECKTIME &lt;= #{EndTime} ) ORDER BY RECHARGETIME DESC) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end}
+	</select>
+	
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.OrderInfo">
+		insert into RS_OrderInfo(OrderId,ProductId,BusId,TargetNumber,PayMoney,PhoneNumber,OrderTime,OrderStatus,SPID,SendScore,PayStatus,PayMethodId,HCOrderId,Os,Client,Version)
+		values (#{OrderId,jdbcType=VARCHAR},#{ProductId,jdbcType=VARCHAR},#{BusId,jdbcType=NUMERIC},#{TargetNumber,jdbcType=VARCHAR},#{PayMoney,jdbcType=FLOAT},#{PhoneNumber,jdbcType=VARCHAR},#{OrderTime,jdbcType=TIMESTAMP},#{OrderStatus,jdbcType=VARCHAR},#{SPID,jdbcType=VARCHAR},#{SendScore,jdbcType=FLOAT},#{PayStatus,jdbcType=VARCHAR},#{PayMethodId,jdbcType=NUMERIC},#{HCOrderId,jdbcType=VARCHAR},#{Os,jdbcType=VARCHAR},#{Client,jdbcType=VARCHAR},#{Version,jdbcType=VARCHAR}) 
+	</insert>
+	
+	<insert id="addTelephoneFee" parameterType="com.rising.mobilepayment.bean.OrderInfo">
+		insert into RS_OrderInfo(OrderId,ProductId,BusId,TargetNumber,PayMoney,PhoneNumber,OrderTime,OrderStatus,SPID,SendScore,PayStatus,PayMethodId,HCOrderId,PayTime,PayReturnCode)
+		values (#{OrderId,jdbcType=VARCHAR},#{ProductId,jdbcType=VARCHAR},#{BusId,jdbcType=NUMERIC},#{TargetNumber,jdbcType=VARCHAR},#{PayMoney,jdbcType=FLOAT},#{PhoneNumber,jdbcType=VARCHAR},#{OrderTime,jdbcType=TIMESTAMP},#{OrderStatus,jdbcType=VARCHAR},#{SPID,jdbcType=VARCHAR},#{SendScore,jdbcType=FLOAT},#{PayStatus,jdbcType=VARCHAR},#{PayMethodId,jdbcType=NUMERIC},#{HCOrderId,jdbcType=VARCHAR},#{PayTime,jdbcType=TIMESTAMP},#{PayReturnCode,jdbcType=VARCHAR}) 
+	</insert>
+	<update id="update" parameterType="com.rising.mobilepayment.bean.OrderInfo">
+		update RS_OrderInfo set PayStatus = #{PayStatus},PayTime = #{PayTime},SendScore = #{SendScore},PayReturnCode = #{PayReturnCode} where OrderId = #{OrderId}
+	</update>
+	
+	<select id="findByExample" parameterType="com.rising.mobilepayment.bean.OrderInfo" resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo where OrderId = #{OrderId} and ProductId = #{ProductId} and PhoneNumber = #{PhoneNumber}
+		and SPID = #{SPID} and TargetNumber = #{TargetNumber} and PayMoney = #{PayMoney} and PayMethodId = #{PayMethodId}
+	</select>
+	
+	<select id="getAllSize" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(*) as allSize from RS_OrderInfo where PhoneNumber = #{PhoneNumber} and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PayStatus is not null
+	</select>
+	
+	<select id="queryPhoneNumberListForThisTargetNumber" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select PhoneNumber,TargetNumber from RS_OrderInfo where TargetNumber = #{TargetNumber} and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PhoneNumber != #{PhoneNumber} group by PhoneNumber,TargetNumber
+	</select>
+	
+	<select id="getTodayQBPayMoney" parameterType="java.util.HashMap"
+		resultType="java.lang.Float">
+		select sum(PayMoney) from RS_OrderInfo where BusID = 100 and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PhoneNumber = #{PhoneNumber} and PayStatus ='成功'
+	</select>
+	<select id="getThisMonthPayMoney" parameterType="java.util.HashMap"
+		resultType="java.lang.Float">
+		select sum(PayMoney) from RS_OrderInfo where PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PhoneNumber = #{PhoneNumber} and PayStatus ='成功'
+	</select>
+	<select id="getThisMonthQBPayMoney" parameterType="java.util.HashMap"
+		resultType="java.lang.Float">
+		select sum(PayMoney) from RS_OrderInfo where BusID = 100 and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PhoneNumber = #{PhoneNumber} and PayStatus ='成功'
+	</select>	
+	
+	<select id="findQQPerMonth" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo where PhoneNumber = #{PhoneNumber} and ProductId like concat(#{ProductId},'%') and PayTime is not null order by PayTime desc
+	</select>
+	
+	<select id="findFlowPerWeek" parameterType="com.rising.mobilepayment.bean.OrderInfo"
+		resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo  where rownum &lt;=100  and  BusId = #{BusId} and PayStatus = #{PayStatus}  and OrderTime &gt;= #{OrderTime} and OrderTime &lt;= #{PayTime} order by  ORDERID
+	</select>
+	
+	<select id="getHashQQPerMonthPhoneNumber" resultType="java.lang.String">
+		select distinct PhoneNumber from RS_OrderInfo where productId in (select productId from RS_Product where busId = 103) and payReturnCode = '0'
+	</select>
+	
+	<select id="getPayMoneyByBusIds" resultType="java.lang.Float" parameterType="java.util.HashMap">
+		select sum(PayMoney) from RS_OrderInfo where PhoneNumber = #{PhoneNumber} and PayStatus ='成功' and PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and BusId in
+		<foreach collection="BusIds" index="index" item="item" open="(" separator="," close=")">  
+        #{item}  
+    	</foreach> 
+	</select>
+	
+	<select id="findLastQBOrder" resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo where PhoneNumber = #{PhoneNumber} and PayStatus = '成功' and BusId = 100 order by PayTime desc
+	</select>
+	
+	<select id="findLastQBOrderByPhoneNumberAndPayMethodId" resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo where PhoneNumber = #{param1} and PayMethodId = #{param2} and PayStatus = '成功' and BusId = 100 order by PayTime desc
+	</select>
+	
+	
+	
+	<select id="getThisMonthPayMoney2" parameterType="java.util.HashMap"
+		resultType="java.lang.Float">
+		select sum(PayMoney) from RS_OrderInfo where PayTime &gt;= #{StartTime} and PayTime &lt;= #{EndTime} and PhoneNumber = #{phoneNumber} and PayStatus ='成功' and BusId in
+		<foreach collection="types" index="index" item="item" open="(" separator="," close=")">  
+        #{item}  
+    	</foreach>
+	</select>
+	
+	<select id="findQQPerMonthOrderByPhoneNumber" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.OrderInfo">
+		select * from RS_OrderInfo where busId = 103 and PhoneNumber = #{param1} order by PayTime desc
+	</select>
+	
+	<select id="getOrderInfoByPhoneNumber" resultType="com.rising.mobilepayment.bean.OrderInfo" parameterType="java.lang.String">
+		select * from RS_OrderInfo where PhoneNumber = #{param1} and PayStatus ='成功' 
+	 </select>
+	 
+	 <select id="getSuccessOrderInfoListByBusId" resultType="com.rising.mobilepayment.bean.OrderInfo" parameterType="java.lang.String">
+		select * from RS_OrderInfo where BusId=#{param1} 
+		and PayReturnCode = '0' 
+		and TO_CHAR(a.PayTime,'YYYY-MM-DD')&gt;=#{param2}  
+		and TO_CHAR(a.PayTime,'YYYY-MM-DD')&lt;=#{param3} 
+	</select>
+	
+	 
+	 <select id="getLastTimeSuccessOrderNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+         select count(*) as orderNum from RS_OrderInfo a where a.PhoneNumber=#{param1}
+         and  a.BusId = #{param2} 
+         and  a.PayStatus = #{param3} 
+         and  TO_CHAR(a.PayTime,'YYYY-MM-DD HH24:MI:SS')&gt;=#{param4}    
+	</select>
+	
+	 
+	 <select id="getSuccessOrderNumber" resultType="java.lang.Integer" parameterType="java.lang.String">
+         select count(*) as orderNum from RS_OrderInfo a where a.PhoneNumber=#{param1}
+         and  a.BusId = #{param2} 
+         and  a.PayStatus = '成功'
+         and  a.PayMethodId = #{param3} 
+         and  TO_CHAR(a.PayTime,'YYYY-MM-DD HH24:MI:SS')&gt;=#{param4}  
+         and  TO_CHAR(a.PayTime,'YYYY-MM-DD HH24:MI:SS')&lt;=#{param5}   
+	</select> 
+	
+	 <select id="getSuccessMaxProductId" resultType="java.lang.String" parameterType="java.lang.String">
+		select max(productid) from RS_OrderInfo 
+		where  paymethodid not in('1','2','9') 
+		and busid='100' 
+		and PayReturnCode = '0' 
+        and phoneNumber=#{param1}
+		and TO_CHAR(PayTime,'YYYY-MM-DD')&gt;=#{param2}  
+		and TO_CHAR(PayTime,'YYYY-MM-DD')&lt;=#{param3} 
+	</select>
+	 
+	 <select id="getLastSuccessOrderInfoByProductId" resultType="com.rising.mobilepayment.bean.OrderInfo" parameterType="java.lang.String">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_OrderInfo where phoneNumber = #{param1}
+				and productId= #{param2}
+				and paymethodid not in('1','2','9') 
+				and PayReturnCode = '0' 
+				and TO_CHAR(PayTime,'YYYY-MM-DD')&gt;=#{param3}  
+		        and TO_CHAR(PayTime,'YYYY-MM-DD')&lt;=#{param4} 
+				order by  PayTime desc
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= 1
+	</select>
+	 
+	 
+	 <update id="updateClient" parameterType="java.lang.String">
+		update RS_OrderInfo 
+		set client= #{param3} 
+		where payMethodId = #{param2} 
+		and   TO_CHAR(PayTime,'YYYY-MM')=#{param1} 
+		
+	</update>
+	 
+	 
+	 
+	
+</mapper>

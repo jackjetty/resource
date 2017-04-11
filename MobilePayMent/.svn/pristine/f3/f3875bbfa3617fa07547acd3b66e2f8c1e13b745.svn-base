@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.ProductMapper">
+	<select id="findProductsByBusId" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.Product">
+		select * from
+		RS_Product product where product.BusId = #{BusId}
+	</select>
+	<select id="findProductById" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.Product">
+		select * from
+		RS_Product product where product.ProductId = #{ProductId}
+	</select>
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.Product">
+		insert into RS_Product (ProductId,ProductName,BusId,MerchantId,ProductDescribe,Cost,SPID,Status,SendScore)
+		 values (#{ProductId},#{ProductName},#{BusId},#{MerchantId},#{ProductDescribe},#{Cost},#{SPID},#{Status},#{SendScore})
+	</insert> 
+	
+	<select id="findByBusIdAndCost" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.Product">
+		select * from RS_Product where BusId = #{busId} and Cost = #{cost}
+	</select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.WinnerListMapper">
+	<select id="getLastWeekWinnerPhoneNumber" parameterType="java.util.HashMap" resultType="java.lang.String">
+		select PhoneNumber from RS_WinnerList where WinTime &gt;= #{Start} and WinTime &lt;= #{End}
+	</select>
+	<select id="getWinnerList" resultType="com.rising.mobilepayment.bean.WinnerList">
+		select * from RS_WinnerList
+	</select>
+	<select id="find" resultType="com.rising.mobilepayment.bean.WinnerList" parameterType="java.util.HashMap">
+		select * from RS_WinnerList where PhoneNumber = #{phoneNumber} and Prize = #{prizeName} and WinTime &gt;= #{StartTime} and WinTime &lt;= #{EndTime}
+	</select>
+</mapper>

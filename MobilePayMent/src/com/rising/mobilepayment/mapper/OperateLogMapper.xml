@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.OperateLogMapper">
+	<insert id="addOperateLog" parameterType="com.rising.mobilepayment.bean.OperateLog">
+		insert into RS_OperateLog (PhoneNumber,OperateType,OperateTime,Os,Client,Version) values (#{PhoneNumber},#{OperateType},#{OperateTime},#{Os},#{Client},#{Version})
+	</insert>
+	<select id="findCheckInLog" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.OperateLog">
+		select * from RS_OperateLog where PhoneNumber = #{PhoneNumber} and OperateTime &gt;= #{Start} and OperateTime &lt;= #{End} and OperateType = 'CheckIn'
+	</select>
+</mapper>

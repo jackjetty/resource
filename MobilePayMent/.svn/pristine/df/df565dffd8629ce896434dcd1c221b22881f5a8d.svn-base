@@ -1,0 +1,60 @@
+
+###Short Message Server IP and PORT
+
+##shortMessageIp=http://61.130.6.68:8090
+
+##payMoneyIp=http://61.130.6.68:8090
+
+##phoneNumberCheckIp=http://61.130.6.68:8090
+
+shortMessageIp=http://172.25.21.14:8090
+
+payMoneyIp=http://172.25.21.14:8090
+
+phoneNumberCheckIp=http://172.25.21.14:8090
+
+checkQQPerMonthStatusIp=http://172.25.21.14:8090
+
+cancelQQPerMonthIp=http://172.25.21.14:8090
+
+###User Register Short Message Static Parameters
+registerMessageParameter=objid=16666$paymoney=$payid=$spid=$
+
+###User Pay Short Message Static Parameters
+payMessageParameter=objid=16667$paymoney=$payid=$spid=$
+
+###User Pay Short Message Static Parameters
+findPasswordMessageParameter=objid=16668$paymoney=$payid=$spid=$
+
+cancelQQPerMonthParameter=objid=16669$paymoney=$payid=$spid=$
+
+checkUserPhoneNumberParameter=objid=333$paymoney=$paymoney=$payid=$spid=$username=$
+
+### QueryOrderList Page Size
+
+listSize=15
+
+### SmsValiCode Validate Time, Unit is second
+
+smsCodeTimeLimit=60
+
+### SmsValiCode2 Validate Time, Unit is second
+
+smsCodeTimeLimit2=600
+
+##FLOW SETTING
+partnerCode=rskeji
+flowKey=sajshd8DW32
+##partnerCode=zj001
+##flowKey=111111
+flowIp=122.224.205.6
+flowQueryPrefix=/flow/api/flow/query
+flowRecommendPrefix=/flow/api/flow/query/taocan
+flowApplyPrefix=/flow/api/flow/order/apply
+flowHandlePrefix=/flow/api/flow/order
+flowOrderQueryPrefix=/flow/api/flow/order/query
+flowForwardUrl=http://134.96.146.9/AppServer/forward/flow
+
+getLeftMoneyForwardUrl=http://115.239.134.175/AppServer/billBalance/telecom
+
+sendFilmMessageParameter=objid=16670$paymoney=$payid=$

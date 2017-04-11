@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.UserInfoMapper">
+	<select id="findUserByPhoneNumber" resultType="com.rising.mobilepayment.bean.UserInfo">
+		select * from RS_UserInfo where PhoneNumber = #{PhoneNumber}
+	</select>
+	<select id="findUserByOpenId" resultType="com.rising.mobilepayment.bean.UserInfo">
+		select * from RS_UserInfo where OpenId = #{OpenId}
+	</select>
+		
+	<insert id="addUser" parameterType="com.rising.mobilepayment.bean.UserInfo">
+		insert into	RS_UserInfo(PhoneNumber,Password,AllScore,RegisterTime,Address,FromWay,UserStatus,RecommendCode) 
+		                values (#{PhoneNumber},#{Password},#{AllScore},#{RegisterTime},#{Address},#{FromWay},#{UserStatus},#{RecommendCode})
+	</insert>
+	<update id="changeUserPassword" parameterType="com.rising.mobilepayment.bean.UserInfo">
+		update RS_UserInfo set Password = #{Password} where PhoneNumber = #{PhoneNumber}
+	</update>
+	
+	<update id="updateOpenIdByPhoneNumber">
+		update RS_UserInfo set OpenId = #{param1} where PhoneNumber = #{param2}
+	</update>
+	
+	
+	<update id="update" parameterType="com.rising.mobilepayment.bean.UserInfo">
+		update RS_UserInfo set AllScore = #{AllScore} where PhoneNumber = #{PhoneNumber}
+	</update>
+	<update id="addScore" parameterType="com.rising.mobilepayment.bean.UserInfo">
+		update RS_UserInfo set AllScore =AllScore+ #{AllScore} where PhoneNumber = #{PhoneNumber}
+	</update> 
+	<update id="updateUser" parameterType="com.rising.mobilepayment.bean.UserInfo">
+		update RS_UserInfo set AllScore = #{AllScore},Password = #{Password},RegisterTime = #{RegisterTime},FromWay = #{FromWay},UserStatus = #{UserStatus} where UserId = #{UserId}
+	</update>
+	
+ 
+	
+</mapper>

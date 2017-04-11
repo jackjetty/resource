@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.SecurityCodeMapper">
+	<select id="findCodeByPhoneNumber" parameterType="java.lang.String" resultType="com.rising.mobilepayment.bean.SecurityCode">
+		select * from RS_SecurityCode where PhoneNumber = #{PhoneNumber}
+	</select>
+	<insert id="addSecurityCode" parameterType="com.rising.mobilepayment.bean.SecurityCode">
+		insert into	RS_SecurityCode(PhoneNumber,InvalidTime,Code) values (#{PhoneNumber},#{InvalidTime},#{Code})
+	</insert>
+	<update id="update">
+		update RS_SecurityCode set Code = #{Code},InvalidTime = #{InvalidTime} where PhoneNumber = #{PhoneNumber} 
+	</update>
+</mapper>

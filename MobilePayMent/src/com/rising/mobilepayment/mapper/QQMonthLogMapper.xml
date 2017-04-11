@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.QQMonthLogMapper">
+
+	<select id="findById" parameterType="java.lang.Integer"
+		resultType="com.rising.mobilepayment.bean.QQMonthLog">
+		select * from RS_QQMonthLog where monthLogId = #{monthLogId}
+	</select>
+	
+	
+	
+	
+	<select id="getUnCheckList" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.QQMonthLog">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQMonthLog where orderStatus = '1'
+				and (payStatus is null or payStatus='未扣费')
+				and targetMonth = #{curMonthForm}
+				and ( lastCheckDate is null or TO_CHAR(lastCheckDate,'YYYY-MM-DD')&lt;=#{curDateForm})
+				order by lastCheckDate 
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= #{pageSize}
+		 
+	</select>
+	
+	
+	<select id="getUnSendMsgList" parameterType="java.util.HashMap"
+		resultType="com.rising.mobilepayment.bean.QQMonthLog">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQMonthLog where msgSign = '0'
+				and ( payStatus='已扣费') 
+				and (fromSource is null or fromSource=#{fromSource})
+				order by lastCheckDate 
+				 
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= #{pageSize}
+		 
+	</select>
+	
+	
+	<select id="findByPQM" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.QQMonthLog">
+		select * from ( select temp.*, rownum row_id from (
+				select * from RS_QQMonthLog where phoneNumber = #{param1}
+				and qqNumber = #{param2}
+				and targetMonth =#{param3}
+				order by  regDate desc
+		 ) temp)   where row_id &gt;= 1 and row_id &lt;= 1
+		 
+	</select>
+	
+	<select id="getListByPQM" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.QQMonthLog"> 
+			select * from RS_QQMonthLog where phoneNumber =#{param1}
+			and qqNumber = #{param2}
+			and targetMonth = #{param3}
+			order by  regDate desc  
+	</select>
+	
+	
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.QQMonthLog">
+		insert into RS_QQMonthLog(phoneNumber,qqNumber,targetMonth,fee,payMoney,orderStatus,payStatus,msgSign,paymethodId,regDate,applyDate,cancelDate,msgDate,lastCheckDate,createDate,fromSource)
+		values (#{phoneNumber,jdbcType=VARCHAR},
+		              #{qqNumber,jdbcType=VARCHAR},
+		                      #{targetMonth,jdbcType=VARCHAR},
+		                           #{fee,jdbcType=VARCHAR},
+		                                #{payMoney,jdbcType=VARCHAR},
+		                                      #{orderStatus,jdbcType=VARCHAR},
+		                                            #{payStatus,jdbcType=VARCHAR},
+		                                                   #{msgSign,jdbcType=VARCHAR},
+		                                                          #{paymethodId,jdbcType=VARCHAR},
+		                                                                   #{regDate,jdbcType=TIMESTAMP},
+		                                                                          #{applyDate,jdbcType=TIMESTAMP},
+		                                                                                   #{cancelDate,jdbcType=TIMESTAMP},
+		                                                                                            #{msgDate,jdbcType=TIMESTAMP},
+		                                                                                                   #{lastCheckDate,jdbcType=TIMESTAMP},
+		                                                                                                              #{createDate,jdbcType=TIMESTAMP},
+		                                                                                                                          #{fromSource,jdbcType=VARCHAR}) 
+	</insert>
+	 
+	<update id="update" parameterType="com.rising.mobilepayment.bean.QQMonthLog">
+		update RS_QQMonthLog set 
+		          phoneNumber = #{phoneNumber,jdbcType=VARCHAR},
+		          qqNumber = #{qqNumber,jdbcType=VARCHAR},
+		          targetMonth = #{targetMonth,jdbcType=VARCHAR},
+		          fee = #{fee,jdbcType=VARCHAR},
+		          payMoney = #{payMoney,jdbcType=VARCHAR},
+		          orderStatus = #{orderStatus,jdbcType=VARCHAR},
+		          payStatus = #{payStatus,jdbcType=VARCHAR},
+		          msgSign = #{msgSign,jdbcType=VARCHAR},
+		          paymethodId=#{paymethodId,jdbcType=VARCHAR},
+		          regDate = #{regDate,jdbcType=TIMESTAMP},
+		          applyDate = #{applyDate,jdbcType=TIMESTAMP},
+		          cancelDate = #{cancelDate,jdbcType=TIMESTAMP},
+		          msgDate = #{msgDate,jdbcType=TIMESTAMP},
+		          lastCheckDate = #{lastCheckDate,jdbcType=TIMESTAMP},
+		          createDate = #{createDate,jdbcType=TIMESTAMP},
+		          fromSource = #{fromSource,jdbcType=VARCHAR}
+		                    where monthLogId = #{monthLogId}
+	</update>
+	
+	
+	<update id="monthInit" parameterType="java.lang.String" > 
+			update  RS_QQMonthLog
+            set paystatus='未扣费',targetMonth = #{param1}
+            where targetMonth &lt; #{param1}
+	</update>
+	
+	
+	
+	<select id="getCountByMonth" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(*) as allSize from RS_QQMonthLog 
+		where targetMonth = #{targetMonth}
+	</select>
+	
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.WinningInfoMapper">
+	<insert id="addWinningInfo"  keyProperty="id" parameterType="com.rising.mobilepayment.bean.WinningInfo">
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="id">  
+        SELECT WINNINGINFOIDNEXT.nextval AS id FROM DUAL  
+    	</selectKey>
+		insert into	RS_WinningInfo(id,phoneNumber,lotteryId,winTime,hasSendMessage) values (#{id},#{phoneNumber},#{lotteryId},#{winTime},#{hasSendMessage})
+	</insert>	
+	<select id="findByPhoneNumber" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.WinningInfo">
+		select * from (select a.*,rownum rn from (select * from RS_WinningInfo where phoneNumber = #{phoneNumber} order by winTime desc) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end}
+	</select>
+	
+	<select id="getAllSize" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select COUNT(*) from RS_WinningInfo where phoneNumber = #{phoneNumber}
+	</select>
+	<select id="getWinningInfo" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.WinningInfo">
+		select * from RS_WinningInfo where lotteryId = #{lotteryId} and winTime &gt;= #{StartTime} and winTime &lt;= #{EndTime}
+	</select>
+	
+	<select id="getWinningInfo2" parameterType="java.util.HashMap" resultType="com.rising.mobilepayment.bean.WinningInfo">
+		select * from RS_WinningInfo where phoneNumber = #{phoneNumber} and lotteryId = #{prizeId} and winTime &gt;= #{StartTime} and winTime &lt;= #{EndTime}
+	</select>
+	
+	<update id="updateWinningInfo" parameterType="com.rising.mobilepayment.bean.WinningInfo">
+	    update RS_WinningInfo set hasSendMessage = #{param2} where id = #{param1}
+	</update>
+</mapper>

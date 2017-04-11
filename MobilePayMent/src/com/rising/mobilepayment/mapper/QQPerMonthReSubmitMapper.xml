@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.QQPerMonthReSubmitMapper">
+	<insert id="add" parameterType="com.rising.mobilepayment.bean.QQPerMonthReSubmit">
+		insert into RS_QQPerMonthReSubmit (phoneNumber,productId,payMoney,submitTime,qqNumber,submitResult) values (#{phoneNumber},#{productId},#{payMoney},#{submitTime},#{qqNumber},#{submitResult})
+	</insert>
+</mapper>

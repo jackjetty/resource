@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rising.mobilepayment.mapper.PublicInfoMapper">
+	<select id="getPublicInfo" resultType="com.rising.mobilepayment.bean.PublicInfo" parameterType="java.util.HashMap">
+		select Id,Title,PublicInfo,Time from (select a.*,rownum rn from (select * from RS_PublicInfo order by Time desc) a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end} order by b.Time asc
+	</select>
+	
+	<select id="getAllSize" resultType="java.lang.Integer">
+		select count(*) as allSize from RS_PublicInfo
+	</select>
+	
+	<select id="getNotReadPublicInfoNumber" resultType="java.lang.Integer">
+         select count(*) as allSize from RS_PublicInfo where id > #{param1}	
+	</select>
+	
+	<select id="getTotalMessage" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select * from (select a.*,rownum rn from (SELECT * FROM (SELECT * FROM (SELECT answertime as time ,'ANSWERFEEDBACK' as type,CONTENT FROM RS_ANSWERFEEDBACK where TOUSERPHONENUMBER = #{PhoneNumber} UNION ALL SELECT c.TIME,'PUBLICINFO' as TYPE,c.PUBLICINFO AS CONTENT from RS_PUBLICINFO c) ORDER BY TIME DESC))a) b where b.rn &gt;= #{start} and b.rn &lt;= #{end} order by b.time asc
+	</select>
+	
+	<select id="getMaxId" resultType="java.lang.Integer">
+		select max(id) from RS_PublicInfo
+	</select>
+
+</mapper>

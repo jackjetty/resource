@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.AppVersionMapper">
+	
+	<select id="findLastVersionByPhoneType" resultType="com.rising.mobilepayment.bean.AppVersion">
+		select * from
+		(select * from RS_AppVersion where PhoneType = #{phoneType} and Remark = '使用'
+		order by
+		PublishTime DESC ) where rownum = 1
+	</select>
+</mapper>

@@ -1,0 +1,183 @@
+package com.rising.management.action;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.rising.management.common.ExcelUtil;
+import com.rising.management.service.OrderInfoService;
+import com.rising.management.vo.OrderInfoVo;
+
+@Controller("downloadExcleAction")
+public class DownloadExcleAction {
+
+	private String phoneNumber;
+
+	private String busId;
+
+	private String productId;
+
+	private Boolean success;
+
+	private Boolean failed;
+
+	private String startTime;
+
+	private String endTime;
+
+	
+	private String payReturnCode;
+	
+	private String targetNumber;
+	
+	private String os;
+	private String client;
+		
+	// Report输出流   
+    public InputStream reportStream;   
+
+	@Autowired
+	OrderInfoService orderInfoService;
+
+	public void toExportData() {
+		Integer BusId = null;
+		if (!"null".equals(busId)) {
+			BusId = Integer.parseInt(busId);
+		}
+		if ("null".equals(productId)) {
+			productId = "";
+		}
+		Integer size = orderInfoService.getOrderInfoSize(phoneNumber, BusId,
+				productId, success, failed, startTime, endTime, payReturnCode,targetNumber,os,client);
+		ArrayList<OrderInfoVo> oiv = orderInfoService.getOrderInfoVo(size, 1,
+				phoneNumber, BusId, productId, success, failed, startTime,
+				endTime, payReturnCode,targetNumber,os,client);
+		String filename = null;
+		try {
+			filename = new String("交易记录信息".getBytes("GBK"),"ISO-8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		response.setHeader("Pragma", "no-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+		response.addHeader("Content-Disposition", "attachment;filename="+filename+".xls");
+		try {
+
+			ExcelUtil.exportClassroom(response.getOutputStream(), oiv);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String execute() {
+		return "success";
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getBusId() {
+		return busId;
+	}
+
+	public void setBusId(String busId) {
+		this.busId = busId;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public Boolean getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
+
+	public Boolean getFailed() {
+		return failed;
+	}
+
+	public void setFailed(Boolean failed) {
+		this.failed = failed;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+
+	 public InputStream getReportStream() {   
+	        return reportStream;   
+	     }
+
+	public String getPayReturnCode() {
+		return payReturnCode;
+	}
+
+	public void setPayReturnCode(String payReturnCode) {
+		this.payReturnCode = payReturnCode;
+	}
+
+	public String getTargetNumber() {
+		return targetNumber;
+	}
+
+	public void setTargetNumber(String targetNumber) {
+		this.targetNumber = targetNumber;
+	}
+
+	public String getOs() {
+		return os;
+	}
+
+	public void setOs(String os) {
+		this.os = os;
+	}
+
+	public String getClient() {
+		return client;
+	}
+
+	public void setClient(String client) {
+		this.client = client;
+	}
+	
+	
+
+}

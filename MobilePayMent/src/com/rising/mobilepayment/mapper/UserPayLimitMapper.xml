@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.UserPayLimitMapper">
+	<select id="getUserPayLimitByPhoneNumber" resultType="com.rising.mobilepayment.bean.UserPayLimit">
+		select * from RS_UserPayLimit where phoneNumber = #{phoneNumber}
+	</select>
+	<insert id="addUserPayLimit" parameterType="com.rising.mobilepayment.bean.UserPayLimit">
+		insert into	RS_UserPayLimit(phoneNumber,limitId,hasPayed,lastPayTime) values (#{phoneNumber},#{limitId},#{hasPayed},#{lastPayTime})
+	</insert>
+	<update id="updateMoneyAndTime" parameterType="com.rising.mobilepayment.bean.UserPayLimit">
+		update RS_UserPayLimit set hasPayed = #{hasPayed},lastPayTime = #{lastPayTime} where phoneNumber = #{phoneNumber} and limitId = #{limitId}
+	</update>
+	
+</mapper>

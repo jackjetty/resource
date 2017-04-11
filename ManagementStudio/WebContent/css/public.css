@@ -1,0 +1,19 @@
+/* 公共样式 */
+*{margin:0px;padding:0px;font-size:12px;font-family:"arial","宋体","helvetica","sans-serif"}
+html{height:100%;}
+table{border-collapse:collapse;}
+ul,li{list-style:none;margin:0px;padding:0px;font-size:12px;}
+img{border:none;}
+a{text-decoration:none;}
+table{font-size:12px;border-collapse:collapse;}
+.clear{clear:both;}
+.floatLeft{float:left;}
+.floatRight{float:right;}
+.alignLeft{text-align:left;}
+.alignCenter{text-align:center;}
+.alignRight{text-align:right}
+a.external{padding-right:11px;}
+a.external:hover{background:url(../images/ico/external.gif) no-repeat center right;}
+span.disabled{color:#ccc;padding-right:11px;}
+.icon-group{background:url(../images/ico/group.gif) no-repeat center !important;}
+.icon-person{background:url(../images/ico/person.gif) no-repeat center !important;}

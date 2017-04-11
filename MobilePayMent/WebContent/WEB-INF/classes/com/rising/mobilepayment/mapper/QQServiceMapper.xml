@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rising.mobilepayment.mapper.QQServiceMapper">
+	<select id="getValidQQServiceList"  parameterType="java.lang.String"  resultType="com.rising.mobilepayment.bean.QQService">
+		select * from
+		RS_QQService a where a.valid=1 and a.BusId = #{param1}  order by orderNum
+	</select>
+	<select id="findById" parameterType="java.lang.String"
+		resultType="com.rising.mobilepayment.bean.QQService">
+		select * from RS_QQService where serviceCode = #{serviceCode}
+	</select>
+	
+</mapper>
