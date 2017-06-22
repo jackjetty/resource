@@ -7,8 +7,37 @@ https://doc.open.alipay.com/doc2/detail.htm?treeId=54&articleId=104509&docType=1
 13336022050@189.cn
 Rising_201610
 
+https://github.com/venusdrogon/feilong-platform/tree/repository/com/feilong/platform/feilong-core/1.2.2-SNAPSHOT
 
 
+<project>
+
+    ....
+    <properties>
+        <version.feilong-platform>1.10.3</version.feilong-platform>
+        ....
+    </properties>
+
+    ....
+    <repositories>
+        <repository>
+            <id>feilong-repository</id>
+            <url>https://raw.github.com/venusdrogon/feilong-platform/repository</url>
+        </repository>
+    </repositories>
+
+    ....
+    <dependencies>
+        ....
+        <dependency>
+            <groupId>com.feilong.platform</groupId>
+            <artifactId>feilong-core</artifactId>
+            <version>${version.feilong-platform}</version>
+        </dependency>
+        ....
+    </dependencies>
+    ....
+</project>
 文档中心
 进入管理中心
  
